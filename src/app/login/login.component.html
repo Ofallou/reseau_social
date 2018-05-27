@@ -1,0 +1,16 @@
+
+<div class="login-page">
+  <div class="form">
+    <form class="login-form" #login="ngForm" >
+      <input type="text" [(ngModel)]="userData.email" name="email" placeholder="email" required/>
+      <input type="password" [(ngModel)]="userData.password"  name="password" placeholder="password" required/>
+      <button  [disabled]="!login.form.valid"  (click)="onLogin()">login</button>
+      <p class="message">Pas encore inscrit ? <a routerLink="/register">S'enregistrer</a></p>
+
+      <div style="color: red">
+      {{errorMessage}}
+      </div>
+    </form>
+  </div>
+</div>
+

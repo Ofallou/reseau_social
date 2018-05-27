@@ -1,0 +1,43 @@
+<div class="card">
+
+  <form #register="ngForm" class="form">
+
+  <div class="row">
+
+    <div class="small-12 medium-6">
+      <label >Nom</label>
+      <input type="text" class="form-control" [(ngModel)]='user.last_name' name="last_name" placeholder="Nom"  required minlength="2">
+    </div>
+    <div class="small-12 medium-6">
+      <label >Prenom</label>
+      <input type="text" [(ngModel)]='user.first_name' name="first_name" placeholder="Prenom" required minlength="2">
+    </div>
+    <div class="small-12 medium-6">
+      <label >Email</label>
+      <input type="email" [(ngModel)]='user.email' name="email" placeholder="Email" required minlength="2">
+    </div>
+    <div class="small-12 medium-4">
+      <label >Password</label>
+      <input type="password" [(ngModel)]='user.password' name="password" placeholder="mot de passe" required minlength="5">
+    </div>
+
+    <div class="small-12 medium-6">
+      <label >Pseudo</label>
+      <input type="text" [(ngModel)]='user.pseudo' name="pseudo" placeholder="Pseudo" required minlength="2">
+    </div>
+    <div class="small-12 medium-4">
+      <label for="">Genre</label>
+      <select   name="gender" [(ngModel)]='user.gender' name="gender" required>
+        <option value="male" >Homme</option>
+        <option value="female">Femme</option>
+      </select>
+    </div>
+
+    <div class="small-4">
+        <button [disabled]="!register.form.valid" class="btn btn-success" (click)="registerUser()" routerLink="/userdata">S'enregistrer</button>
+    </div>
+
+
+  </div>
+</form>
+</div>
