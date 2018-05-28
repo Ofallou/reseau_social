@@ -24,6 +24,8 @@ export class LoginComponent implements OnInit {
         if (res.message || res.err) {
           this.errorMessage = 'Identifiant ou mot de passe invalide';
           console.log(this.errorMessage);
+          this.userData.email = '';
+          this.userData.password = '';
         } else {
           localStorage.setItem('token', res.token);
           this._router.navigate(['/userdata']);

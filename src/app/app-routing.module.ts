@@ -5,6 +5,8 @@ import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {FormsModule} from '@angular/forms';
 import {UserdataComponent} from './userdata/userdata.component';
+import {LostPasswordComponent} from './lost-password/lost-password.component';
+import {AuthGuard} from './auth.guard';
 
 
 const routes: Routes = [
@@ -16,7 +18,9 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: 'userdata', component: UserdataComponent}
+  {path: 'userdata', component: UserdataComponent,
+  canActivate : [AuthGuard]},
+  {path: 'lostpwd', component: LostPasswordComponent}
 
 ];
 

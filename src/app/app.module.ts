@@ -8,11 +8,14 @@ import {HomeComponent} from './home/home.component';
 import {RegisterComponent} from './register/register.component';
 import {LoginComponent} from './login/login.component';
 import {UserdataComponent} from './userdata/userdata.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 // services
 import {TokenService} from './token.service';
 import {AuthService} from './auth.service';
+import { LostPasswordComponent } from './lost-password/lost-password.component';
+import {AuthGuard} from './auth.guard';
+import {TokenInterceptService} from './token-intercept.service';
 
 
 
@@ -22,7 +25,8 @@ import {AuthService} from './auth.service';
     HomeComponent,
     RegisterComponent,
     LoginComponent,
-    UserdataComponent
+    UserdataComponent,
+    LostPasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +34,12 @@ import {AuthService} from './auth.service';
     FormsModule,
     HttpClientModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptService,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

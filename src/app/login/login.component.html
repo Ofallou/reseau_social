@@ -1,13 +1,25 @@
 
 <div class="login-page">
+  <h3>Connectez-vous a votre espace</h3>
   <div class="form">
-    <form class="login-form" #login="ngForm" >
-      <input type="text" [(ngModel)]="userData.email" name="email" placeholder="email" required/>
-      <input type="password" [(ngModel)]="userData.password"  name="password" placeholder="password" required/>
+
+    <div>
+
+    </div>
+    <form class="form-group" #login="ngForm" >
+      <div>
+        <label>Email</label>
+        <input type="text" [(ngModel)]="userData.email" name="email" placeholder="email" required/>
+      </div>
+      <div>
+        <label>Mot de passe</label>
+        <input type="password" [(ngModel)]="userData.password"  name="password" placeholder="password" required/>
+      </div>
       <button  [disabled]="!login.form.valid"  (click)="onLogin()">login</button>
+      <p class="message">Mot de passe perdu? <a routerLink="/lostpwd">cliquez-ici</a></p>
       <p class="message">Pas encore inscrit ? <a routerLink="/register">S'enregistrer</a></p>
 
-      <div style="color: red">
+      <div  style="color: red">
       {{errorMessage}}
       </div>
     </form>
