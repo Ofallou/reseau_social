@@ -13,6 +13,7 @@ mongoose.connect(db, err => {
     }
 });
 
+var currentUserId;
 function veriFyToken(req,res, next){
   if(!req.headers.authorization){
     return res.statut(401).send('invalide request')
@@ -27,6 +28,8 @@ function veriFyToken(req,res, next){
     return res.statut(401).send('invalide request')
   } else {
     req.userId = payload.subject;
+    currentUserId= req.userId;
+    //console.log(payload.subject);
     next();
   }
 }
@@ -59,15 +62,15 @@ router.post('/register',  (req, res) => {
 // gestion du login utilisateur
 router.post('/login', (req, res)=> {
   let userdata= req.body
-  console.log(userdata)
-  console.log(req.body.password)
+  //console.log(userdata)
+ // console.log(req.body.password)
   let user = new User(userdata);
   User.findOne({email:req.body.email}, (err, data)=>{
    if(err){
      console.log(err)
    } else {
      if(!data){
-       res.json({message:'Email inavlide '});
+       res.json({message:'Email invalide '});
 
      } else {
        if(data.password === req.body.password){
@@ -86,8 +89,15 @@ router.post('/login', (req, res)=> {
 });
 
 
-router.get('/userdata', veriFyToken, (req, res) => {
 
+
+router.get('/userdata',veriFyToken ,(req, res) => {
+
+  User.findOne({_id:currentUserId}, (err, user)=>{
+    if(!err){
+      res.send({user: user})
+    }
+  })
 
 })
 

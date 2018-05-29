@@ -15,7 +15,6 @@ import {TokenService} from './token.service';
 import {AuthService} from './auth.service';
 import { LostPasswordComponent } from './lost-password/lost-password.component';
 import {AuthGuard} from './auth.guard';
-import {TokenInterceptService} from './token-intercept.service';
 
 
 
@@ -37,7 +36,7 @@ import {TokenInterceptService} from './token-intercept.service';
   providers: [AuthService, AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptService,
+      useClass: TokenService,
       multi: true
     }],
   bootstrap: [AppComponent]
