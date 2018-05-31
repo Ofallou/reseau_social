@@ -102,3 +102,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.error {
+  color: #EF3B3A;
+  font-family: fantasy
+}

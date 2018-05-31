@@ -7,7 +7,9 @@
   </ul>
 
   <ul class="menu align-left">
-    <li><a  class="nav-item" routerLink="/userdata" routerLinkActive="active">Members <i class="fas fa-user-circle"></i></a></li>
+      <li><a *ngIf="!getUserState()" class="nav-item" routerLink="/login" routerLinkActive="active"> Member <i class="fas fa-user-circle"></i></a></li>
+
+    <li><a *ngIf="getUserState()" class="nav-item" routerLink="/home" routerLinkActive="active"> <app-userdata></app-userdata> <i class="fas fa-user-circle"></i></a></li>
     <li><a *ngIf="getUserState()"  (click)="logoutUser()" >Se deconnecter</a></li>
   </ul>
 </div>

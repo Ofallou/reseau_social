@@ -11,12 +11,11 @@ import { AuthService} from '../auth.service';
   styleUrls: ['./userdata.component.css']
 })
 export class UserdataComponent implements OnInit {
-   user: User;
+   user = {};
   constructor(private authService: AuthService ) {}
 
   ngOnInit() {
     this.getUserdata();
-
 
   }
 

@@ -14,6 +14,7 @@ export class AuthService {
   private _registerURL = 'http://localhost:3000/api/register';
   private _loginURL = 'http://localhost:3000/api/login';
   private _userdataURL = 'http://localhost:3000/api/userdata';
+  private _lostPassword = 'http://localhost:3000/api/lostpwd';
 
   constructor(private http: HttpClient, private _router: Router) {}
   registerUser(user) {
@@ -35,6 +36,9 @@ export class AuthService {
 
   loggedIn() {
     return !!localStorage.getItem('token');
+  }
+  lostPassword(_email) {
+    return this.http.post<any>(this._lostPassword, _email);
   }
 
   getData() {

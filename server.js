@@ -1,16 +1,18 @@
 const express = require('express');
+const mailer = require ('express-mailer');
+
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const path = require('path');
 const app = express();
 const jwt = require('jsonwebtoken');
-const fakeUser = {email: 'hello@world.com', password: 'welcome'};
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   next();
 });
+
 
 
 const PORT = 3000;

@@ -1,5 +1,7 @@
 const express = require ('express');
 const router = express.Router();
+const nodemailer =  require ('nodemailer')
+
 const User = require ('./models/user.js');
 const mongoose= require('mongoose');
 const jwt = require('jsonwebtoken');
@@ -12,6 +14,42 @@ mongoose.connect(db, err => {
         console.log('Connecté a Mongodb')
     }
 });
+
+
+
+
+
+var sentPassword =  function(email, password, last_name){
+
+  nodemailer.createTestAccount((err, account) => {
+    let transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: 'ofallou@gmail.com',
+        pass:'meissa1971'
+      }
+    });
+    let mailOptions = {
+      from:'"Socialbook"<exemple@of.fr>',
+      subject:'Information sur votre compte',
+      to:email,
+      replyTo:'ofbk@hotmail.fr',
+      text:'test from nodemail',
+      html:'<p>Bonjour,' +last_name+' <br> Vous trouverez ci-dessous votre mot de passe de connection   </p>'+ password
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+         if(error){
+           return console.log(error)
+         }
+         console.log('Message sent : %s', info.messageId)
+    })
+  });
+
+}
+
+
 
 var currentUserId;
 function veriFyToken(req,res, next){
@@ -30,10 +68,10 @@ function veriFyToken(req,res, next){
     req.userId = payload.subject;
     currentUserId= req.userId;
     //console.log(payload.subject);
+
     next();
   }
 }
-
 
 
 // Enregistrement de l'utilisateur
@@ -90,7 +128,6 @@ router.post('/login', (req, res)=> {
 
 
 
-
 router.get('/userdata',veriFyToken ,(req, res) => {
 
   User.findOne({_id:currentUserId}, (err, user)=>{
@@ -101,4 +138,31 @@ router.get('/userdata',veriFyToken ,(req, res) => {
 
 })
 
+
+router.post('/lostpwd', (req, res) => {
+  let email = req.body.email;
+  User.findOne({email: email}, (err, data)=>{
+    if(err){
+      console.log(err)
+      res.send({error:'Adresse email inconnu'})
+      //console.log(data.password)
+    }else {
+
+      if(data){
+        console.log(data.length)
+
+        sentPassword(email,data.password, data.last_name)
+      res.send({success:'Mot de passe envoyé,merci de verifier votre boite de reception de meme votre dossier spam'})
+      }else {
+        res.send({error:'Adresse email inconnu'})
+
+      }
+
+
+
+    }
+
+  })
+
+})
 module.exports= router;
