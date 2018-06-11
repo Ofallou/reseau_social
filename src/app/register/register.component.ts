@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
 import { AuthService} from '../auth.service';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -12,9 +13,10 @@ import { HttpClient } from '@angular/common/http';
 
 })
 export class RegisterComponent implements OnInit {
-   public user: User;
+   user: User;
 
-  constructor( private authService: AuthService, private _router: Router) {
+
+  constructor( private authService: AuthService, private _router: Router, private formBuilder: FormBuilder) {
     this.user = new User ({first_name: '',
     last_name: '',
     email: '',

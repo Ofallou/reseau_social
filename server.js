@@ -2,7 +2,6 @@ const express = require('express');
 const mailer = require ('express-mailer');
 
 const bodyParser = require('body-parser');
-const session = require('express-session');
 const path = require('path');
 const app = express();
 const jwt = require('jsonwebtoken');
