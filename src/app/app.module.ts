@@ -9,12 +9,14 @@ import {RegisterComponent} from './register/register.component';
 import {LoginComponent} from './login/login.component';
 import {UserdataComponent} from './userdata/userdata.component';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
-import {FormsModule} from '@angular/forms';
+import {FormsModule } from '@angular/forms';
 // services
 import {TokenService} from './token.service';
 import {AuthService} from './auth.service';
 import { LostPasswordComponent } from './lost-password/lost-password.component';
 import {AuthGuard} from './auth.guard';
+import { CommentsComponent } from './comments/comments.component';
+import {CommentService} from './comment.service';
 
 
 
@@ -25,7 +27,8 @@ import {AuthGuard} from './auth.guard';
     RegisterComponent,
     LoginComponent,
     UserdataComponent,
-    LostPasswordComponent
+    LostPasswordComponent,
+    CommentsComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,7 @@ import {AuthGuard} from './auth.guard';
     FormsModule,
     HttpClientModule
   ],
-  providers: [AuthService, AuthGuard,
+  providers: [AuthService, AuthGuard, CommentService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenService,

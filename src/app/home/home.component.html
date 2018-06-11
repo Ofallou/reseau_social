@@ -1,42 +1,36 @@
+
+
 <div class="container">
   <h2 class="h4">Bienvenue sur le reseau social </h2>
-  <section class="section-article">
 
-    <article>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex odio consequuntur, perferendis sapiente, recusandae qui natus obcaecati exercitationem consectetur autem, minima ullam atque quisquam quis dolores doloremque quia animi iste.</p>
+
+  <section>
+
+    <article *ngIf=isMember>
+        <app-comments></app-comments>
 
     </article>
 
-
-    <article>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex odio consequuntur, perferendis sapiente, recusandae qui natus obcaecati exercitationem consectetur autem, minima ullam atque quisquam quis dolores doloremque quia animi iste.</p>
-
-      </article>
-
-
-    <article>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex odio consequuntur, perferendis sapiente, recusandae qui natus obcaecati exercitationem consectetur autem, minima ullam atque quisquam quis dolores doloremque quia animi iste.</p>
-
-      </article>
-
   </section>
 
-  <section class="section-article">
+  <section class="comments">
 
-      <article>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex odio consequuntur, perferendis sapiente, recusandae qui natus obcaecati exercitationem consectetur autem, minima ullam atque quisquam quis dolores doloremque quia animi iste.</p>
+    <div class="commentaire" *ngFor="let comment of comments">
+      <div class="card">
+          <h5 class="card-header" style="background-color: #43A047">Titre: {{comment.title}}</h5>
+        <div class="card-body">
 
-      </article>
+        <p class="card-text">
+          {{comment.content}}
+        </p>
+      </div>
+      <p class="card-footer text-muted">Publié par {{comment.author}} le  {{comment.date| date:'dd-MM-yyyy HH:mm' }}</p>
+      <a href="#"><i class="fas fa-comment"></i></a>
+    </div>
 
-    </section>
 
-    <section class="section-article">
+    </div>
 
-        <article>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex odio consequuntur, perferendis sapiente, recusandae qui natus obcaecati exercitationem consectetur autem, minima ullam atque quisquam quis dolores doloremque quia animi iste.</p>
-
-        </article>
-
-      </section>
+  </section>
 
 </div>

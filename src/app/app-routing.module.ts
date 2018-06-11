@@ -22,6 +22,7 @@ const routes: Routes = [
   {path: 'userdata', component: UserdataComponent,
   canActivate : [AuthGuard]},
 
+
 ];
 
 @NgModule({

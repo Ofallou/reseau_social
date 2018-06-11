@@ -2,10 +2,20 @@ const express = require ('express');
 const router = express.Router();
 const nodemailer =  require ('nodemailer')
 
-const User = require ('./models/user.js');
+
 const mongoose= require('mongoose');
 const jwt = require('jsonwebtoken');
+
+//Models
+const User = require ('./models/user.js');
+const Comment = require ('./models/comment');
+
+
+//Mongodb
 const db="mongodb://localhost/reseau_social_db";
+
+
+
 const secret='RffrtejksizikskiksizkskizkskkzikskskksMpp';
 mongoose.connect(db, err => {
     if(err){
@@ -138,7 +148,7 @@ router.get('/userdata',veriFyToken ,(req, res) => {
 
 })
 
-
+// Lost passwaord recovery
 router.post('/lostpwd', (req, res) => {
   let email = req.body.email;
   User.findOne({email: email}, (err, data)=>{
@@ -152,12 +162,11 @@ router.post('/lostpwd', (req, res) => {
         console.log(data.length)
 
         sentPassword(email,data.password, data.last_name)
-      res.send({success:'Mot de passe envoyé,merci de verifier votre boite de reception de meme votre dossier spam'})
+      res.send({success:'Mot de passe envoyé,merci de verifier votre boite de reception de meme votre dossier spam'});
       }else {
         res.send({error:'Adresse email inconnu'})
 
       }
-
 
 
     }
@@ -165,4 +174,53 @@ router.post('/lostpwd', (req, res) => {
   })
 
 })
+
+// comment recording (register user only)
+
+
+router.post('/post_comment',veriFyToken ,(req,res) => {
+
+  //On valide le token et le user connecté
+  const token= req.headers.authorization.split(' ')[1];
+  const payload = jwt.verify(token, secret);
+  const user_id = payload.subject;
+
+//recherche via id **
+ User.findById(user_id, (err, user) =>{
+  let commentForm = req.body;
+   if(err) console.log(err)
+  // console.log(user)
+   commentForm.author= user.first_name +' '+ user.last_name;
+   commentForm.user_id=payload.subject;
+
+   let comment= new Comment(commentForm);
+
+   if(comment){
+     comment.save((err, commentData) =>{
+       if(err){
+         console.log(err)
+       }
+       console.log('Commentaire sauvegardé : ',commentData)
+       res.status(200).send({commentData})
+
+     })
+   }
+
+ })
+
+
+})
+
+
+router.get('/comments', (req,res) => {
+  Comment.find({},null,{sort:{date: -1}},(err, comments)=>{
+    if(err) throw err;
+    //console.log(comments);
+    res.status(200).send({comments})
+  })
+
+
+
+})
+
 module.exports= router;

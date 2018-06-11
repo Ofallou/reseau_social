@@ -1,6 +1,4 @@
 const express = require('express');
-const mailer = require ('express-mailer');
-
 const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
@@ -29,5 +27,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, function () {
-  console.log('Server running on localhost :3000')
+  console.log('Server running on localhost port:', PORT)
 });

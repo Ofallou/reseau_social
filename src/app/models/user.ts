@@ -5,6 +5,7 @@ export class User {
    email: String;
     gender: String;
     password: String;
+    roleAdmin: Boolean
 
   constructor(user: any) {
     this.first_name = user.first_name;
@@ -13,6 +14,7 @@ export class User {
     this.email = user.last_name;
     this.password = user.password;
     this.gender = user.gender;
+    this.roleAdmin = false;
 
   }
 }

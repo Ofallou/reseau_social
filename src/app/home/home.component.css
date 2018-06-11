@@ -1,13 +1,22 @@
 .container {
+  max-width: 40%;
   display: flex;
   flex-flow: column wrap;
   justify-content: center
 }
 
 .section-article{
+  max-width: 60%;
   display: flex;
   flex-flow: row wrap;
   align-content: space-around
 
 
+}
+.comment{
+  display: flex;
+  flex-flow: column wrap;
+}
+.fa-comment{
+  color: green
 }

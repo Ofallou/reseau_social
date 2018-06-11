@@ -2,26 +2,29 @@
     <h3>Créez votre compte </h3>
 <form #register="ngForm" class="form">
   <div class="row">
-    <div class="small-12 medium-12">
-      <label >Nom</label>
-      <input type="text" class="form-control" [(ngModel)]='user.last_name' name="last_name" placeholder="Nom"  required minlength="2">
+    <div class="small-12 medium-12" >
+      <div class="form-group" [class.has-error]="name.invalid && name.touched">
+      <label for="name" >Nom</label>
+      <input id="name" type="text" class="form-control" [(ngModel)]='user.last_name' name="last_name" placeholder="Nom"  required #name="ngModel">
+
+      </div>
     </div>
     <div class="small-12 medium-12">
       <label >Prenom</label>
-      <input type="text" [(ngModel)]='user.first_name' name="first_name" placeholder="Prenom" required minlength="2">
+      <input type="text" [(ngModel)]='user.first_name' name="first_name" placeholder="Prenom" required >
     </div>
     <div class="small-12 medium-8">
       <label >Email</label>
-      <input type="email" [(ngModel)]='user.email' name="email" placeholder="Email" required minlength="2">
+      <input type="email" [(ngModel)]='user.email' name="email" placeholder="Email"  required email   >
     </div>
     <div class="small-12 medium-4">
       <label >Mot de passe</label>
-      <input type="password" [(ngModel)]='user.password' name="password" placeholder="password" required minlength="5">
+      <input type="password" [(ngModel)]='user.password' name="password" placeholder="password" required >
     </div>
 
     <div class="small-12 medium-8">
       <label >Pseudo</label>
-      <input type="text" [(ngModel)]='user.pseudo' name="pseudo" placeholder="Pseudo" required minlength="2">
+      <input type="text" [(ngModel)]='user.pseudo' name="pseudo" placeholder="Pseudo" required >
     </div>
     <div class="small-12 medium-4">
       <label >Genre</label>

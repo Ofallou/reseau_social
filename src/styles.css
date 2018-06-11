@@ -60,6 +60,8 @@ label {
   display: none;
 }
 .container {
+
+
   position: relative;
   z-index: 1;
   max-width: 300px;
@@ -105,4 +107,19 @@ body {
 .error {
   color: #EF3B3A;
   font-family: fantasy
+}
+
+
+
+.comment {
+  max-width: 150%;
+  height: 80%;
+}
+
+.green-border-focus .form-control:focus {
+  border: 1px solid #8bc34a;
+  box-shadow: 0 0 0 0.2rem rgba(139, 195, 74, .25);
+}
+.card-header {
+  background-color: #43A047
 }

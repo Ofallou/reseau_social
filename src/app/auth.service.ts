@@ -11,10 +11,11 @@ export class AuthService {
     email : '',
     password : ''
   };
-  private _registerURL = 'http://localhost:3000/api/register';
-  private _loginURL = 'http://localhost:3000/api/login';
-  private _userdataURL = 'http://localhost:3000/api/userdata';
-  private _lostPassword = 'http://localhost:3000/api/lostpwd';
+  url = 'http://localhost:3000';
+  private _registerURL = this.url + '/api/register';
+  private _loginURL = this.url + '/api/login';
+  private _userdataURL = this.url + '/api/userdata';
+  private _lostPassword = this.url + '/api/lostpwd';
 
   constructor(private http: HttpClient, private _router: Router) {}
   registerUser(user) {

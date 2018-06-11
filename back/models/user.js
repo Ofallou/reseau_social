@@ -9,7 +9,8 @@ const userSchema = new Schema({
   email: String,
    gender: String,
    password: String,
-   isAdmin: Boolean
+   isAdmin: Boolean,
+
 });
 
 module.exports = mongoose.model('user', userSchema, 'users');

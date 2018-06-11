@@ -3,6 +3,7 @@ import { User } from '../models/user';
 import { HttpInterceptor} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService} from '../auth.service';
+import {CommentService} from '../comment.service';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { AuthService} from '../auth.service';
 })
 export class UserdataComponent implements OnInit {
    user = {};
-  constructor(private authService: AuthService ) {}
+  constructor(private authService: AuthService, private commentService: CommentService) {}
 
   ngOnInit() {
     this.getUserdata();
@@ -24,6 +25,8 @@ export class UserdataComponent implements OnInit {
      .subscribe(
        res => {
           this.user = res.user;
+          console.log(res.user)
+          return this.user;
        }
      );
    }

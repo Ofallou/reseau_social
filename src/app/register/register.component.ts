@@ -16,13 +16,15 @@ export class RegisterComponent implements OnInit {
    user: User;
 
 
-  constructor( private authService: AuthService, private _router: Router, private formBuilder: FormBuilder) {
+  constructor( private authService: AuthService, private _router: Router) {
     this.user = new User ({first_name: '',
     last_name: '',
     email: '',
     gender: '',
     password: '',
-    pseudo: ''});
+    pseudo: '',
+      roleAdmin: false
+    });
   }
 
   ngOnInit() {
