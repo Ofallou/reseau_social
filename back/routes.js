@@ -1,8 +1,6 @@
 const express = require ('express');
 const router = express.Router();
-const nodemailer =  require ('nodemailer')
-
-
+const nodemailer =  require ('nodemailer');
 const mongoose= require('mongoose');
 const jwt = require('jsonwebtoken');
 
@@ -10,11 +8,8 @@ const jwt = require('jsonwebtoken');
 const User = require ('./models/user.js');
 const Comment = require ('./models/comment');
 
-
 //Mongodb
 const db="mongodb://localhost/reseau_social_db";
-
-
 
 const secret='RffrtejksizikskiksizkskizkskkzikskskksMpp';
 mongoose.connect(db, err => {
@@ -24,9 +19,6 @@ mongoose.connect(db, err => {
         console.log('Connecté a Mongodb')
     }
 });
-
-
-
 
 
 var sentPassword =  function(email, password, last_name){
@@ -84,6 +76,8 @@ function veriFyToken(req,res, next){
 }
 
 
+
+
 // Enregistrement de l'utilisateur
 router.post('/register',  (req, res) => {
   let userdata= req.body;
@@ -133,7 +127,7 @@ router.post('/login', (req, res)=> {
      }
    }
 
-  })
+  });
 });
 
 
@@ -147,6 +141,14 @@ router.get('/userdata',veriFyToken ,(req, res) => {
   })
 
 })
+
+router.get('/',(req, res) => {
+
+res.send({message: 'connecté'})
+
+})
+
+
 
 // Lost passwaord recovery
 router.post('/lostpwd', (req, res) => {
@@ -219,8 +221,10 @@ router.get('/comments', (req,res) => {
     res.status(200).send({comments})
   })
 
-
-
 })
+
+
+
+
 
 module.exports= router;

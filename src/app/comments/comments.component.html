@@ -1,22 +1,21 @@
 
+<div class="ui container">
+  <div class="ui grid">
+  <form class="ui form" #commentF="ngForm" (submit)="sendMessage();commentF.reset()" >
 
-  <form class="form-group shadow-textarea" #commentF="ngForm" (submit)="addComment();commentF.reset()" >
-
-
-  <div class="card-body form-group green-border-focus">
-      <p class="card-title">Poster un commentaire </p>
+  <div class="field">
+      <p class="ui card-title">Poster un commentaire </p>
       <input  type="text" name="title" [(ngModel)]="comment.title" placeholder="titre">
 
       <textarea class="card-text " rows="5"  required type="textarea" name="comment" [(ngModel)]="comment.content" placeholder="commentaire....">
    </textarea>
-     <button type="submit" class="btn btn-secondary" [disabled]="!commentF.form.valid" >
+     <button type="submit" class="positive ui button" [disabled]="!commentF.form.valid" (click)="posted()" >
        Publier
      </button>
-
   </div>
-
-
   </form>
+</div>
+</div>
 
 
 

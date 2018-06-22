@@ -16,6 +16,7 @@ export class AuthService {
   private _loginURL = this.url + '/api/login';
   private _userdataURL = this.url + '/api/userdata';
   private _lostPassword = this.url + '/api/lostpwd';
+  private _home = this.url + '/api/';
 
   constructor(private http: HttpClient, private _router: Router) {}
   registerUser(user) {
@@ -46,7 +47,9 @@ export class AuthService {
     return this.http.get<any>(this._userdataURL);
   }
 
-
+  home() {
+    return this.http.get<any>(this._home);
+  }
 
 }
 

@@ -1,28 +1,29 @@
 
-<div class="login-page">
-  <h3>Connectez-vous a votre espace</h3>
-  <div class="form">
-
-    <div>
-
-    </div>
-    <form class="form-group" #login="ngForm" >
-      <div>
+<div class="ui container ">
+<div class="ui grid" >
+<form class="ui form"  #login="ngForm">
+      <div class="field">
         <label>Email</label>
+        <div class="ui left icon input">
         <input type="text" [(ngModel)]="userData.email" name="email" placeholder="email" required/>
+        <i class="user icon"></i>
+        </div>
       </div>
-      <div>
+      <div class="field">
         <label>Mot de passe</label>
-        <input type="password" [(ngModel)]="userData.password"  name="password" placeholder="password" required/>
-      </div>
-      <button  [disabled]="!login.form.valid"  (click)="onLogin()">login</button>
-      <p class="message">Mot de passe perdu? <a routerLink="/lostpwd">cliquez-ici</a></p>
-      <p class="message">Pas encore inscrit ? <a routerLink="/register">S'enregistrer</a></p>
-
-      <div  style="color: red">
-      {{errorMessage}}
-      </div>
+        <div class="ui left icon input">
+                    <input type="password" [(ngModel)]="userData.password"  name="password" placeholder="password" required  />
+        <i class="lock icon"></i>
+        </div>
+        </div>
+        <div class="ui error message">
+            <div  style="color: red">
+                {{errorMessage}}
+            </div>
+            <p class="message">Mot de passe perdu? <a routerLink="/lostpwd">cliquez-ici</a></p>
+            <p class="message">Pas encore inscrit ? <a routerLink="/register">S'enregistrer</a></p>
+        </div>
+            <button  [disabled]="!login.form.valid"  (click)="onLogin()" class="ui positive button active">Save</button>
     </form>
   </div>
 </div>
-

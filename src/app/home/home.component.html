@@ -1,8 +1,6 @@
 
-
-<div class="container">
+<div class="ui container">
   <h2 class="h4">Bienvenue sur le reseau social </h2>
-
 
   <section>
 
@@ -13,24 +11,30 @@
 
   </section>
 
-  <section class="comments">
+        <div class="ui card" *ngFor="let comment of comments">
+            <div class="content">
+              <div class="right floated meta">{{comment.date| date:'dd-MM-yyyy HH:mm' }}</div>
+              <img class="ui avatar image" src="../../assets/images/of.jpg"> {{comment.author}}
+            </div>
+            <div class="content">
+                {{comment.content}}
+              <span class="right floated">
+                <i class="heart outline like icon"></i>
+              </span>
 
-    <div class="commentaire" *ngFor="let comment of comments">
-      <div class="card">
-          <h5 class="card-header" style="background-color: #43A047">Titre: {{comment.title}}</h5>
-        <div class="card-body">
-
-        <p class="card-text">
-          {{comment.content}}
-        </p>
-      </div>
-      <p class="card-footer text-muted">Publié par {{comment.author}} le  {{comment.date| date:'dd-MM-yyyy HH:mm' }}</p>
-      <a href="#"><i class="fas fa-comment"></i></a>
-    </div>
+            </div>
+            <div class="extra content">
+              <div class="ui large transparent left icon input">
+                <i class="heart outline icon"></i>
+                <input type="text" placeholder="Add Comment...">
+              </div>
+            </div>
+   </div>
 
 
-    </div>
 
-  </section>
 
 </div>
+
+
+

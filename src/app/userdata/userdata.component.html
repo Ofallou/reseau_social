@@ -1,11 +1,14 @@
-<div class="container-fluid">
-Bienvenue {{user.first_name}}
+<div class="ui container">
+  <div class="ui grid">
+    <div class="row">
+      <div class="two wide column">
+          {{user.first_name}} {{user.last_name}}
+      </div>
 
-<p>Partager un article ou un commentaire</p>
+           <app-comments class="six wide column" [user]="user"></app-comments>
+    </div>
 
-
-    <app-comments [user]="user"></app-comments>
-
+  </div>
 
 </div>
 
