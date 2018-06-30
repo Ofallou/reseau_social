@@ -11,6 +11,7 @@ import {UserdataComponent} from './userdata/userdata.component';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {FormsModule } from '@angular/forms';
 import { DragulaModule } from 'ng2-dragula';
+
 // services
 import {TokenService} from './token.service';
 import {AuthService} from './auth.service';
@@ -21,6 +22,8 @@ import {CommentService} from './comment.service';
 import { UploaderComponent } from './uploader/uploader.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { WebsocketService } from './websocket.service';
+import { StatsComponent } from './stats/stats.component';
+import { HeaderComponent } from './header/header.component';
 
 
 
@@ -34,7 +37,9 @@ import { WebsocketService } from './websocket.service';
     LostPasswordComponent,
     CommentsComponent,
     UploaderComponent,
-    UserSettingsComponent
+    UserSettingsComponent,
+    StatsComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -42,6 +47,7 @@ import { WebsocketService } from './websocket.service';
     FormsModule,
     HttpClientModule,
     DragulaModule
+
   ],
   providers: [AuthService, AuthGuard,WebsocketService, CommentService,
     {

@@ -1,23 +1,22 @@
+<div class="row ">
+  <form class="col s8" #commentF="ngForm" (submit)="posted();commentF.reset()" >
+    <div class="row">
 
-<div class="ui container">
-  <div class="ui grid">
-  <form class="ui form" #commentF="ngForm" (submit)="sendMessage();commentF.reset()" >
-
-  <div class="field">
-      <p class="ui card-title">Poster un commentaire </p>
-      <input  type="text" name="title" [(ngModel)]="comment.title" placeholder="titre">
-
-      <textarea class="card-text " rows="5"  required type="textarea" name="comment" [(ngModel)]="comment.content" placeholder="commentaire....">
-   </textarea>
-     <button type="submit" class="positive ui button" [disabled]="!commentF.form.valid" (click)="posted()" >
-       Publier
-     </button>
-  </div>
+      <div class="input-field col s5">
+        <i class="material-icons prefix">title</i>
+        <input  type="text" name="title" id="titre" [(ngModel)]="comment.title" required >
+        <label for="titre">Titre</label>
+      </div>
+      <div class="input-field col s10">
+        <i class="material-icons prefix">mode_edit</i>
+        <textarea id="icon_prefix2" class="materialize-textarea" name="content" [(ngModel)]="comment.content" ></textarea>
+        <label for="icon_prefix2">Commentaire</label>
+      </div>
+    </div>
+    <button type="submit" class="btn waves-effect waves-light" [disabled]="!commentF.form.valid" >Poster
+      <i class="material-icons right">send</i>
+    </button>
   </form>
 </div>
-</div>
-
-
-
 
 

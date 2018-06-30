@@ -14,6 +14,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class RegisterComponent implements OnInit {
    user: User;
+   photoUpload: File = null;
+   imageUrl: string;
 
 
   constructor( private authService: AuthService, private _router: Router) {
@@ -23,7 +25,9 @@ export class RegisterComponent implements OnInit {
     gender: '',
     password: '',
     pseudo: '',
-      roleAdmin: false
+    dateNaissance: '',
+    roleAdmin: false,
+      pictures: [],
     });
   }
 
@@ -32,8 +36,20 @@ export class RegisterComponent implements OnInit {
       this._router.navigate(['/userdata']);
     }
   }
+  /* gere l'upload de photo */
+  onFileSelected(file: FileList) {
+    console.log(file);
+    this.photoUpload= file.item(0);
+     var reader = new FileReader();
+     reader.onload = (event:any) => {
+       this.imageUrl = event.target.result;
+     }
+     reader.readAsDataURL(this.photoUpload);
+     this.user.pictures.push(this.photoUpload);
+  }
 
   registerUser() {
+
     this.authService.registerUser(this.user)
     .subscribe(
       res => {

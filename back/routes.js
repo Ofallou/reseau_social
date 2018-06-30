@@ -9,16 +9,10 @@ const User = require ('./models/user.js');
 const Comment = require ('./models/comment');
 
 //Mongodb
-const db="mongodb://localhost/reseau_social_db";
+const db="mongodb://ofallou:meissa71@ds249079.mlab.com:49079/reseau_social";
 
 const secret='RffrtejksizikskiksizkskizkskkzikskskksMpp';
-mongoose.connect(db, err => {
-    if(err){
-        console.log('Oups Erreur '+err)
-    }else {
-        console.log('Connecté a Mongodb')
-    }
-});
+
 
 
 var sentPassword =  function(email, password, last_name){
@@ -91,6 +85,7 @@ router.post('/register',  (req, res) => {
         if(err){
           console.log(err)
         }else {
+          console.log(dataUser)
           let payload = {subject: dataUser._id};
           let token = jwt.sign(payload, secret);
           res.status(200).send({token})
@@ -210,7 +205,6 @@ router.post('/post_comment',veriFyToken ,(req,res) => {
 
  })
 
-
 })
 
 
@@ -222,8 +216,6 @@ router.get('/comments', (req,res) => {
   })
 
 })
-
-
 
 
 

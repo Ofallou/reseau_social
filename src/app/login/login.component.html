@@ -1,29 +1,28 @@
+<div class="container">
+  <div class="row ">
+    <div class="card-panel blue lighten-3 col s6" >
+      <form   #login="ngForm">
+        <div class="input-field">
+          <input type="text" [(ngModel)]="userData.email" name="email"  id="email" required/>
+          <label for="email">Email</label>
+        </div>
 
-<div class="ui container ">
-<div class="ui grid" >
-<form class="ui form"  #login="ngForm">
-      <div class="field">
-        <label>Email</label>
-        <div class="ui left icon input">
-        <input type="text" [(ngModel)]="userData.email" name="email" placeholder="email" required/>
-        <i class="user icon"></i>
-        </div>
-      </div>
-      <div class="field">
-        <label>Mot de passe</label>
-        <div class="ui left icon input">
-                    <input type="password" [(ngModel)]="userData.password"  name="password" placeholder="password" required  />
-        <i class="lock icon"></i>
-        </div>
+        <div class="input-field ">
+          <input type="text" [(ngModel)]="userData.password"  name="password"  id="password" required/>
+          <label for="password">Password</label>
         </div>
         <div class="ui error message">
-            <div  style="color: red">
-                {{errorMessage}}
-            </div>
-            <p class="message">Mot de passe perdu? <a routerLink="/lostpwd">cliquez-ici</a></p>
-            <p class="message">Pas encore inscrit ? <a routerLink="/register">S'enregistrer</a></p>
+          <div  style="color: red">
+            {{errorMessage}}
+          </div>
+          <p class="message">Mot de passe perdu? <a routerLink="/lostpwd">cliquez-ici</a></p>
+          <p class="message">Pas encore inscrit ? <a routerLink="/register">S'enregistrer</a></p>
         </div>
-            <button  [disabled]="!login.form.valid"  (click)="onLogin()" class="ui positive button active">Save</button>
-    </form>
+        <button  [disabled]="!login.form.valid"  (click)="onLogin()" class="waves-effect waves-light btn light-green darken-4">Se connecter</button>
+      </form>
+    </div>
   </div>
+
 </div>
+
+

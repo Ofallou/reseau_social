@@ -10,6 +10,7 @@ const userSchema = new Schema({
    gender: String,
    password: String,
    isAdmin: Boolean,
+  pictures:[]
 
 });
 

@@ -20,11 +20,10 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-       "../semantic/dist/semantic.min.css"
-
+        "../node_modules/materialize-css/dist/css/materialize.css"
       ],
       "scripts": [
-        "../semantic/dist/semantic.min.js"
+        "../node_modules/materialize-css/dist/js/materialize.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

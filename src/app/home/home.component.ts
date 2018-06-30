@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { CommentService } from '../comment.service';
+import { Comment } from '../models/comment';
+
 
 
 @Component({
@@ -10,40 +12,57 @@ import { CommentService } from '../comment.service';
 })
 export class HomeComponent implements OnInit {
   isMember = false;
-  comments: {};
-  isPosted = false;
-  constructor(private auth: AuthService, private commentService: CommentService) { }
+  message :String;
+  comment:Comment ={
+    title: '',
+ author: '',
+ content: '',
+ date:null,
+ authorId: '',
+ explicit: false
+
+  }
+
+commentsArray: Array<Comment>= [];
+  constructor(private auth: AuthService, private  commentService: CommentService) {
+   
+  
+    this.commentService.onBegin()
+    .subscribe(
+
+    );
+
+    this.commentService.onPosted()
+    .subscribe(data => this.commentsArray.push(data)
+    );
+      
+        console.log(this.commentsArray)
+  }
 
   ngOnInit() {
-
-    this.commentService.comments;
-    console.log('le message ',this.commentService.comments);
-      this.getComments();
     if (this.auth.loggedIn()) {
       this.isMember = true;
     }
+    this.commentService.getComments().subscribe(
+      res => {
+        this.commentsArray=res.comments;
 
+        console.log('Les commentaires en base',this.commentsArray);
+      }
+    )
+  
 }
 
-getComments() {
-  this.commentService.getComments()
-  .subscribe(
-    res => {
-      this.comments = res.comments;
-    }
-  );
-  return this.comments;
+posted() {
+  this.comment.date=new Date();
+  this.commentService.postMessage(this.comment)
 }
 
-onPostedEvent(event: boolean) {
-  console.log('*************', event);
-  this.isPosted = event;
-  if (this.isPosted) {
-    console.log('$$$', this.isPosted);
-    this.commentService.getComments();
-  }
-
-  }
+getMessages(){
+  this.commentService.onBegin()
+    .subscribe(data => this.message
+    );
+}
 
 }
 

@@ -1,0 +1,14 @@
+<nav class="nav-wrapper light-green lighten-3">
+  <ul>
+    <li><a class="item" routerLink="/home" routerLinkActive="active"><i class="material-icons">home</i></a></li>
+    <div  class="right hide-on-med-and-down">
+      <li><a  *ngIf="!getUserState()" class="item" routerLink="/login" routerLinkActive="active">Se connecter</a></li>
+      <li> <a *ngIf="!getUserState()" class="item" routerLink="/register" routerLinkActive="active">S'enregistrer</a></li>
+      <li><a *ngIf="!getUserState()"  routerLink="/login" routerLinkActive="active"><i class="user outline icon"></i></a></li>
+      <li><a *ngIf="getUserState()" routerLink="/user-settings" routerLinkActive="active">  <i class="fas fa-cogs"></i></a></li>
+      <li><a *ngIf="getUserState()"  routerLink="/userdata" routerLinkActive="active"><i class="fas fa-user-circle"></i></a></li>
+      <li><a *ngIf="getUserState()"  (click)="logoutUser()">Deconnection</a></li>
+    </div>
+
+  </ul>
+</nav>

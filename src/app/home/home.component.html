@@ -1,40 +1,55 @@
 
 <div class="ui container">
-  <h2 class="h4">Bienvenue sur le reseau social </h2>
-
+  <h6 class="h4">Bienvenue sur le reseau social </h6>
+  {{message}}
   <section>
-
     <article *ngIf=isMember>
-        <app-comments></app-comments>
-
+        <div class="row ">
+            <form class="col s8" #commentF="ngForm" (submit)="posted();commentF.reset()" >
+              <div class="row">
+          
+                <div class="input-field col s5">
+                  <i class="material-icons prefix">title</i>
+                  <input  type="text" name="title" id="titre" [(ngModel)]="comment.title" required >
+                  <label for="titre">Titre</label>
+                </div>
+                <div class="input-field col s10">
+                  <i class="material-icons prefix">mode_edit</i>
+                  <textarea id="icon_prefix2" class="materialize-textarea" name="content" [(ngModel)]="comment.content" ></textarea>
+                  <label for="icon_prefix2">Commentaire</label>
+                </div>
+              </div>
+              <button type="submit" class="btn waves-effect waves-light" [disabled]="!commentF.form.valid" >Poster
+                <i class="material-icons right">send</i>
+              </button>
+            </form>
+          </div>
     </article>
-
   </section>
 
-        <div class="ui card" *ngFor="let comment of comments">
-            <div class="content">
-              <div class="right floated meta">{{comment.date| date:'dd-MM-yyyy HH:mm' }}</div>
-              <img class="ui avatar image" src="../../assets/images/of.jpg"> {{comment.author}}
-            </div>
-            <div class="content">
-                {{comment.content}}
-              <span class="right floated">
-                <i class="heart outline like icon"></i>
-              </span>
+<div class="row">
 
-            </div>
-            <div class="extra content">
-              <div class="ui large transparent left icon input">
-                <i class="heart outline icon"></i>
-                <input type="text" placeholder="Add Comment...">
-              </div>
-            </div>
-   </div>
+  <section id="stats" class="col offset-s8">
+    <app-stats></app-stats>
+  </section>
 
+  <div class="col s10 m6" >
 
+    <div class="card-panel green lighten-5" *ngFor="let comment of commentsArray">
+      <div class="card-image">
+        {{comment.author}}   Posté le  {{comment.date| date:'dd-MM-yyyy à HH:mm' }}
+        <span class="card-title"></span>
+      </div>
+      <div class="card-content">
+        {{comment.title}}
 
-
+        <p>{{comment.content}}</p>
+      </div>
+      <div class="card-action">
+        <a href="#">This is a link</a>
+      </div>
+    </div>
+  </div>
 </div>
 
-
-
+</div>
