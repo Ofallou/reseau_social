@@ -11,9 +11,11 @@ import { Comment } from '../models/comment';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+ 
   isMember = false;
   message :String;
-  comment:Comment ={
+  currentDate= new Date();
+   comment:Comment ={
     title: '',
  author: '',
  content: '',
@@ -22,31 +24,30 @@ export class HomeComponent implements OnInit {
  explicit: false
 
   }
+  
 
 commentsArray: Array<Comment>= [];
   constructor(private auth: AuthService, private  commentService: CommentService) {
-   
-  
     this.commentService.onBegin()
-    .subscribe(
-
-    );
-
+    .subscribe();
     this.commentService.onPosted()
-    .subscribe(data => this.commentsArray.push(data)
+    .subscribe(data => this.commentsArray.splice(0,0,data)
     );
-      
-        console.log(this.commentsArray)
   }
 
   ngOnInit() {
     if (this.auth.loggedIn()) {
       this.isMember = true;
     }
+    this.auth.getData().subscribe(
+      res =>{
+        this.comment.author = res.user.first_name + ' ' +res.user.last_name 
+        console.log(this.comment )
+      }
+    )
     this.commentService.getComments().subscribe(
       res => {
         this.commentsArray=res.comments;
-
         console.log('Les commentaires en base',this.commentsArray);
       }
     )
@@ -63,6 +64,9 @@ getMessages(){
     .subscribe(data => this.message
     );
 }
+
+
+
 
 }
 

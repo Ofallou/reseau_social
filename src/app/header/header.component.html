@@ -1,6 +1,7 @@
 <nav class="nav-wrapper light-green lighten-3">
   <ul>
     <li><a class="item" routerLink="/home" routerLinkActive="active"><i class="material-icons">home</i></a></li>
+    <li><h5>Bienvenue sur le reseau social</h5></li>
     <div  class="right hide-on-med-and-down">
       <li><a  *ngIf="!getUserState()" class="item" routerLink="/login" routerLinkActive="active">Se connecter</a></li>
       <li> <a *ngIf="!getUserState()" class="item" routerLink="/register" routerLinkActive="active">S'enregistrer</a></li>

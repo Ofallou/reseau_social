@@ -1,11 +1,8 @@
-.card-image> img  {
+.card-image > img  {
     width: 128px;
   height: 128px;
 }
-
 #stats{
-  display: flex;
-  position: fixed;
-  flex-flow: row wrap;
-
+  position: absolute;
+  top :12%;
 }

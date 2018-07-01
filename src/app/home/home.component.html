@@ -1,10 +1,17 @@
 
-<div class="ui container">
-  <h6 class="h4">Bienvenue sur le reseau social </h6>
-  {{message}}
+<div class="container">
+ <div class="col s6" *ngIf=!isMember>
+   <p>Visiteurs : Creer un compte pour poster des messages et discuter avec vos amis</p>
+ </div>
+ <div class="col s6" *ngIf=isMember>
+    <app-member-search></app-member-search>  
+   </div>
+ 
   <section>
     <article *ngIf=isMember>
+       
         <div class="row ">
+            <h6>Poster un message</h6>
             <form class="col s8" #commentF="ngForm" (submit)="posted();commentF.reset()" >
               <div class="row">
           
@@ -17,27 +24,33 @@
                   <i class="material-icons prefix">mode_edit</i>
                   <textarea id="icon_prefix2" class="materialize-textarea" name="content" [(ngModel)]="comment.content" ></textarea>
                   <label for="icon_prefix2">Commentaire</label>
+                  <button type="submit" class="btn waves-effect waves-light" [disabled]="!commentF.form.valid">Poster
+                      <i class="material-icons right">send</i>
+                    </button>
                 </div>
               </div>
-              <button type="submit" class="btn waves-effect waves-light" [disabled]="!commentF.form.valid" >Poster
-                <i class="material-icons right">send</i>
-              </button>
+             
             </form>
           </div>
     </article>
   </section>
 
 <div class="row">
-
-  <section id="stats" class="col offset-s8">
+  <section id="stats" class="col offset-s8 green lighten-5">
+      <aside *ngIf=isMember>
+        <p>Nous sommes le {{currentDate | date:'dd-MM-yyyy'}} </p>
+          <p>Bienvenue {{comment.author }}</p>
+           
+        </aside>
     <app-stats></app-stats>
+
   </section>
 
   <div class="col s10 m6" >
 
     <div class="card-panel green lighten-5" *ngFor="let comment of commentsArray">
       <div class="card-image">
-        {{comment.author}}   Posté le  {{comment.date| date:'dd-MM-yyyy à HH:mm' }}
+        {{comment.author }}   Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}
         <span class="card-title"></span>
       </div>
       <div class="card-content">
@@ -46,7 +59,7 @@
         <p>{{comment.content}}</p>
       </div>
       <div class="card-action">
-        <a href="#">This is a link</a>
+        <a href="#">Voir le profil</a>
       </div>
     </div>
   </div>

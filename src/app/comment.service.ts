@@ -4,10 +4,6 @@ import { Router } from '@angular/router';
 import 'rxjs/add/operator/map';
 import * as io from 'socket.io-client';
 import { Observable, Subject} from 'rxjs/Rx';
-import { WebsocketService } from './websocket.service';
-import {AuthService} from "./auth.service";
-import { Component, OnInit } from '@angular/core';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { Config } from '../app/config'
 
 @Injectable()

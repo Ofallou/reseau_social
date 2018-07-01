@@ -24,6 +24,8 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { WebsocketService } from './websocket.service';
 import { StatsComponent } from './stats/stats.component';
 import { HeaderComponent } from './header/header.component';
+import { MemberSearchComponent } from './member-search/member-search.component';
+import { MemberActionService } from './member-action.service';
 
 
 
@@ -39,7 +41,8 @@ import { HeaderComponent } from './header/header.component';
     UploaderComponent,
     UserSettingsComponent,
     StatsComponent,
-    HeaderComponent
+    HeaderComponent,
+    MemberSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,7 @@ import { HeaderComponent } from './header/header.component';
     DragulaModule
 
   ],
-  providers: [AuthService, AuthGuard,WebsocketService, CommentService,
+  providers: [AuthService, AuthGuard,WebsocketService, CommentService,MemberActionService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenService,

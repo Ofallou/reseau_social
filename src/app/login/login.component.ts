@@ -22,8 +22,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-
-
   onLogin() {
 
     this.authService.loginUser(this.userData)
@@ -38,12 +36,11 @@ export class LoginComponent implements OnInit {
 
 
             localStorage.setItem('token', res.token);
-            this._router.navigate(['/userdata']);
+            this._router.navigate(['/home']);
           }
 
         }
       );
-
 
   }
 }

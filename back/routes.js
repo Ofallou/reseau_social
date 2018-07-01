@@ -55,7 +55,7 @@ function veriFyToken(req,res, next){
   // On recupere le token apres le terme beare
   const token= req.headers.authorization.split(' ')[1];
   if(token === 'null') {
-    return res.statut(401).send('invalide request')
+    return res.send('invalide request')
   }
   const payload = jwt.verify(token, secret);
   if(!payload){
@@ -217,6 +217,21 @@ router.get('/comments', (req,res) => {
 
 })
 
+router.post('/member',veriFyToken, (req,res)=> {
+  let key = req.body.name
+  User.find({email:key},(err, data) =>{
+    if(err) throw err;
+    if(data.length>0){
+      console.log(data);
+      res.json(data)
+    }else {
+      console.log(data);
+     res.json({message:'pas de membre trouvé avec cette adresse email'})
+    }
+     
+  })
+ 
+})
 
 
 module.exports= router;

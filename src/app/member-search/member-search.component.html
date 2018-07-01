@@ -1,0 +1,9 @@
+<form class="col s6" #search="ngForm" (submit)="searchMember();search.reset()">
+    <div class="input-field col s6">
+        <i class="material-icons prefix">search</i>
+       
+        <input type="text" name="name" id="search" [(ngModel)]="keyword.name" required>
+        <label for="search">Trouver des amis</label>
+        <button class="btn waves-effect waves-light" [disabled]="!search.form.valid">ok</button>
+    </div>
+ </form> 
