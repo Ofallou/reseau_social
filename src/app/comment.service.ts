@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import 'rxjs/add/operator/map';
+
 import * as io from 'socket.io-client';
-import { Observable, Subject} from 'rxjs/Rx';
+import { Observable, Subject} from 'rxjs';
 import { Config } from '../app/config'
 
 @Injectable()

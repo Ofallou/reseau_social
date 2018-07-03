@@ -11,7 +11,10 @@ import {UserdataComponent} from './userdata/userdata.component';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {FormsModule } from '@angular/forms';
 import { DragulaModule } from 'ng2-dragula';
-
+import { MatTableModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatRadioModule, MatListModule, MatGridListModule, MatCardModule, MatMenuModule,MatFormFieldModule,MatInputModule, MatCheckboxModule } from '@angular/material';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatSelectModule} from '@angular/material/select';
+import { LayoutModule } from '@angular/cdk/layout';
 // services
 import {TokenService} from './token.service';
 import {AuthService} from './auth.service';
@@ -26,6 +29,9 @@ import { StatsComponent } from './stats/stats.component';
 import { HeaderComponent } from './header/header.component';
 import { MemberSearchComponent } from './member-search/member-search.component';
 import { MemberActionService } from './member-action.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MainComponent } from './main/main.component';
+import { NavigationComponent } from './navigation/navigation.component';
 
 
 
@@ -42,14 +48,34 @@ import { MemberActionService } from './member-action.service';
     UserSettingsComponent,
     StatsComponent,
     HeaderComponent,
-    MemberSearchComponent
+    MemberSearchComponent,
+    MainComponent,
+    NavigationComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    DragulaModule
+    DragulaModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    MatGridListModule,
+    MatCardModule,
+    MatMenuModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatTabsModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatTableModule,
+    MatCheckboxModule,
+    BrowserAnimationsModule,
+    
 
   ],
   providers: [AuthService, AuthGuard,WebsocketService, CommentService,MemberActionService,
