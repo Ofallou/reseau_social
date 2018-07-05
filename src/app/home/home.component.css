@@ -2,7 +2,32 @@
     width: 128px;
   height: 128px;
 }
+
 #stats{
-  position: absolute;
-  top :12%;
+  padding-top: 30px;
+  position: fixed;
+  max-width: 400px;
+ left: 70%;
+}
+
+.example-card {
+  max-width: 400px;
+  height: 100%;
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+.mat-card-actions {
+  margin-bottom: 30px;
+}
+.container {
+  padding-left: 25%
+}
+span {
+  padding: 25px;
+  
 }

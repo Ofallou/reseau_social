@@ -9,12 +9,13 @@ import {RegisterComponent} from './register/register.component';
 import {LoginComponent} from './login/login.component';
 import {UserdataComponent} from './userdata/userdata.component';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
-import {FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragulaModule } from 'ng2-dragula';
 import { MatTableModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatRadioModule, MatListModule, MatGridListModule, MatCardModule, MatMenuModule,MatFormFieldModule,MatInputModule, MatCheckboxModule } from '@angular/material';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatSelectModule} from '@angular/material/select';
 import { LayoutModule } from '@angular/cdk/layout';
+import {MatBadgeModule} from '@angular/material/badge';
 // services
 import {TokenService} from './token.service';
 import {AuthService} from './auth.service';
@@ -32,7 +33,7 @@ import { MemberActionService } from './member-action.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MainComponent } from './main/main.component';
 import { NavigationComponent } from './navigation/navigation.component';
-
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -56,6 +57,7 @@ import { NavigationComponent } from './navigation/navigation.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     DragulaModule,
     LayoutModule,
@@ -75,6 +77,8 @@ import { NavigationComponent } from './navigation/navigation.component';
     MatTableModule,
     MatCheckboxModule,
     BrowserAnimationsModule,
+    MatBadgeModule,
+    MatTooltipModule
     
 
   ],

@@ -1,4 +1,4 @@
-  <div class="container">
+  <!-- <div class="container">
     <div class="row">
     <form #register="ngForm" class="col s6">
     <div class="card-panel blue lighten-3">
@@ -55,4 +55,50 @@
   </div>
       </form>
     </div>
-  </div>
+  </div> -->
+
+  <form #register="ngForm"class="example-form">
+    
+    
+      <table class="example-full-width" cellspacing="0"><tr>
+        <td><mat-form-field class="example-full-width">
+          <input matInput [(ngModel)]='user.first_name' name="first_name"  required  placeholder="Prénom">
+        </mat-form-field></td>
+        <td><mat-form-field class="example-full-width">
+          <input matInput [(ngModel)]='user.last_name' name="last_name"  required  placeholder="Nom">
+        </mat-form-field></td>
+      </tr></table>
+    
+      <p>
+          <mat-form-field>
+              <input matInput placeholder="Email" [(ngModel)]="user.email" name="email"  [formControl]="email" required>
+              <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
+      
+      </p>
+      <p>
+          <mat-form-field>
+              <input  #password minlength="6" matInput placeholder="Choix du mot de passe" [(ngModel)]="user.password" required name="password"  [type]="hide ? 'password' : 'text'">
+              <mat-hint align="end">{{password.value.length}} / 6</mat-hint>
+              <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+            </mat-form-field>
+             <mat-form-field>
+                <input matInput placeholder="Confirmez le mot de passe" required name="verifypassword"  [type]="hide ? 'password' : 'text'">
+                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+              </mat-form-field> 
+      </p>
+    
+      <table class="example-full-width" cellspacing="0"><tr>
+        <td><mat-form-field class="example-full-width">
+          <input type="date" matInput placeholder="Date de Naissance">
+        </mat-form-field></td>
+      
+       
+        <td><mat-form-field class="example-full-width">
+          <input matInput >
+        </mat-form-field></td>
+      </tr></table>
+      <button [disabled]="!register.form.valid" class="btn btn-success" (click)="registerUser()" routerLink="/">S'enregistrer</button>
+
+    </form>
+    

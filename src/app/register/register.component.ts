@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
 import { AuthService} from '../auth.service';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -16,8 +16,8 @@ export class RegisterComponent implements OnInit {
    user: User;
    photoUpload: File = null;
    imageUrl: string;
-
-
+   email = new FormControl('', [Validators.required, Validators.email]);
+   hide = true;
   constructor( private authService: AuthService, private _router: Router) {
     this.user = new User ({first_name: '',
     last_name: '',
@@ -31,6 +31,12 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+
+  getErrorMessage() {
+    return this.email.hasError('required') ? 'Le champs doit etre rempli' :
+        this.email.hasError('email') ? "Le format de l'adresse Email est invalide" :
+            '';
+  }
   ngOnInit() {
     if (this.authService.getToken()) {
       this._router.navigate(['/userdata']);
@@ -54,7 +60,7 @@ export class RegisterComponent implements OnInit {
     .subscribe(
       res => {
         localStorage.setItem('token', res.token );
-        this._router.navigate(['/userdata']);
+        this._router.navigate(['/']);
       }
     );
    // console.log(this.user);

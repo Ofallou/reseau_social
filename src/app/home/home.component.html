@@ -1,69 +1,75 @@
 
 <div class="container">
 
+    <mat-card id="stats">
+        <app-stats></app-stats>
+        
+            <aside *ngIf=isMember>
+              <p>Nous sommes le {{currentDate | date:'dd-MM-yyyy'}} </p>
+                <p>Bienvenue {{comment.author }}</p>
+              </aside>
+
+        
+    </mat-card>
+
  <div class="col s6" *ngIf=!isMember>
    <p>Visiteurs : Creer un compte pour poster des messages et discuter avec vos amis</p>
  </div>
+
  <div class="col s6" *ngIf=isMember>
     <app-member-search></app-member-search>  
    </div>
  
-  <section>
+ 
     <article *ngIf=isMember>
+        <h6>Poster un message</h6>
+        <form class="col s8" #commentF="ngForm" (submit)="posted();commentF.reset()" >
+      <mat-form-field>
+        <input matInput placeholder="titre du message" name="title" id="titre" [(ngModel)]="comment.title" required >
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Commentaire..." value="value"  name="content" [(ngModel)]="comment.content">
+      </mat-form-field>
        
-        <div class="row ">
-            <h6>Poster un message</h6>
-            <form class="col s8" #commentF="ngForm" (submit)="posted();commentF.reset()" >
-              <div class="row">
-          
-                <div class="input-field col s5">
-                  <i class="material-icons prefix">title</i>
-                  <input  type="text" name="title" id="titre" [(ngModel)]="comment.title" required >
-                  <label for="titre">Titre</label>
-                </div>
-                <div class="input-field col s10">
-                  <i class="material-icons prefix">mode_edit</i>
-                  <textarea id="icon_prefix2" class="materialize-textarea" name="content" [(ngModel)]="comment.content" ></textarea>
-                  <label for="icon_prefix2">Commentaire</label>
-                  <button type="submit" class="btn waves-effect waves-light" [disabled]="!commentF.form.valid">Poster
-                      <i class="material-icons right">send</i>
-                    </button>
-                </div>
-              </div>
-             
-            </form>
-          </div>
-    </article>
-  </section>
-
-<div class="row">
-  <section id="stats" class="col offset-s8 green lighten-5">
-      <aside *ngIf=isMember>
-        <p>Nous sommes le {{currentDate | date:'dd-MM-yyyy'}} </p>
-          <p>Bienvenue {{comment.author }}</p>
            
-        </aside>
-    <app-stats></app-stats>
+      <button type="submit" class="btn waves-effect waves-light" [disabled]="!commentF.form.valid">Poster
+         <i class="material-icons right">send</i>
+      </button>
 
-  </section>
-
-  <div class="col s10 m6" >
-
-    <div class="card-panel green lighten-5" *ngFor="let comment of commentsArray">
-      <div class="card-image">
-        {{comment.author }}   Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}
-        <span class="card-title"></span>
-      </div>
-      <div class="card-content">
-        {{comment.title}}
-
-        <p>{{comment.content}}</p>
-      </div>
-      <div class="card-action">
-        <a href="#">Voir le profil</a>
-      </div>
-    </div>
-  </div>
+  </form>
+        
+    </article>
 </div>
 
+<div class="container">
+
+  <mat-card class="example-card" *ngFor="let comment of commentsArray">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>{{comment.author }} </mat-card-title>
+      <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}</mat-card-subtitle>
+    </mat-card-header>
+    <h4> {{comment.title}}</h4>
+   
+    <mat-card-content>
+      <p>
+        {{comment.content}}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+<span>  <i class="material-icons">
+    thumb_up_alt
+    </i></span>
+       <span> <i class="material-icons">
+          share
+          </i> </span>
+       <span> <i class="material-icons">
+          thumb_down_alt
+          </i> </span>
+         
+         
+    </mat-card-actions>
+  </mat-card>
 </div>
+

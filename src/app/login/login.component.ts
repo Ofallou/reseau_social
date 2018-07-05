@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService} from '../auth.service';
 import { Router } from '@angular/router';
+import { FormControl, Validators } from '@angular/forms';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -11,7 +12,10 @@ export class LoginComponent implements OnInit {
     email: '',
     password: ''
   };
+  email = new FormControl('', [Validators.required, Validators.email]);
+
   errorMessage = '';
+  hide = true;
 
   constructor(private authService: AuthService, private _router: Router) {
   }
@@ -22,6 +26,12 @@ export class LoginComponent implements OnInit {
     }
   }
 
+
+  getErrorMessage() {
+    return this.email.hasError('required') ? 'Le champs doit etre rempli' :
+        this.email.hasError('email') ? "Le format de l'adresse Email est invalide" :
+            '';
+  }
   onLogin() {
 
     this.authService.loginUser(this.userData)

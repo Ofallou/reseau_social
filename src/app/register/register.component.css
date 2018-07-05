@@ -1,9 +1,23 @@
-label {
-  color:red;
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
 }
 
-.container{
+.example-full-width {
+  width: 100%;
+}
+
+.mat-tab-group {
   margin-left: 33%;
-  margin-top: 10%;
+  margin-top: 5%;
+  padding-bottom: 20px;
   color: black;
+  height: 100%;
+}
+
+form{
+  padding-bottom: 20px;
+  align-items: center;
 }

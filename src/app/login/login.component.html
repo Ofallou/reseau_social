@@ -1,28 +1,29 @@
-<div class="container">
-  <div class="row ">
-    <div class="card-panel blue lighten-3 col s6" >
-      <form   #login="ngForm">
-        <div class="input-field">
-          <input type="text" [(ngModel)]="userData.email" name="email"  id="email" required/>
-          <label for="email">Email</label>
-        </div>
-
-        <div class="input-field ">
-          <input type="text" [(ngModel)]="userData.password"  name="password"  id="password" required/>
-          <label for="password">Password</label>
-        </div>
-        <div class="ui error message">
-          <div  style="color: red">
-            {{errorMessage}}
+<mat-tab-group>
+  
+    <mat-tab label="Login"> 
+        <form #loginF="ngForm">
+        <div class="example-container">
+            <mat-form-field>
+              <input matInput placeholder="Email" [(ngModel)]="userData.email" name="email"  [formControl]="email" required>
+              <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+                <input matInput placeholder="Mot de passe" [(ngModel)]="userData.password" required name="password"  [type]="hide ? 'password' : 'text'">
+                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+              </mat-form-field>
+              <br>
+              <button mat-button color="primary" [disabled]="!loginF.form.valid" (click)="onLogin()">Se connecter</button>
+        
           </div>
-          <p class="message">Mot de passe perdu? <a routerLink="/lostpwd">cliquez-ici</a></p>
-          <p class="message">Pas encore inscrit ? <a routerLink="/register">S'enregistrer</a></p>
-        </div>
-        <button  [disabled]="!login.form.valid"  (click)="onLogin()" class="waves-effect waves-light btn light-green darken-4">Se connecter</button>
-      </form>
-    </div>
-  </div>
-
-</div>
+        </form>
+    </mat-tab>
+    <mat-tab label="Inscription"> 
+      <app-register></app-register>
+    </mat-tab>
+  </mat-tab-group>
+  
 
 
+
+  

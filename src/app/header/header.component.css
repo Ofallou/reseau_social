@@ -1,11 +1,16 @@
 
-nav ul a{
-  color: #3e2723;
+.example-icon {
+  padding: 0 14px;
 }
 
-h5{
-  position: absolute;
-  color: #3e2723;
-  left: 30%;
+.example-spacer {
+  flex: 1 1 auto;
+  width: 40px;
+}
+a{
+  color: white;
+}
+
+.mat-toolbar{
   
 }

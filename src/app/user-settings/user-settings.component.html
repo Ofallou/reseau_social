@@ -1,30 +1,33 @@
 
+ 
+<mat-tab-group>
+    <mat-tab label="Information du compte"> 
+
 <div class="container col s6">
-<h5>Parametres du compte utilisateur</h5>
-
-<div class="row">
-  <form #info="ngForm">
-<div class="row">
-  <div class="input-field col s6" >
-    <input type="text" id="first_name" name="first_name" [(ngModel)]="user.first_name" placeholder="Prenom">
-  </div>
-  <div class="input-field col s6" >
-    <input type="text" id="last_name" name="last_name" [(ngModel)]="user.last_name" placeholder="Nom" >
-  </div>
-  <div class="input-field">
-    <input type="email" id="email" name="email" [(ngModel)]="user.email" placeholder="Email">
-  </div>
-
-  <div class="input-field ">
-    <input type="text" id="pseudo" name="pseudo" [(ngModel)]="user.pseudo" placeholder="Pseudo">
-  </div>
-</div>
-
-      <a class="waves-effect waves-light btn-large"><i class="material-icons left">cloud</i>Mettre a jour</a>
-
-
-
-
-  </form>
-</div>
-</div>
+    
+    <div class="row">
+      <form #info="ngForm">
+    <div class="row">
+      <div class="input-field col s6" >
+        <input type="text" id="first_name" name="first_name" [(ngModel)]="user.first_name" placeholder="Prenom">
+      </div>
+      <div class="input-field col s6" >
+        <input type="text" id="last_name" name="last_name" [(ngModel)]="user.last_name" placeholder="Nom" >
+      </div>
+      <div class="input-field">
+        <input type="email" id="email" name="email" [(ngModel)]="user.email" placeholder="Email">
+      </div>
+    
+      <div class="input-field ">
+        <input type="text" id="pseudo" name="pseudo" [(ngModel)]="user.pseudo" placeholder="Pseudo">
+      </div>
+    </div>
+    
+          <a class="waves-effect waves-light btn-large"><i class="material-icons left">cloud</i>Mettre a jour</a>
+        </form>
+      </div>
+      </div>
+</mat-tab>
+    <mat-tab label="Connexion"> Content 2 </mat-tab>
+    <mat-tab label="Inscription"> Content 3 </mat-tab>
+  </mat-tab-group>

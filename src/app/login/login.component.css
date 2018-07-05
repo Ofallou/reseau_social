@@ -1,9 +1,10 @@
 
-.container {
+.mat-tab-group {
   margin-left: 33%;
-  margin-top: 10%;
+  margin-top: 5%;
   padding-bottom: 20px;
   color: black;
+  height: 100%;
 }
 
 form{
