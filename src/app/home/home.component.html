@@ -23,17 +23,17 @@
  
     <article *ngIf=isMember>
         <h6>Poster un message</h6>
-        <form class="col s8" #commentF="ngForm" (submit)="posted();commentF.reset()" >
+        <form class="example-form" #commentF="ngForm" (submit)="posted();commentF.reset()" >
       <mat-form-field>
         <input matInput placeholder="titre du message" name="title" id="titre" [(ngModel)]="comment.title" required >
       </mat-form-field>
-
-      <mat-form-field>
-        <input matInput placeholder="Commentaire..." value="value"  name="content" [(ngModel)]="comment.content">
+       <br>
+      <mat-form-field class="example-full-width">
+        <textarea matInput placeholder="Poster un commentaire......"></textarea>
       </mat-form-field>
-       
+       <br>
            
-      <button type="submit" class="btn waves-effect waves-light" [disabled]="!commentF.form.valid">Poster
+      <button type="submit"mat-button color="accent" [disabled]="!commentF.form.valid">Poster
          <i class="material-icons right">send</i>
       </button>
 
@@ -46,7 +46,9 @@
 
   <mat-card class="example-card" *ngFor="let comment of commentsArray">
     <mat-card-header>
-      <div mat-card-avatar class="example-header-image"></div>
+      <div mat-card-avatar class="example-header-image">
+        <img src="{{comment.authorPicture}}" style="width: 46px;" alt="">
+      </div>
       <mat-card-title>{{comment.author }} </mat-card-title>
       <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}</mat-card-subtitle>
     </mat-card-header>

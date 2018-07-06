@@ -27,7 +27,7 @@ export class RegisterComponent implements OnInit {
     pseudo: '',
     dateNaissance: '',
     roleAdmin: false,
-      pictures: [],
+      pictures:'',
     });
   }
 
@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit {
       this._router.navigate(['/userdata']);
     }
   }
-  /* gere l'upload de photo */
+  /* gere l'upload de photo 
   onFileSelected(file: FileList) {
     console.log(file);
     this.photoUpload= file.item(0);
@@ -52,10 +52,10 @@ export class RegisterComponent implements OnInit {
      }
      reader.readAsDataURL(this.photoUpload);
      this.user.pictures.push(this.photoUpload);
-  }
+  }*/
 
   registerUser() {
-
+ 
     this.authService.registerUser(this.user)
     .subscribe(
       res => {

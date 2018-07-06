@@ -4,6 +4,7 @@ export class Comment {
  content: String;
  date: Date;
  authorId: String;
+ authorPicture: String;
  explicit: boolean;
 
 
@@ -12,7 +13,8 @@ export class Comment {
     this.author = comment.author;
     this.content = comment.content;
     this.date = new Date();
-    this. authorId = comment.authorId;
+    this.authorId = comment.authorId;
+    this.authorPicture = comment.authorPicture;
     this.explicit = false;
 
   }

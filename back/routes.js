@@ -3,7 +3,7 @@ const router = express.Router();
 const nodemailer =  require ('nodemailer');
 const mongoose= require('mongoose');
 const jwt = require('jsonwebtoken');
-
+var gravatar = require('gravatar');
 //Models
 const User = require ('./models/user.js');
 const Comment = require ('./models/comment');
@@ -75,12 +75,18 @@ function veriFyToken(req,res, next){
 // Enregistrement de l'utilisateur
 router.post('/register',  (req, res) => {
   let userdata= req.body;
+  
   let user = new User(userdata);
    User.findOne({email:req.body.email},(err,data) => {
     if(data){
       console.log(data)
       console.log('deja enregistré avec email ' + req.body.email);
     } else {
+      user.picture = gravatar.url(req.body.email, {
+        s: '150',
+        r: 'pg',
+        d: 'robohash'});
+        
       user.save((err, dataUser)=>{
         if(err){
           console.log(err)

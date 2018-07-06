@@ -6,6 +6,7 @@ const commentSchema = new Schema({
   title: String,
   author: String,
   authorId: String,
+  authorPicture:String,
   content: String,
   date: Date
 

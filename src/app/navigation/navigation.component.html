@@ -1,3 +1,5 @@
+
+
 <mat-sidenav-container class="sidenav-container" >
   <mat-sidenav #sidenav [mode]="over" color="primary">
     
@@ -11,11 +13,9 @@
   <mat-sidenav-content color="primary">
       <mat-toolbar color="primary">
           <button *ngIf="getUserState()" mat-button (click)="sidenav.toggle()">Menu</button>
-          <app-header></app-header>
+          
       </mat-toolbar>
-    
-      
-    <router-outlet></router-outlet>
-    
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+

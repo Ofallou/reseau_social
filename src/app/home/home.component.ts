@@ -21,10 +21,11 @@ export class HomeComponent implements OnInit {
  content: '',
  date:null,
  authorId: '',
+ authorPicture:'',
  explicit: false
 
   }
-  
+  userPicture:String;
 
 commentsArray: Array<Comment>= [];
   constructor(private auth: AuthService, private  commentService: CommentService) {
@@ -41,7 +42,9 @@ commentsArray: Array<Comment>= [];
     }
     this.auth.getData().subscribe(
       res =>{
-        this.comment.author = res.user.first_name + ' ' +res.user.last_name 
+       
+        this.comment.author = res.user.first_name + ' ' +res.user.last_name;
+        this.comment.authorPicture = res.user.picture;
         console.log(this.comment )
       }
     )

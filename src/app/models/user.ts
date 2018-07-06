@@ -7,7 +7,7 @@ export class User {
     gender: String;
     password: String;
     roleAdmin: Boolean;
-    pictures:any[];
+    picture:String;
 
   constructor(user: any) {
     this.first_name = user.first_name;
@@ -18,7 +18,7 @@ export class User {
     this.password = user.password;
     this.gender = user.gender;
     this.roleAdmin = false;
-    this.pictures =[];
+    this.picture =user.picture;
 
   }
 }
