@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-
+import {Config} from './config'
 
 
 
@@ -11,7 +11,7 @@ export class AuthService {
     email : '',
     password : ''
   };
-  url = 'http://localhost:5000';
+  url = Config.SOCKET_HOST;
   private _registerURL = this.url + '/api/register';
   private _loginURL = this.url + '/api/login';
   private _userdataURL = this.url + '/api/userdata';

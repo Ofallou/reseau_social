@@ -8,8 +8,9 @@ import { Config } from '../app/config'
 
 @Injectable()
 export class CommentService  {
-  private _postCommentUrl = 'http://localhost:5000/api/post_comment';
-  private _getUserCommentsUrl = 'http://localhost:5000/api/comments';
+  url = Config.SOCKET_HOST;
+  private _postCommentUrl = this.url+'/api/post_comment';
+  private _getUserCommentsUrl = this.url+'/api/comments';
   private socket = io(Config.SOCKET_HOST);
   message:any;
   constructor(private http: HttpClient, private _router: Router) {}
