@@ -11,7 +11,7 @@ export class AuthService {
     email : '',
     password : ''
   };
-  url = 'http://localhost:3000';
+  url = 'http://localhost:5000';
   private _registerURL = this.url + '/api/register';
   private _loginURL = this.url + '/api/login';
   private _userdataURL = this.url + '/api/userdata';

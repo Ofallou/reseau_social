@@ -2,7 +2,11 @@
 
  <form class="example-form" #search="ngForm" (submit)="searchMember();search.reset()">
     <mat-form-field class="example-full-width">
+        
       <input matInput placeholder="Email" type="text" name="name" id="search" [(ngModel)]="keyword.name" required>
+      <i class="material-icons">
+          search
+          </i>
     </mat-form-field>
 
 </form> 

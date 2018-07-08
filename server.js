@@ -32,12 +32,12 @@ mongoose.connect(db, err => {
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
-const PORT = 3000;
+const PORT = process.env.PORT || 8080;
 //routes
 const api = require('./back/routes');
 
 app.use(bodyParser.json());
-//config routes
+//config route
 app.use('/api', api);
 
 app.get('*', (req, res) => {
