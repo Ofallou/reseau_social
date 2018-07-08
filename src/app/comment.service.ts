@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import * as io from 'socket.io-client';
 import { Observable, Subject} from 'rxjs';
 import { Config } from '../app/config'
+import { environment } from '../environments/environment';
 
 @Injectable()
 export class CommentService  {
