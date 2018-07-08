@@ -6,7 +6,7 @@ import * as io from 'socket.io-client';
 
 @Injectable()
 export class MemberActionService {
-  private _findMember = 'http://localhost:3000/api/member';
+  private _findMember = 'http://localhost:5000/api/member';
   private socket = io(Config.SOCKET_HOST);
 
   constructor(private http:HttpClient) { }
