@@ -8,6 +8,8 @@ import {UserdataComponent} from './userdata/userdata.component';
 import {LostPasswordComponent} from './lost-password/lost-password.component';
 import {AuthGuard} from './auth.guard';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { AdminGuard } from './admin.guard';
 
 
 const routes: Routes = [
@@ -24,6 +26,8 @@ const routes: Routes = [
   canActivate : [AuthGuard]},
   {path: 'user-settings', component: UserSettingsComponent,
   canActivate : [AuthGuard]},
+  {path: 'admin', component: AdminDashboardComponent,
+   canActivate: [AdminGuard]}
 
 
 ];

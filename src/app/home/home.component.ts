@@ -28,6 +28,7 @@ export class HomeComponent implements OnInit {
   userPicture:String;
 
 commentsArray: Array<Comment>= [];
+
   constructor(private auth: AuthService, private  commentService: CommentService) {
     this.commentService.onBegin()
     .subscribe();
@@ -39,10 +40,11 @@ commentsArray: Array<Comment>= [];
   ngOnInit() {
     if (this.auth.loggedIn()) {
       this.isMember = true;
+      this.userdata()
     }
     this.auth.getData().subscribe(
       res =>{
-       
+        this.comment.authorId= res.user._id;
         this.comment.author = res.user.first_name + ' ' +res.user.last_name;
         this.comment.authorPicture = res.user.picture;
         console.log(this.comment )
@@ -52,7 +54,9 @@ commentsArray: Array<Comment>= [];
       res => {
         this.commentsArray=res.comments;
         console.log('Les commentaires en base',this.commentsArray);
+        
       }
+      
     )
   
 }
@@ -68,6 +72,12 @@ getMessages(){
     );
 }
 
+userdata() {
+  
+    this.auth.getData().subscribe(
+      res => console.log(res)
+    );
+  }
 
 
 

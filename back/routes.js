@@ -113,17 +113,16 @@ router.post('/login', (req, res)=> {
      console.log(err)
    } else {
      if(!data){
-       res.json({message:'Email invalide '});
-
+      res.json({message:'Email invalide '});
      } else {
+
        if(data.password === req.body.password){
          let payload = {subject: data._id};
          let token = jwt.sign(payload, secret);
          res.json({success: true, token : token})
 
        }else {
-         res.json({err: 'Mot de passe Invalide'})
-       }
+        res.json({err: 'Mot de passe Invalide'})       }
 
      }
    }
@@ -147,6 +146,12 @@ router.get('/',(req, res) => {
 
 res.send({message: 'connecté'})
 
+})
+
+
+router.get('/admin', veriFyToken, (req,res) => {
+
+  res.send('admin welcome !')
 })
 
 

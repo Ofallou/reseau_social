@@ -1,15 +1,13 @@
 
 <div class="container">
 
-    <mat-card id="stats">
-        <app-stats></app-stats>
-        
-            <aside *ngIf=isMember>
+    <mat-card id="stats" *ngIf=isMember>
+               
+            <aside>
               <p>Nous sommes le {{currentDate | date:'dd-MM-yyyy'}} </p>
                 <p>Bienvenue {{comment.author }}</p>
               </aside>
 
-        
     </mat-card>
 
  <div class="col s6" *ngIf=!isMember>
@@ -19,27 +17,28 @@
  <div class="col s6" *ngIf=isMember>
     <app-member-search></app-member-search>  
    </div>
- 
- 
-    <article *ngIf=isMember>
-        <h6>Poster un message</h6>
+  
+   
+    <mat-card class="example-card" *ngIf=isMember>
+      <article >
         <form class="example-form" #commentF="ngForm" (submit)="posted();commentF.reset()" >
       <mat-form-field>
         <input matInput placeholder="titre du message" name="title" id="titre" [(ngModel)]="comment.title" required >
       </mat-form-field>
        <br>
       <mat-form-field class="example-full-width">
-        <textarea matInput placeholder="Poster un commentaire......"></textarea>
+        <textarea matInput placeholder="Poster un commentaire......" name="comment" [(ngModel)]="comment.content"></textarea>
       </mat-form-field>
        <br>
            
-      <button type="submit"mat-button color="accent" [disabled]="!commentF.form.valid">Poster
-         <i class="material-icons right">send</i>
+      <button type="submit" mat-fab color="accent" [disabled]="!commentF.form.valid">Poster
+       
       </button>
 
   </form>
         
     </article>
+    </mat-card>
 </div>
 
 <div class="container">

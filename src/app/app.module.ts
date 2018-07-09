@@ -34,6 +34,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MainComponent } from './main/main.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { AdminGuard } from './admin.guard';
 
 
 @NgModule({
@@ -51,7 +53,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     HeaderComponent,
     MemberSearchComponent,
     MainComponent,
-    NavigationComponent
+    NavigationComponent,
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -82,7 +85,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     
 
   ],
-  providers: [AuthService, AuthGuard,WebsocketService, CommentService,MemberActionService,
+  providers: [AuthService,AdminGuard, AuthGuard,WebsocketService, CommentService,MemberActionService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenService,

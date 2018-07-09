@@ -49,7 +49,7 @@ app.get('*', (req, res) => {
 //app.use(express.static(__dirname + "/dist/"))
 
 io.on('connection' , (socket) =>{
-  console.log('User joined');
+  console.log('User joined', socket.id);
   // On recupere tous les messages posté et enr  du serveur
   
     socket.emit('user join',{message:'Welcome'});
@@ -59,7 +59,13 @@ io.on('connection' , (socket) =>{
         // Ici connecte toi a la base de donnees et sauvegared les messages
         io.sockets.emit('message',data)
       });
+  
 
+})
+io.on('disconnect',(socket) => {
+        
+  io.emit('user disconnect')
+  console.log('user disconnected', socket.id)
 })
 
 

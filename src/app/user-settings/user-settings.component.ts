@@ -23,6 +23,6 @@ user:{};
         console.log(this.user);
       }
 
-    ).closed;
+    );
   }
 }

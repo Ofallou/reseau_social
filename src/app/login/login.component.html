@@ -1,7 +1,7 @@
 <mat-tab-group>
   
     <mat-tab label="Login"> 
-        <form #loginF="ngForm">
+        <form #loginF="ngForm"  >
         <div class="example-container">
             <mat-form-field>
               <input matInput placeholder="Email" [(ngModel)]="userData.email" name="email"  [formControl]="email" required>
@@ -13,8 +13,8 @@
                 <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
               </mat-form-field>
               <br>
-              <button mat-button color="primary" [disabled]="!loginF.form.valid" (click)="onLogin()">Se connecter</button>
-        
+              <button  mat-button color="primary" [disabled]="!loginF.form.valid" (click)="onLogin();loginF.reset()">Se connecter</button>
+              <mat-error>{{errorMessage}}</mat-error> 
           </div>
         </form>
     </mat-tab>

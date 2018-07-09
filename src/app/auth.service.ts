@@ -17,6 +17,7 @@ export class AuthService {
   private _userdataURL = this.url + '/api/userdata';
   private _lostPassword = this.url + '/api/lostpwd';
   private _home = this.url + '/api/';
+  private _admin = this.url + '/api/admin';
 
   constructor(private http: HttpClient, private _router: Router) {}
   registerUser(user) {
@@ -33,7 +34,7 @@ export class AuthService {
 
   logoutUser() {
     localStorage.removeItem('token');
-    this._router.navigate(['/login']);
+    //this._router.navigate(['/home']);
   }
 
   loggedIn() {
@@ -47,6 +48,9 @@ export class AuthService {
     return this.http.get<any>(this._userdataURL);
   }
 
+  admin() {
+    return this.http.get<any>(this._admin);
+  }
   home() {
     return this.http.get<any>(this._home);
   }

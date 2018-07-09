@@ -6,6 +6,7 @@ import * as io from 'socket.io-client';
 import { Observable, Subject} from 'rxjs';
 import { Config } from '../app/config'
 import { environment } from '../environments/environment';
+import { User } from './models/user';
 
 @Injectable()
 export class CommentService  {
@@ -36,6 +37,10 @@ export class CommentService  {
       return () => {this.socket.disconnect();};
     });
     return observable;
+  }
+
+  onLeave() {
+   this.socket.disconnect();
   }
  
 postMessage(data) {

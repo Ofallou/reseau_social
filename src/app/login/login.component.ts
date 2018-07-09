@@ -26,6 +26,9 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  showLoginError() {
+    
+  }
 
   getErrorMessage() {
     return this.email.hasError('required') ? 'Le champs doit etre rempli' :
@@ -38,13 +41,15 @@ export class LoginComponent implements OnInit {
       .subscribe(
         res => {
           if (res.message || res.err) {
-            this.errorMessage = 'Identifiant ou mot de passe invalide';
-            console.log(this.errorMessage);
-            this.userData.email = '';
-            this.userData.password = '';
+            if(res.message === undefined) this.errorMessage = res.err;
+            if(res.err=== undefined ) this.errorMessage = res.message;
+            this.userData.email =null;
+            this.userData.password = null;
+            
+           
           } else {
 
-
+            console.log(res.messageErr);
             localStorage.setItem('token', res.token);
             this._router.navigate(['/home']);
           }

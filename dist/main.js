@@ -23,6 +23,129 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 
 /***/ }),
 
+/***/ "./src/app/admin-dashboard/admin-dashboard.component.css":
+/*!***************************************************************!*\
+  !*** ./src/app/admin-dashboard/admin-dashboard.component.css ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".grid-container {\n  margin: 20px;\n}\n\n.dashboard-card {\n  position: absolute;\n  top: 15px;\n  left: 15px;\n  right: 15px;\n  bottom: 15px;\n}\n\n.more-button {\n  position: absolute;\n  top: 5px;\n  right: 10px;\n}\n\n.dashboard-card-content {\n  text-align: center;\n}"
+
+/***/ }),
+
+/***/ "./src/app/admin-dashboard/admin-dashboard.component.html":
+/*!****************************************************************!*\
+  !*** ./src/app/admin-dashboard/admin-dashboard.component.html ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"grid-container\">\n  <h1 class=\"mat-h1\">Dashboard</h1>\n  <mat-grid-list cols=\"1\" rowHeight=\"350px\">\n    <mat-grid-tile [colspan]=\"1\" [rowspan]=\"1\">\n      <mat-card class=\"dashboard-card\">\n        <mat-card-header>\n          <mat-card-title>\n           \n            <button mat-icon-button class=\"more-button\" [matMenuTriggerFor]=\"menu\" aria-label=\"Toggle menu\">\n              <mat-icon>more_vert</mat-icon>\n            </button>\n            <mat-menu #menu=\"matMenu\" xPosition=\"before\">\n              <button mat-menu-item>Expand</button>\n              <button mat-menu-item>Remove</button>\n            </mat-menu>\n          </mat-card-title>\n        </mat-card-header>\n        <mat-card-content class=\"dashboard-card-content\">\n          <app-stats></app-stats>\n        </mat-card-content>\n      </mat-card>\n    </mat-grid-tile>\n  </mat-grid-list>\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/admin-dashboard/admin-dashboard.component.ts":
+/*!**************************************************************!*\
+  !*** ./src/app/admin-dashboard/admin-dashboard.component.ts ***!
+  \**************************************************************/
+/*! exports provided: AdminDashboardComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AdminDashboardComponent", function() { return AdminDashboardComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var AdminDashboardComponent = /** @class */ (function () {
+    function AdminDashboardComponent(authService) {
+        this.authService = authService;
+    }
+    AdminDashboardComponent.prototype.ngOnInit = function () {
+        this.authService.getData().subscribe(function (res) { return console.log(res); });
+    };
+    AdminDashboardComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'admin-dashboard',
+            template: __webpack_require__(/*! ./admin-dashboard.component.html */ "./src/app/admin-dashboard/admin-dashboard.component.html"),
+            styles: [__webpack_require__(/*! ./admin-dashboard.component.css */ "./src/app/admin-dashboard/admin-dashboard.component.css")]
+        }),
+        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"]])
+    ], AdminDashboardComponent);
+    return AdminDashboardComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/admin.guard.ts":
+/*!********************************!*\
+  !*** ./src/app/admin.guard.ts ***!
+  \********************************/
+/*! exports provided: AdminGuard */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AdminGuard", function() { return AdminGuard; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./auth.service */ "./src/app/auth.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var AdminGuard = /** @class */ (function () {
+    function AdminGuard(_authService, _router) {
+        this._authService = _authService;
+        this._router = _router;
+        this.admin = true;
+    }
+    AdminGuard.prototype.getData = function () {
+        this._authService.getData().subscribe(function (res) {
+            console.log(res);
+        });
+    };
+    AdminGuard.prototype.canActivate = function () {
+        if (this._authService.loggedIn() && this.admin) {
+            return true;
+        }
+        else {
+            this._router.navigate(['/home']);
+            return false;
+        }
+    };
+    AdminGuard = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
+        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
+    ], AdminGuard);
+    return AdminGuard;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/app-routing.module.ts":
 /*!***************************************!*\
   !*** ./src/app/app-routing.module.ts ***!
@@ -43,12 +166,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lost_password_lost_password_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./lost-password/lost-password.component */ "./src/app/lost-password/lost-password.component.ts");
 /* harmony import */ var _auth_guard__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./auth.guard */ "./src/app/auth.guard.ts");
 /* harmony import */ var _user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./user-settings/user-settings.component */ "./src/app/user-settings/user-settings.component.ts");
+/* harmony import */ var _admin_dashboard_admin_dashboard_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./admin-dashboard/admin-dashboard.component */ "./src/app/admin-dashboard/admin-dashboard.component.ts");
+/* harmony import */ var _admin_guard__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./admin.guard */ "./src/app/admin.guard.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -73,6 +200,8 @@ var routes = [
         canActivate: [_auth_guard__WEBPACK_IMPORTED_MODULE_8__["AuthGuard"]] },
     { path: 'user-settings', component: _user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_9__["UserSettingsComponent"],
         canActivate: [_auth_guard__WEBPACK_IMPORTED_MODULE_8__["AuthGuard"]] },
+    { path: 'admin', component: _admin_dashboard_admin_dashboard_component__WEBPACK_IMPORTED_MODULE_10__["AdminDashboardComponent"],
+        canActivate: [_admin_guard__WEBPACK_IMPORTED_MODULE_11__["AdminGuard"]] }
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
@@ -191,6 +320,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _main_main_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./main/main.component */ "./src/app/main/main.component.ts");
 /* harmony import */ var _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./navigation/navigation.component */ "./src/app/navigation/navigation.component.ts");
 /* harmony import */ var _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! @angular/material/tooltip */ "./node_modules/@angular/material/esm5/tooltip.es5.js");
+/* harmony import */ var _admin_dashboard_admin_dashboard_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./admin-dashboard/admin-dashboard.component */ "./src/app/admin-dashboard/admin-dashboard.component.ts");
+/* harmony import */ var _admin_guard__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./admin.guard */ "./src/app/admin.guard.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -231,6 +362,8 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
+
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -250,7 +383,8 @@ var AppModule = /** @class */ (function () {
                 _header_header_component__WEBPACK_IMPORTED_MODULE_26__["HeaderComponent"],
                 _member_search_member_search_component__WEBPACK_IMPORTED_MODULE_27__["MemberSearchComponent"],
                 _main_main_component__WEBPACK_IMPORTED_MODULE_30__["MainComponent"],
-                _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_31__["NavigationComponent"]
+                _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_31__["NavigationComponent"],
+                _admin_dashboard_admin_dashboard_component__WEBPACK_IMPORTED_MODULE_33__["AdminDashboardComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -279,7 +413,7 @@ var AppModule = /** @class */ (function () {
                 _angular_material_badge__WEBPACK_IMPORTED_MODULE_15__["MatBadgeModule"],
                 _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_32__["MatTooltipModule"]
             ],
-            providers: [_auth_service__WEBPACK_IMPORTED_MODULE_17__["AuthService"], _auth_guard__WEBPACK_IMPORTED_MODULE_19__["AuthGuard"], _websocket_service__WEBPACK_IMPORTED_MODULE_24__["WebsocketService"], _comment_service__WEBPACK_IMPORTED_MODULE_21__["CommentService"], _member_action_service__WEBPACK_IMPORTED_MODULE_28__["MemberActionService"],
+            providers: [_auth_service__WEBPACK_IMPORTED_MODULE_17__["AuthService"], _admin_guard__WEBPACK_IMPORTED_MODULE_34__["AdminGuard"], _auth_guard__WEBPACK_IMPORTED_MODULE_19__["AuthGuard"], _websocket_service__WEBPACK_IMPORTED_MODULE_24__["WebsocketService"], _comment_service__WEBPACK_IMPORTED_MODULE_21__["CommentService"], _member_action_service__WEBPACK_IMPORTED_MODULE_28__["MemberActionService"],
                 {
                     provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_8__["HTTP_INTERCEPTORS"],
                     useClass: _token_service__WEBPACK_IMPORTED_MODULE_16__["TokenService"],
@@ -386,6 +520,7 @@ var AuthService = /** @class */ (function () {
         this._userdataURL = this.url + '/api/userdata';
         this._lostPassword = this.url + '/api/lostpwd';
         this._home = this.url + '/api/';
+        this._admin = this.url + '/api/admin';
     }
     AuthService.prototype.registerUser = function (user) {
         return this.http.post(this._registerURL, user);
@@ -398,7 +533,7 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.logoutUser = function () {
         localStorage.removeItem('token');
-        this._router.navigate(['/login']);
+        //this._router.navigate(['/home']);
     };
     AuthService.prototype.loggedIn = function () {
         return !!localStorage.getItem('token');
@@ -408,6 +543,9 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.getData = function () {
         return this.http.get(this._userdataURL);
+    };
+    AuthService.prototype.admin = function () {
+        return this.http.get(this._admin);
     };
     AuthService.prototype.home = function () {
         return this.http.get(this._home);
@@ -483,6 +621,9 @@ var CommentService = /** @class */ (function () {
             return function () { _this.socket.disconnect(); };
         });
         return observable;
+    };
+    CommentService.prototype.onLeave = function () {
+        this.socket.disconnect();
     };
     CommentService.prototype.postMessage = function (data) {
         this.socket.emit('posted', data);
@@ -583,7 +724,7 @@ var Config = /** @class */ (function () {
     }
     Object.defineProperty(Config, "SOCKET_HOST", {
         get: function () {
-            return 'https://dry-fortress-71234.herokuapp.com';
+            return 'http://localhost:5000';
         },
         enumerable: true,
         configurable: true
@@ -613,7 +754,7 @@ module.exports = "\n.example-icon {\n  padding: 0 14px;\n}\n\n.example-spacer {\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<mat-toolbar color=\"primary\">\n         \n    <mat-toolbar-row>\n        <span>Bienvenu sur mon reseau social</span>\n        <span class=\"example-spacer\"></span>\n        \n        <span class=\"example-spacer\"> <a routerLink=\"/\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Page d'accueil\">\n            home\n            </i></a> </span>\n        <span class=\"example-spacer\"></span>\n   \n      <span class=\"example-spacer\"></span>\n      <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"material-icons\">\n          account_circle\n          </i></a>\n      <span class=\"example-spacer\"></span>\n      <span> <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/register\" routerLinkActive=\"active\">S'enregistrer</a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"!getUserState()\"  routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"user outline icon\"></i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\" routerLink=\"/user-settings\" routerLinkActive=\"active\">  <i class=\"material-icons\" matTooltip=\"Paramettres du compte\">\n            settings\n            </i></a></span>\n      <span class=\"example-spacer\"></span>\n      <!-- <span><a *ngIf=\"getUserState()\"  routerLink=\"/userdata\" routerLinkActive=\"active\"><i class=\"fas fa-user-circle\"></i></a></span> -->\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\"  (click)=\"logoutUser()\">Deconnection</a></span>\n    \n    </mat-toolbar-row>\n\n  </mat-toolbar>\n  "
+module.exports = "\n<mat-toolbar color=\"primary\">\n         \n    <mat-toolbar-row>\n        <span>Bienvenu sur mon reseau social</span>\n        <span class=\"example-spacer\"></span>\n        \n        <span class=\"example-spacer\"> <a routerLink=\"/\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Page d'accueil\">\n            home\n            </i></a> </span>\n        <span class=\"example-spacer\"></span>\n   \n      <span class=\"example-spacer\"></span>\n      <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Membre - Se connecter\">\n          account_circle\n          </i></a>\n      <span class=\"example-spacer\"></span>\n      <span> <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/register\" routerLinkActive=\"active\"><i class=\"material-icons\">login</i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"!getUserState()\"  routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"user outline icon\"></i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\" routerLink=\"/user-settings\" routerLinkActive=\"active\">  <i class=\"material-icons\" matTooltip=\"Paramettres du compte\">\n            settings\n            </i></a></span>\n      <span class=\"example-spacer\"></span>\n      <!-- <span><a *ngIf=\"getUserState()\"  routerLink=\"/userdata\" routerLinkActive=\"active\"><i class=\"fas fa-user-circle\"></i></a></span> -->\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\"  (click)=\"logoutUser()\" href=\"/home\">Deconnection</a></span>\n    \n    </mat-toolbar-row>\n\n  </mat-toolbar>\n  "
 
 /***/ }),
 
@@ -629,6 +770,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HeaderComponent", function() { return HeaderComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
+/* harmony import */ var _comment_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../comment.service */ "./src/app/comment.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -640,9 +782,11 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var HeaderComponent = /** @class */ (function () {
-    function HeaderComponent(authService) {
+    function HeaderComponent(authService, com) {
         this.authService = authService;
+        this.com = com;
         this.isAuth = false;
         this.title = 'app';
     }
@@ -654,6 +798,8 @@ var HeaderComponent = /** @class */ (function () {
     };
     HeaderComponent.prototype.logoutUser = function () {
         this.authService.logoutUser();
+        this.com.onLeave();
+        console.log('leave ??');
     };
     HeaderComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -661,7 +807,7 @@ var HeaderComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./header.component.html */ "./src/app/header/header.component.html"),
             styles: [__webpack_require__(/*! ./header.component.css */ "./src/app/header/header.component.css")]
         }),
-        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"]])
+        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"], _comment_service__WEBPACK_IMPORTED_MODULE_2__["CommentService"]])
     ], HeaderComponent);
     return HeaderComponent;
 }());
@@ -677,7 +823,7 @@ var HeaderComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".card-image > img  {\n    width: 128px;\n  height: 128px;\n}\n\n#stats{\n  padding-top: 30px;\n  position: fixed;\n  max-width: 400px;\n left: 70%;\n}\n\n.example-card {\n  max-width: 400px;\n  height: 100%;\n  margin-bottom: 40px;\n  padding-bottom: 40px;\n}\n\n.example-header-image {\n\n  background-size: cover;\n}\n\n.mat-card-actions {\n  margin-bottom: 30px;\n}\n\n.container {\n  padding-left: 25%\n}\n\nspan {\n  padding: 25px;\n  \n}\n\n.example-form {\n  min-width: 150px;\n  max-width: 500px;\n  width: 100%;\n}\n\n.example-full-width {\n  width: 100%;\n}"
+module.exports = ".card-image > img  {\n    width: 128px;\n  height: 128px;\n}\n\n#stats{\n  padding-top: 30px;\n  position: fixed;\n  max-width: 400px;\n left: 70%;\n}\n\n.example-card {\n  max-width: 400px;\n  height: 100%;\n  margin-bottom: 40px;\n  padding-bottom: 40px;\n  background-color: ivory\n}\n\n.example-header-image {\n\n  background-size: cover;\n}\n\n.mat-card-actions {\n  margin-bottom: 30px;\n}\n\n.container {\n  padding-left: 25%\n}\n\nspan {\n  padding: 25px;\n  \n}\n\n.example-form {\n  min-width: 150px;\n  max-width: 500px;\n  width: 100%;\n}\n\n.example-full-width {\n  width: 100%;\n}"
 
 /***/ }),
 
@@ -688,7 +834,7 @@ module.exports = ".card-image > img  {\n    width: 128px;\n  height: 128px;\n}\n
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<div class=\"container\">\n\n    <mat-card id=\"stats\">\n        <app-stats></app-stats>\n        \n            <aside *ngIf=isMember>\n              <p>Nous sommes le {{currentDate | date:'dd-MM-yyyy'}} </p>\n                <p>Bienvenue {{comment.author }}</p>\n              </aside>\n\n        \n    </mat-card>\n\n <div class=\"col s6\" *ngIf=!isMember>\n   <p>Visiteurs : Creer un compte pour poster des messages et discuter avec vos amis</p>\n </div>\n\n <div class=\"col s6\" *ngIf=isMember>\n    <app-member-search></app-member-search>  \n   </div>\n \n \n    <article *ngIf=isMember>\n        <h6>Poster un message</h6>\n        <form class=\"example-form\" #commentF=\"ngForm\" (submit)=\"posted();commentF.reset()\" >\n      <mat-form-field>\n        <input matInput placeholder=\"titre du message\" name=\"title\" id=\"titre\" [(ngModel)]=\"comment.title\" required >\n      </mat-form-field>\n       <br>\n      <mat-form-field class=\"example-full-width\">\n        <textarea matInput placeholder=\"Poster un commentaire......\"></textarea>\n      </mat-form-field>\n       <br>\n           \n      <button type=\"submit\"mat-button color=\"accent\" [disabled]=\"!commentF.form.valid\">Poster\n         <i class=\"material-icons right\">send</i>\n      </button>\n\n  </form>\n        \n    </article>\n</div>\n\n<div class=\"container\">\n\n  <mat-card class=\"example-card\" *ngFor=\"let comment of commentsArray\">\n    <mat-card-header>\n      <div mat-card-avatar class=\"example-header-image\">\n        <img src=\"{{comment.authorPicture}}\" style=\"width: 46px;\" alt=\"\">\n      </div>\n      <mat-card-title>{{comment.author }} </mat-card-title>\n      <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}</mat-card-subtitle>\n    </mat-card-header>\n    <h4> {{comment.title}}</h4>\n   \n    <mat-card-content>\n      <p>\n        {{comment.content}}\n      </p>\n    </mat-card-content>\n    <mat-card-actions>\n<span>  <i class=\"material-icons\">\n    thumb_up_alt\n    </i></span>\n       <span> <i class=\"material-icons\">\n          share\n          </i> </span>\n       <span> <i class=\"material-icons\">\n          thumb_down_alt\n          </i> </span>\n         \n         \n    </mat-card-actions>\n  </mat-card>\n</div>\n\n"
+module.exports = "\n<div class=\"container\">\n\n    <mat-card id=\"stats\" *ngIf=isMember>\n               \n            <aside>\n              <p>Nous sommes le {{currentDate | date:'dd-MM-yyyy'}} </p>\n                <p>Bienvenue {{comment.author }}</p>\n              </aside>\n\n    </mat-card>\n\n <div class=\"col s6\" *ngIf=!isMember>\n   <p>Visiteurs : Creer un compte pour poster des messages et discuter avec vos amis</p>\n </div>\n\n <div class=\"col s6\" *ngIf=isMember>\n    <app-member-search></app-member-search>  \n   </div>\n  \n   \n    <mat-card class=\"example-card\" *ngIf=isMember>\n      <article >\n        <form class=\"example-form\" #commentF=\"ngForm\" (submit)=\"posted();commentF.reset()\" >\n      <mat-form-field>\n        <input matInput placeholder=\"titre du message\" name=\"title\" id=\"titre\" [(ngModel)]=\"comment.title\" required >\n      </mat-form-field>\n       <br>\n      <mat-form-field class=\"example-full-width\">\n        <textarea matInput placeholder=\"Poster un commentaire......\" name=\"comment\" [(ngModel)]=\"comment.content\"></textarea>\n      </mat-form-field>\n       <br>\n           \n      <button type=\"submit\" mat-fab color=\"accent\" [disabled]=\"!commentF.form.valid\">Poster\n       \n      </button>\n\n  </form>\n        \n    </article>\n    </mat-card>\n</div>\n\n<div class=\"container\">\n\n  <mat-card class=\"example-card\" *ngFor=\"let comment of commentsArray\">\n    <mat-card-header>\n      <div mat-card-avatar class=\"example-header-image\">\n        <img src=\"{{comment.authorPicture}}\" style=\"width: 46px;\" alt=\"\">\n      </div>\n      <mat-card-title>{{comment.author }} </mat-card-title>\n      <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}</mat-card-subtitle>\n    </mat-card-header>\n    <h4> {{comment.title}}</h4>\n   \n    <mat-card-content>\n      <p>\n        {{comment.content}}\n      </p>\n    </mat-card-content>\n    <mat-card-actions>\n<span>  <i class=\"material-icons\">\n    thumb_up_alt\n    </i></span>\n       <span> <i class=\"material-icons\">\n          share\n          </i> </span>\n       <span> <i class=\"material-icons\">\n          thumb_down_alt\n          </i> </span>\n         \n         \n    </mat-card-actions>\n  </mat-card>\n</div>\n\n"
 
 /***/ }),
 
@@ -743,8 +889,10 @@ var HomeComponent = /** @class */ (function () {
         var _this = this;
         if (this.auth.loggedIn()) {
             this.isMember = true;
+            this.userdata();
         }
         this.auth.getData().subscribe(function (res) {
+            _this.comment.authorId = res.user._id;
             _this.comment.author = res.user.first_name + ' ' + res.user.last_name;
             _this.comment.authorPicture = res.user.picture;
             console.log(_this.comment);
@@ -762,6 +910,9 @@ var HomeComponent = /** @class */ (function () {
         var _this = this;
         this.commentService.onBegin()
             .subscribe(function (data) { return _this.message; });
+    };
+    HomeComponent.prototype.userdata = function () {
+        this.auth.getData().subscribe(function (res) { return console.log(res); });
     };
     HomeComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -796,7 +947,7 @@ module.exports = "\n.mat-tab-group {\n  margin-left: 33%;\n  margin-top: 5%;\n  
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-tab-group>\n  \n    <mat-tab label=\"Login\"> \n        <form #loginF=\"ngForm\">\n        <div class=\"example-container\">\n            <mat-form-field>\n              <input matInput placeholder=\"Email\" [(ngModel)]=\"userData.email\" name=\"email\"  [formControl]=\"email\" required>\n              <mat-error *ngIf=\"email.invalid\">{{getErrorMessage()}}</mat-error>\n            </mat-form-field>\n            <br>\n            <mat-form-field>\n                <input matInput placeholder=\"Mot de passe\" [(ngModel)]=\"userData.password\" required name=\"password\"  [type]=\"hide ? 'password' : 'text'\">\n                <mat-icon matSuffix (click)=\"hide = !hide\">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>\n              </mat-form-field>\n              <br>\n              <button mat-button color=\"primary\" [disabled]=\"!loginF.form.valid\" (click)=\"onLogin()\">Se connecter</button>\n        \n          </div>\n        </form>\n    </mat-tab>\n    <mat-tab label=\"Inscription\"> \n      <app-register></app-register>\n    </mat-tab>\n  </mat-tab-group>\n  \n\n\n\n  "
+module.exports = "<mat-tab-group>\n  \n    <mat-tab label=\"Login\"> \n        <form #loginF=\"ngForm\"  >\n        <div class=\"example-container\">\n            <mat-form-field>\n              <input matInput placeholder=\"Email\" [(ngModel)]=\"userData.email\" name=\"email\"  [formControl]=\"email\" required>\n              <mat-error *ngIf=\"email.invalid\">{{getErrorMessage()}}</mat-error>\n            </mat-form-field>\n            <br>\n            <mat-form-field>\n                <input matInput placeholder=\"Mot de passe\" [(ngModel)]=\"userData.password\" required name=\"password\"  [type]=\"hide ? 'password' : 'text'\">\n                <mat-icon matSuffix (click)=\"hide = !hide\">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>\n              </mat-form-field>\n              <br>\n              <button  mat-button color=\"primary\" [disabled]=\"!loginF.form.valid\" (click)=\"onLogin();loginF.reset()\">Se connecter</button>\n              <mat-error>{{errorMessage}}</mat-error> \n          </div>\n        </form>\n    </mat-tab>\n    <mat-tab label=\"Inscription\"> \n      <app-register></app-register>\n    </mat-tab>\n  </mat-tab-group>\n  \n\n\n\n  "
 
 /***/ }),
 
@@ -844,6 +995,8 @@ var LoginComponent = /** @class */ (function () {
             this._router.navigate(['/home']);
         }
     };
+    LoginComponent.prototype.showLoginError = function () {
+    };
     LoginComponent.prototype.getErrorMessage = function () {
         return this.email.hasError('required') ? 'Le champs doit etre rempli' :
             this.email.hasError('email') ? "Le format de l'adresse Email est invalide" :
@@ -854,12 +1007,15 @@ var LoginComponent = /** @class */ (function () {
         this.authService.loginUser(this.userData)
             .subscribe(function (res) {
             if (res.message || res.err) {
-                _this.errorMessage = 'Identifiant ou mot de passe invalide';
-                console.log(_this.errorMessage);
-                _this.userData.email = '';
-                _this.userData.password = '';
+                if (res.message === undefined)
+                    _this.errorMessage = res.err;
+                if (res.err === undefined)
+                    _this.errorMessage = res.message;
+                _this.userData.email = null;
+                _this.userData.password = null;
             }
             else {
+                console.log(res.messageErr);
                 localStorage.setItem('token', res.token);
                 _this._router.navigate(['/home']);
             }
@@ -1618,7 +1774,7 @@ var UserSettingsComponent = /** @class */ (function () {
         this.user = this.authService.getData().subscribe(function (res) {
             _this.user = res.user;
             console.log(_this.user);
-        }).closed;
+        });
     };
     UserSettingsComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({

@@ -11,11 +11,11 @@
         <span class="example-spacer"></span>
    
       <span class="example-spacer"></span>
-      <a *ngIf="!getUserState()" class="item" routerLink="/login" routerLinkActive="active"><i class="material-icons">
+      <a *ngIf="!getUserState()" class="item" routerLink="/login" routerLinkActive="active"><i class="material-icons" matTooltip="Membre - Se connecter">
           account_circle
           </i></a>
       <span class="example-spacer"></span>
-      <span> <a *ngIf="!getUserState()" class="item" routerLink="/register" routerLinkActive="active">S'enregistrer</a></span>
+      <span> <a *ngIf="!getUserState()" class="item" routerLink="/register" routerLinkActive="active"><i class="material-icons">login</i></a></span>
       <span class="example-spacer"></span>
       <span><a *ngIf="!getUserState()"  routerLink="/login" routerLinkActive="active"><i class="user outline icon"></i></a></span>
       <span class="example-spacer"></span>
@@ -25,7 +25,7 @@
       <span class="example-spacer"></span>
       <!-- <span><a *ngIf="getUserState()"  routerLink="/userdata" routerLinkActive="active"><i class="fas fa-user-circle"></i></a></span> -->
       <span class="example-spacer"></span>
-      <span><a *ngIf="getUserState()"  (click)="logoutUser()">Deconnection</a></span>
+      <span><a *ngIf="getUserState()"  (click)="logoutUser()" href="/home">Deconnection</a></span>
     
     </mat-toolbar-row>
 
