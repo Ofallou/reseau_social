@@ -1946,7 +1946,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/fallou/projets/reseau_social/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /home/ofallou/reseau_social/src/main.ts */"./src/main.ts");
 
 
 /***/ }),
