@@ -653,7 +653,7 @@ var CommentService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n"
+module.exports = "\n.example-form {\n    min-width: 150px;\n    max-width: 500px;\n    width: 100%;\n  }\n  \n  .example-full-width {\n    width: 100%;\n  }"
 
 /***/ }),
 
@@ -664,7 +664,7 @@ module.exports = "\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row \">\n  <form class=\"col s8\" #commentF=\"ngForm\" (submit)=\"posted();commentF.reset()\" >\n    <div class=\"row\">\n\n      <div class=\"input-field col s5\">\n        <i class=\"material-icons prefix\">title</i>\n        <input  type=\"text\" name=\"title\" id=\"titre\" [(ngModel)]=\"comment.title\" required >\n        <label for=\"titre\">Titre</label>\n      </div>\n      <div class=\"input-field col s10\">\n        <i class=\"material-icons prefix\">mode_edit</i>\n        <textarea id=\"icon_prefix2\" class=\"materialize-textarea\" name=\"content\" [(ngModel)]=\"comment.content\" ></textarea>\n        <label for=\"icon_prefix2\">Commentaire</label>\n      </div>\n    </div>\n    <button type=\"submit\" class=\"btn waves-effect waves-light\" [disabled]=\"!commentF.form.valid\" >Poster\n      <i class=\"material-icons right\">send</i>\n    </button>\n  </form>\n</div>\n\n\n"
+module.exports = "<mat-card class=\"example-card\">\n    <article >\n      <form class=\"example-form\" #commentF=\"ngForm\" (submit)=\"posted();commentF.reset()\" >\n    <mat-form-field>\n      <input matInput placeholder=\"titre du message\" name=\"title\" id=\"titre\" [(ngModel)]=\"comment.title\" required >\n    </mat-form-field>\n     <br>\n    <mat-form-field class=\"example-full-width\">\n      <textarea matInput placeholder=\"Poster un commentaire......\" name=\"comment\" [(ngModel)]=\"comment.content\"></textarea>\n    </mat-form-field>\n     <br>\n         \n    <button type=\"submit\" mat-fab color=\"accent\" [disabled]=\"!commentF.form.valid\">Poster\n     \n    </button>\n\n</form>\n      \n  </article>\n  </mat-card>"
 
 /***/ }),
 
@@ -679,6 +679,8 @@ module.exports = "<div class=\"row \">\n  <form class=\"col s8\" #commentF=\"ngF
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CommentsComponent", function() { return CommentsComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _comment_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../comment.service */ "./src/app/comment.service.ts");
+/* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -689,10 +691,44 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var CommentsComponent = /** @class */ (function () {
-    function CommentsComponent() {
+    function CommentsComponent(auth, commentService) {
+        var _this = this;
+        this.auth = auth;
+        this.commentService = commentService;
+        this.commentsArray = [];
+        this.comment = {
+            title: '',
+            author: '',
+            content: '',
+            date: null,
+            authorId: '',
+            authorPicture: '',
+            explicit: false
+        };
+        this.commentService.onBegin()
+            .subscribe();
+        this.commentService.onPosted()
+            .subscribe(function (data) { return _this.commentsArray.splice(0, 0, data); });
     }
     CommentsComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.auth.getData().subscribe(function (res) {
+            _this.comment.authorId = res.user._id;
+            _this.comment.author = res.user.first_name + ' ' + res.user.last_name;
+            _this.comment.authorPicture = res.user.picture;
+            console.log(_this.comment);
+        });
+        this.commentService.getComments().subscribe(function (res) {
+            _this.commentsArray = res.comments;
+            console.log('Les commentaires en base', _this.commentsArray);
+        });
+    };
+    CommentsComponent.prototype.posted = function () {
+        this.comment.date = new Date();
+        this.commentService.postMessage(this.comment);
     };
     CommentsComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -700,7 +736,7 @@ var CommentsComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./comments.component.html */ "./src/app/comments/comments.component.html"),
             styles: [__webpack_require__(/*! ./comments.component.css */ "./src/app/comments/comments.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"], _comment_service__WEBPACK_IMPORTED_MODULE_1__["CommentService"]])
     ], CommentsComponent);
     return CommentsComponent;
 }());
@@ -743,7 +779,7 @@ var Config = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n.example-icon {\n  padding: 0 14px;\n}\n\n.example-spacer {\n  flex: 1 1 auto;\n  width: 40px;\n}\n\na{\n  color: white;\n}\n\n"
+module.exports = "\n.example-icon {\n  padding: 0 14px;\n}\n\n.example-spacer {\n  flex: 1 1 auto;\n  width: 40px;\n}\n\na{\n  color: white;\n}\n\n.infos {\n  display:flex;\n  flex-flow: row nowrap;\n  justify-content:space-between;\n  align-items: center;\n\n\n}\n\nimg {\n  width: 46px;\n  border-radius: 50%;\n  padding-right: 10px;\n}"
 
 /***/ }),
 
@@ -754,7 +790,7 @@ module.exports = "\n.example-icon {\n  padding: 0 14px;\n}\n\n.example-spacer {\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<mat-toolbar color=\"primary\">\n         \n    <mat-toolbar-row>\n        <span>Bienvenu sur mon reseau social</span>\n        <span class=\"example-spacer\"></span>\n        \n        <span class=\"example-spacer\"> <a routerLink=\"/\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Page d'accueil\">\n            home\n            </i></a> </span>\n        <span class=\"example-spacer\"></span>\n   \n      <span class=\"example-spacer\"></span>\n      <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Membre - Se connecter\">\n          account_circle\n          </i></a>\n      <span class=\"example-spacer\"></span>\n      <span> <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/register\" routerLinkActive=\"active\"><i class=\"material-icons\">login</i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"!getUserState()\"  routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"user outline icon\"></i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\" routerLink=\"/user-settings\" routerLinkActive=\"active\">  <i class=\"material-icons\" matTooltip=\"Paramettres du compte\">\n            settings\n            </i></a></span>\n      <span class=\"example-spacer\"></span>\n      <!-- <span><a *ngIf=\"getUserState()\"  routerLink=\"/userdata\" routerLinkActive=\"active\"><i class=\"fas fa-user-circle\"></i></a></span> -->\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\"  (click)=\"logoutUser()\" href=\"/home\">Deconnection</a></span>\n    \n    </mat-toolbar-row>\n\n  </mat-toolbar>\n  "
+module.exports = "\n<mat-toolbar color=\"primary\">\n         \n    <mat-toolbar-row>\n        <span>Bienvenu sur mon reseau social</span>\n        <span class=\"example-spacer\"></span>\n        \n        <span class=\"example-spacer\"> <a routerLink=\"/\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Page d'accueil\">\n            home\n            </i></a> </span>\n        <span class=\"example-spacer\"></span>\n        <div class=\"infos\" *ngIf=\"isAuth\">\n            <div>\n                <a routerLink=\"userdata\"><img src=\"{{user.picture}}\"  alt=\"\"></a>\n                \n                \n                    \n            </div>\n            <div>\n                    {{user.first_name}} {{user.last_name}} \n            </div>\n            \n        \n        </div>\n   \n      <span class=\"example-spacer\"></span>\n      <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Membre - Se connecter\">\n          account_circle\n          </i></a>\n      <span class=\"example-spacer\"></span>\n      <span> <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/register\" routerLinkActive=\"active\"><i class=\"material-icons\">login</i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"!getUserState()\"  routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"user outline icon\"></i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\" routerLink=\"/user-settings\" routerLinkActive=\"active\">  <i class=\"material-icons\" matTooltip=\"Paramettres du compte\">\n            settings\n            </i></a></span>\n      <span class=\"example-spacer\"></span>\n      <!-- <span><a *ngIf=\"getUserState()\"  routerLink=\"/userdata\" routerLinkActive=\"active\"><i class=\"fas fa-user-circle\"></i></a></span> -->\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\"  (click)=\"logoutUser()\" href=\"/home\">Deconnection</a></span>\n    \n    </mat-toolbar-row>\n\n  </mat-toolbar>\n  "
 
 /***/ }),
 
@@ -789,17 +825,36 @@ var HeaderComponent = /** @class */ (function () {
         this.com = com;
         this.isAuth = false;
         this.title = 'app';
+        this.user = {
+            first_name: '',
+            last_name: '',
+            email: '',
+            picture: ''
+        };
     }
     HeaderComponent.prototype.getUserState = function () {
         this.isAuth = !!this.authService.getToken();
         return this.isAuth;
     };
     HeaderComponent.prototype.ngOnInit = function () {
+        this.getUserState();
+        this.isLoged();
+        console.log(this.isAuth);
     };
     HeaderComponent.prototype.logoutUser = function () {
         this.authService.logoutUser();
         this.com.onLeave();
         console.log('leave ??');
+    };
+    HeaderComponent.prototype.isLoged = function () {
+        var _this = this;
+        if (this.isAuth) {
+            this.authService.getData()
+                .subscribe(function (res) {
+                console.log(res);
+                _this.user = res.user;
+            });
+        }
     };
     HeaderComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1798,7 +1853,7 @@ var UserSettingsComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = ".card {\n    width: 400px;\n  }\n\n  .container {\n      width: 800px;\n      display:flex;\n      flex-flow: row wrap;\n  }"
 
 /***/ }),
 
@@ -1809,7 +1864,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"ui container\">\n  <div class=\"ui grid\">\n    <div class=\"row\">\n      <div class=\"two wide column\">\n\n      </div>\n    </div>\n\n  </div>\n\n</div>\n\n\n"
+module.exports = "<div class=\"container\">\n    <mat-card class=\"card\">\n        <mat-card-header>\n          <mat-card-title>\n            {{userData.first_name}}\n            {{userData.last_name}}\n      \n          </mat-card-title>\n          <mat-card-subtitle>\n            {{userData.pseudo}}\n            <img src=\" {{userData.picture}}\" alt=\"\">\n          </mat-card-subtitle>\n        </mat-card-header>\n        <mat-card-content>\n        \n        </mat-card-content>\n       \n      </mat-card>\n      \n      <app-comments></app-comments>\n\n</div>\n\n"
 
 /***/ }),
 
@@ -1824,7 +1879,9 @@ module.exports = "<div class=\"ui container\">\n  <div class=\"ui grid\">\n    <
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserdataComponent", function() { return UserdataComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _comment_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../comment.service */ "./src/app/comment.service.ts");
+/* harmony import */ var _models_user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/user */ "./src/app/models/user.ts");
+/* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
+/* harmony import */ var _comment_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../comment.service */ "./src/app/comment.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1836,11 +1893,21 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
+
 var UserdataComponent = /** @class */ (function () {
-    function UserdataComponent(commentService) {
+    function UserdataComponent(commentService, auth) {
         this.commentService = commentService;
+        this.auth = auth;
+        this.userData = _models_user__WEBPACK_IMPORTED_MODULE_1__["User"];
     }
     UserdataComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.auth.getData()
+            .subscribe(function (data) {
+            _this.userData = data.user;
+            console.log(_this.userData);
+        });
     };
     UserdataComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1848,7 +1915,7 @@ var UserdataComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./userdata.component.html */ "./src/app/userdata/userdata.component.html"),
             styles: [__webpack_require__(/*! ./userdata.component.css */ "./src/app/userdata/userdata.component.css")]
         }),
-        __metadata("design:paramtypes", [_comment_service__WEBPACK_IMPORTED_MODULE_1__["CommentService"]])
+        __metadata("design:paramtypes", [_comment_service__WEBPACK_IMPORTED_MODULE_3__["CommentService"], _auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"]])
     ], UserdataComponent);
     return UserdataComponent;
 }());

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../auth.service";
 import { CommentService } from '../comment.service';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-header',
@@ -11,12 +12,24 @@ export class HeaderComponent implements OnInit {
 
   isAuth = false;
   title = 'app';
+  user = {
+    first_name :'',
+    last_name:'',
+    email:'',
+    picture:''
+
+  };
+
+  
   constructor( private authService: AuthService, private com: CommentService) {}
   getUserState() {
     this.isAuth = !!this.authService.getToken();
     return this.isAuth;
   }
   ngOnInit() {
+    this.getUserState()
+    this.isLoged()
+    console.log(this.isAuth)
    
   }
   logoutUser() {
@@ -25,7 +38,16 @@ export class HeaderComponent implements OnInit {
     console.log('leave ??')
   }
 
- 
+ isLoged(){
+   if(this.isAuth){
+
+    this.authService.getData()
+    .subscribe(
+      res => {console.log(res)
+      this.user = res.user;
+      })
+   }
+ }
  
 
 }

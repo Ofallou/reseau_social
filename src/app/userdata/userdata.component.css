@@ -1,0 +1,9 @@
+.card {
+    width: 400px;
+  }
+
+  .container {
+      width: 800px;
+      display:flex;
+      flex-flow: row wrap;
+  }

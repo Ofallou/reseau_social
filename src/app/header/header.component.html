@@ -9,6 +9,19 @@
             home
             </i></a> </span>
         <span class="example-spacer"></span>
+        <div class="infos" *ngIf="isAuth">
+            <div>
+                <a routerLink="userdata"><img src="{{user.picture}}"  alt=""></a>
+                
+                
+                    
+            </div>
+            <div>
+                    {{user.first_name}} {{user.last_name}} 
+            </div>
+            
+        
+        </div>
    
       <span class="example-spacer"></span>
       <a *ngIf="!getUserState()" class="item" routerLink="/login" routerLinkActive="active"><i class="material-icons" matTooltip="Membre - Se connecter">

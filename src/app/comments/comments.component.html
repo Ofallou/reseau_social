@@ -1,22 +1,20 @@
-<div class="row ">
-  <form class="col s8" #commentF="ngForm" (submit)="posted();commentF.reset()" >
-    <div class="row">
-
-      <div class="input-field col s5">
-        <i class="material-icons prefix">title</i>
-        <input  type="text" name="title" id="titre" [(ngModel)]="comment.title" required >
-        <label for="titre">Titre</label>
-      </div>
-      <div class="input-field col s10">
-        <i class="material-icons prefix">mode_edit</i>
-        <textarea id="icon_prefix2" class="materialize-textarea" name="content" [(ngModel)]="comment.content" ></textarea>
-        <label for="icon_prefix2">Commentaire</label>
-      </div>
-    </div>
-    <button type="submit" class="btn waves-effect waves-light" [disabled]="!commentF.form.valid" >Poster
-      <i class="material-icons right">send</i>
+<mat-card class="example-card">
+    <article >
+      <form class="example-form" #commentF="ngForm" (submit)="posted();commentF.reset()" >
+    <mat-form-field>
+      <input matInput placeholder="titre du message" name="title" id="titre" [(ngModel)]="comment.title" required >
+    </mat-form-field>
+     <br>
+    <mat-form-field class="example-full-width">
+      <textarea matInput placeholder="Poster un commentaire......" name="comment" [(ngModel)]="comment.content"></textarea>
+    </mat-form-field>
+     <br>
+         
+    <button type="submit" mat-fab color="accent" [disabled]="!commentF.form.valid">Poster
+     
     </button>
-  </form>
-</div>
 
-
+</form>
+      
+  </article>
+  </mat-card>
