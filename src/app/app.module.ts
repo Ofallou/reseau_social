@@ -36,6 +36,12 @@ import { NavigationComponent } from './navigation/navigation.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AdminGuard } from './admin.guard';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+import { NewPasswordComponent } from './new-password/new-password.component';
+import {MatDialogModule} from '@angular/material/dialog';
+
+
 
 
 @NgModule({
@@ -54,7 +60,8 @@ import { AdminGuard } from './admin.guard';
     MemberSearchComponent,
     MainComponent,
     NavigationComponent,
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    NewPasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -79,11 +86,20 @@ import { AdminGuard } from './admin.guard';
     MatRadioModule,
     MatTableModule,
     MatCheckboxModule,
+    MatDialogModule,
     BrowserAnimationsModule,
     MatBadgeModule,
-    MatTooltipModule
+    MatTooltipModule,
+    AngularFireModule.initializeApp({
+      apiKey: "AIzaSyAlSqMwKKhmxwcaV2yV0JakW1Z3FC-8d3Q",
+    authDomain: "reseau-social-c1b9a.firebaseapp.com",
+    databaseURL: "https://reseau-social-c1b9a.firebaseio.com",
+    projectId: "reseau-social-c1b9a",
+    storageBucket: "reseau-social-c1b9a.appspot.com",
+    messagingSenderId: "217716745845"
+    }),
+    AngularFireStorageModule
     
-
   ],
   providers: [AuthService,AdminGuard, AuthGuard,WebsocketService, CommentService,MemberActionService,
     {

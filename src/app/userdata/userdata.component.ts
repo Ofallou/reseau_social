@@ -6,6 +6,7 @@ import { AuthService} from '../auth.service';
 import {CommentService} from '../comment.service';
 import { WebsocketService } from '../websocket.service';
 import { subscribeOn } from 'rxjs/operators';
+import { AngularFireStorage } from 'angularfire2/storage';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { subscribeOn } from 'rxjs/operators';
 })
 export class UserdataComponent implements OnInit {
 userData =  User;
-  constructor(private commentService: CommentService, private auth: AuthService  ) {
+  constructor(private commentService: CommentService, private auth: AuthService, private afStorage:AngularFireStorage   ) {
   }
 
   ngOnInit() {
@@ -30,6 +31,10 @@ userData =  User;
     
   }
 
+  upload(event) {
+    this.afStorage.upload('/', event.target.files[0]);
+    console.log('fait')
+  }
  
 
 }

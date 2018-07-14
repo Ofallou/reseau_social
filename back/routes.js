@@ -4,9 +4,11 @@ const nodemailer =  require ('nodemailer');
 const mongoose= require('mongoose');
 const jwt = require('jsonwebtoken');
 var gravatar = require('gravatar');
+var generator = require ('generate-password');
 //Models
 const User = require ('./models/user.js');
 const Comment = require ('./models/comment');
+const SentPassword = require ('./mails/sendPassword')
 
 //Mongodb
 const db="mongodb://ofallou:meissa71@ds249079.mlab.com:49079/reseau_social";
@@ -15,7 +17,7 @@ const secret='RffrtejksizikskiksizkskizkskkzikskskksMpp';
 
 
 
-var sentPassword =  function(email, password, last_name){
+/* var sentPassword =  function(email, password, last_name){
 
   nodemailer.createTestAccount((err, account) => {
     let transporter = nodemailer.createTransport({
@@ -43,7 +45,7 @@ var sentPassword =  function(email, password, last_name){
     })
   });
 
-}
+} */
 
 
 
@@ -55,11 +57,11 @@ function veriFyToken(req,res, next){
   // On recupere le token apres le terme beare
   const token= req.headers.authorization.split(' ')[1];
   if(token === 'null') {
-    return res.send('invalide request')
+    return res.send('invalide request ')
   }
   const payload = jwt.verify(token, secret);
   if(!payload){
-    return res.statut(401).send('invalide request')
+    return res.statut(401).send('invalide request ')
   } else {
     req.userId = payload.subject;
     currentUserId= req.userId;
@@ -95,6 +97,7 @@ router.post('/register',  (req, res) => {
           let payload = {subject: dataUser._id};
           let token = jwt.sign(payload, secret);
           res.status(200).send({token})
+
         }
        })
     }
@@ -136,7 +139,7 @@ router.get('/userdata',veriFyToken ,(req, res) => {
 
   User.findOne({_id:currentUserId}, (err, user)=>{
     if(!err){
-      res.send({user: user})
+      res.status('200').send({user: user})
     }
   })
 
@@ -167,10 +170,18 @@ router.post('/lostpwd', (req, res) => {
     }else {
 
       if(data){
-        console.log(data.length)
-
-        sentPassword(email,data.password, data.last_name)
-      res.send({success:'Mot de passe envoyé,merci de verifier votre boite de reception de meme votre dossier spam'});
+        console.log("Info du user",data)
+        var new_password = generator.generate({
+          length:8,
+          numbers:true
+        });
+        User.update({_id: data._id}, {$set: {password: new_password}}, (err, data) => {
+          if(err) console.log(err);
+          console.log('info mises a jours en base', data , new_password)
+        })
+        
+        SentPassword(email,data.password, data.first_name,new_password);
+      res.send({success:'Un nouveau mot de passe a été envoyé a votre adresse email, Merci de verifier votre boite aux lettres ainsi que le dossier spam !'});
       }else {
         res.send({error:'Adresse email inconnu'})
 
@@ -180,6 +191,15 @@ router.post('/lostpwd', (req, res) => {
     }
 
   })
+
+})
+
+
+router.get('/passCode/:id', (req, res)=>{
+  var id= req.params.id;
+  console.log(id);
+  res.send('user_id', id)
+
 
 })
 
@@ -243,6 +263,9 @@ router.post('/member',veriFyToken, (req,res)=> {
   })
  
 })
+
+
+router.post('/notification')
 
 
 module.exports= router;

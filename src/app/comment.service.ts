@@ -10,7 +10,7 @@ import { User } from './models/user';
 
 @Injectable()
 export class CommentService  {
-  url = Config.SOCKET_HOST;
+  url = Config.SOCKET_HOST || "http://localhost";;
   private _postCommentUrl = this.url+'/api/post_comment';
   private _getUserCommentsUrl = this.url+'/api/comments';
   private socket = io(Config.SOCKET_HOST);
@@ -22,7 +22,11 @@ export class CommentService  {
     (observer => {
       this.socket.on('user join', (data) => {
         observer.next(data);
-      });
+        this.socket.disconnect()
+        observer.complete()
+      }
+        
+    );
       return () => {this.socket.disconnect();};
     });
     return observable;

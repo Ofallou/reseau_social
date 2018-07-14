@@ -10,7 +10,9 @@ const userSchema = new Schema({
    gender: String,
    password: String,
    isAdmin: Boolean,
-  picture:String
+  picture:String,
+  description:String,
+  friendList:Array
 
 });
 

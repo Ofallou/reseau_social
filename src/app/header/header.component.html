@@ -1,29 +1,21 @@
 
 <mat-toolbar color="primary">
-         
-    <mat-toolbar-row>
-        <span>Bienvenu sur mon reseau social</span>
+   <mat-toolbar-row>
+        <span>Réseau Social</span>
         <span class="example-spacer"></span>
-        
-        <span class="example-spacer"> <a routerLink="/" routerLinkActive="active"><i class="material-icons" matTooltip="Page d'accueil">
+            <span class="example-spacer"> <a routerLink="/" routerLinkActive="active"><i class="material-icons" matTooltip="Page d'accueil">
             home
             </i></a> </span>
         <span class="example-spacer"></span>
-        <div class="infos" *ngIf="isAuth">
+        <div class="infos">
             <div>
-                <a routerLink="userdata"><img src="{{user.picture}}"  alt=""></a>
-                
-                
-                    
+                <a routerLink="userdata"><img src="{{user.picture}}"  alt=""></a>            
             </div>
             <div>
-                    {{user.first_name}} {{user.last_name}} 
+                {{user.first_name}} {{user.last_name}} 
             </div>
-            
-        
-        </div>
-   
-      <span class="example-spacer"></span>
+           </div>
+         <span class="example-spacer"></span>
       <a *ngIf="!getUserState()" class="item" routerLink="/login" routerLinkActive="active"><i class="material-icons" matTooltip="Membre - Se connecter">
           account_circle
           </i></a>
@@ -38,9 +30,8 @@
       <span class="example-spacer"></span>
       <!-- <span><a *ngIf="getUserState()"  routerLink="/userdata" routerLinkActive="active"><i class="fas fa-user-circle"></i></a></span> -->
       <span class="example-spacer"></span>
-      <span><a *ngIf="getUserState()"  (click)="logoutUser()" href="/home">Deconnection</a></span>
-    
+      <span><a *ngIf="getUserState()"  (click)="logoutUser()" href="/home">Se deconnecter</a></span>
+      
     </mat-toolbar-row>
-
   </mat-toolbar>
   

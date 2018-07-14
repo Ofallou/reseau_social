@@ -168,12 +168,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./user-settings/user-settings.component */ "./src/app/user-settings/user-settings.component.ts");
 /* harmony import */ var _admin_dashboard_admin_dashboard_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./admin-dashboard/admin-dashboard.component */ "./src/app/admin-dashboard/admin-dashboard.component.ts");
 /* harmony import */ var _admin_guard__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./admin.guard */ "./src/app/admin.guard.ts");
+/* harmony import */ var _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./new-password/new-password.component */ "./src/app/new-password/new-password.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -196,6 +198,7 @@ var routes = [
     { path: 'login', component: _login_login_component__WEBPACK_IMPORTED_MODULE_3__["LoginComponent"] },
     { path: 'register', component: _register_register_component__WEBPACK_IMPORTED_MODULE_4__["RegisterComponent"] },
     { path: 'lostpwd', component: _lost_password_lost_password_component__WEBPACK_IMPORTED_MODULE_7__["LostPasswordComponent"] },
+    { path: 'passCode/:id', component: _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_12__["NewPasswordComponent"] },
     { path: 'userdata', component: _userdata_userdata_component__WEBPACK_IMPORTED_MODULE_6__["UserdataComponent"],
         canActivate: [_auth_guard__WEBPACK_IMPORTED_MODULE_8__["AuthGuard"]] },
     { path: 'user-settings', component: _user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_9__["UserSettingsComponent"],
@@ -322,6 +325,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! @angular/material/tooltip */ "./node_modules/@angular/material/esm5/tooltip.es5.js");
 /* harmony import */ var _admin_dashboard_admin_dashboard_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./admin-dashboard/admin-dashboard.component */ "./src/app/admin-dashboard/admin-dashboard.component.ts");
 /* harmony import */ var _admin_guard__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./admin.guard */ "./src/app/admin.guard.ts");
+/* harmony import */ var angularfire2__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! angularfire2 */ "./node_modules/angularfire2/index.js");
+/* harmony import */ var angularfire2_storage__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! angularfire2/storage */ "./node_modules/angularfire2/storage/index.js");
+/* harmony import */ var _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./new-password/new-password.component */ "./src/app/new-password/new-password.component.ts");
+/* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! @angular/material/dialog */ "./node_modules/@angular/material/esm5/dialog.es5.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -364,6 +371,10 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
+
+
+
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -384,7 +395,8 @@ var AppModule = /** @class */ (function () {
                 _member_search_member_search_component__WEBPACK_IMPORTED_MODULE_27__["MemberSearchComponent"],
                 _main_main_component__WEBPACK_IMPORTED_MODULE_30__["MainComponent"],
                 _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_31__["NavigationComponent"],
-                _admin_dashboard_admin_dashboard_component__WEBPACK_IMPORTED_MODULE_33__["AdminDashboardComponent"]
+                _admin_dashboard_admin_dashboard_component__WEBPACK_IMPORTED_MODULE_33__["AdminDashboardComponent"],
+                _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_37__["NewPasswordComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -409,9 +421,19 @@ var AppModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatRadioModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatTableModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatCheckboxModule"],
+                _angular_material_dialog__WEBPACK_IMPORTED_MODULE_38__["MatDialogModule"],
                 _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_29__["BrowserAnimationsModule"],
                 _angular_material_badge__WEBPACK_IMPORTED_MODULE_15__["MatBadgeModule"],
-                _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_32__["MatTooltipModule"]
+                _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_32__["MatTooltipModule"],
+                angularfire2__WEBPACK_IMPORTED_MODULE_35__["AngularFireModule"].initializeApp({
+                    apiKey: "AIzaSyAlSqMwKKhmxwcaV2yV0JakW1Z3FC-8d3Q",
+                    authDomain: "reseau-social-c1b9a.firebaseapp.com",
+                    databaseURL: "https://reseau-social-c1b9a.firebaseio.com",
+                    projectId: "reseau-social-c1b9a",
+                    storageBucket: "reseau-social-c1b9a.appspot.com",
+                    messagingSenderId: "217716745845"
+                }),
+                angularfire2_storage__WEBPACK_IMPORTED_MODULE_36__["AngularFireStorageModule"]
             ],
             providers: [_auth_service__WEBPACK_IMPORTED_MODULE_17__["AuthService"], _admin_guard__WEBPACK_IMPORTED_MODULE_34__["AdminGuard"], _auth_guard__WEBPACK_IMPORTED_MODULE_19__["AuthGuard"], _websocket_service__WEBPACK_IMPORTED_MODULE_24__["WebsocketService"], _comment_service__WEBPACK_IMPORTED_MODULE_21__["CommentService"], _member_action_service__WEBPACK_IMPORTED_MODULE_28__["MemberActionService"],
                 {
@@ -514,13 +536,14 @@ var AuthService = /** @class */ (function () {
             email: '',
             password: ''
         };
-        this.url = _config__WEBPACK_IMPORTED_MODULE_3__["Config"].SOCKET_HOST;
+        this.url = _config__WEBPACK_IMPORTED_MODULE_3__["Config"].SOCKET_HOST || "http://localhost";
         this._registerURL = this.url + '/api/register';
         this._loginURL = this.url + '/api/login';
         this._userdataURL = this.url + '/api/userdata';
         this._lostPassword = this.url + '/api/lostpwd';
         this._home = this.url + '/api/';
         this._admin = this.url + '/api/admin';
+        this._passCode = this.url + '/api/passCode';
     }
     AuthService.prototype.registerUser = function (user) {
         return this.http.post(this._registerURL, user);
@@ -540,6 +563,9 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.lostPassword = function (_email) {
         return this.http.post(this._lostPassword, _email);
+    };
+    AuthService.prototype.generatePassword = function () {
+        return this.http.get(this._passCode);
     };
     AuthService.prototype.getData = function () {
         return this.http.get(this._userdataURL);
@@ -597,16 +623,19 @@ var CommentService = /** @class */ (function () {
     function CommentService(http, _router) {
         this.http = http;
         this._router = _router;
-        this.url = _app_config__WEBPACK_IMPORTED_MODULE_5__["Config"].SOCKET_HOST;
+        this.url = _app_config__WEBPACK_IMPORTED_MODULE_5__["Config"].SOCKET_HOST || "http://localhost";
         this._postCommentUrl = this.url + '/api/post_comment';
         this._getUserCommentsUrl = this.url + '/api/comments';
         this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_3__(_app_config__WEBPACK_IMPORTED_MODULE_5__["Config"].SOCKET_HOST);
     }
+    ;
     CommentService.prototype.onBegin = function () {
         var _this = this;
         var observable = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Observable"](function (observer) {
             _this.socket.on('user join', function (data) {
                 observer.next(data);
+                _this.socket.disconnect();
+                observer.complete();
             });
             return function () { _this.socket.disconnect(); };
         });
@@ -757,10 +786,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Config", function() { return Config; });
 var Config = /** @class */ (function () {
     function Config() {
+        this.URL = "http://localhost:5000";
     }
     Object.defineProperty(Config, "SOCKET_HOST", {
         get: function () {
-            return 'http://localhost:5000' || 'https://dry-fortress-71234.herokuapp.com';
+            return "http://localhost:5000" || 'https://dry-fortress-71234.herokuapp.com';
         },
         enumerable: true,
         configurable: true
@@ -790,7 +820,7 @@ module.exports = "\n.example-icon {\n  padding: 0 14px;\n}\n\n.example-spacer {\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<mat-toolbar color=\"primary\">\n         \n    <mat-toolbar-row>\n        <span>Bienvenu sur mon reseau social</span>\n        <span class=\"example-spacer\"></span>\n        \n        <span class=\"example-spacer\"> <a routerLink=\"/\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Page d'accueil\">\n            home\n            </i></a> </span>\n        <span class=\"example-spacer\"></span>\n        <div class=\"infos\" *ngIf=\"isAuth\">\n            <div>\n                <a routerLink=\"userdata\"><img src=\"{{user.picture}}\"  alt=\"\"></a>\n                \n                \n                    \n            </div>\n            <div>\n                    {{user.first_name}} {{user.last_name}} \n            </div>\n            \n        \n        </div>\n   \n      <span class=\"example-spacer\"></span>\n      <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Membre - Se connecter\">\n          account_circle\n          </i></a>\n      <span class=\"example-spacer\"></span>\n      <span> <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/register\" routerLinkActive=\"active\"><i class=\"material-icons\">login</i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"!getUserState()\"  routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"user outline icon\"></i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\" routerLink=\"/user-settings\" routerLinkActive=\"active\">  <i class=\"material-icons\" matTooltip=\"Paramettres du compte\">\n            settings\n            </i></a></span>\n      <span class=\"example-spacer\"></span>\n      <!-- <span><a *ngIf=\"getUserState()\"  routerLink=\"/userdata\" routerLinkActive=\"active\"><i class=\"fas fa-user-circle\"></i></a></span> -->\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\"  (click)=\"logoutUser()\" href=\"/home\">Deconnection</a></span>\n    \n    </mat-toolbar-row>\n\n  </mat-toolbar>\n  "
+module.exports = "\n<mat-toolbar color=\"primary\">\n   <mat-toolbar-row>\n        <span>Réseau Social</span>\n        <span class=\"example-spacer\"></span>\n            <span class=\"example-spacer\"> <a routerLink=\"/\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Page d'accueil\">\n            home\n            </i></a> </span>\n        <span class=\"example-spacer\"></span>\n        <div class=\"infos\">\n            <div>\n                <a routerLink=\"userdata\"><img src=\"{{user.picture}}\"  alt=\"\"></a>            \n            </div>\n            <div>\n                {{user.first_name}} {{user.last_name}} \n            </div>\n           </div>\n         <span class=\"example-spacer\"></span>\n      <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Membre - Se connecter\">\n          account_circle\n          </i></a>\n      <span class=\"example-spacer\"></span>\n      <span> <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/register\" routerLinkActive=\"active\"><i class=\"material-icons\">login</i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"!getUserState()\"  routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"user outline icon\"></i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\" routerLink=\"/user-settings\" routerLinkActive=\"active\">  <i class=\"material-icons\" matTooltip=\"Paramettres du compte\">\n            settings\n            </i></a></span>\n      <span class=\"example-spacer\"></span>\n      <!-- <span><a *ngIf=\"getUserState()\"  routerLink=\"/userdata\" routerLinkActive=\"active\"><i class=\"fas fa-user-circle\"></i></a></span> -->\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\"  (click)=\"logoutUser()\" href=\"/home\">Se deconnecter</a></span>\n      \n    </mat-toolbar-row>\n  </mat-toolbar>\n  "
 
 /***/ }),
 
@@ -843,6 +873,7 @@ var HeaderComponent = /** @class */ (function () {
     };
     HeaderComponent.prototype.logoutUser = function () {
         this.authService.logoutUser();
+        this.isAuth = false;
         this.com.onLeave();
         console.log('leave ??');
     };
@@ -945,13 +976,13 @@ var HomeComponent = /** @class */ (function () {
         if (this.auth.loggedIn()) {
             this.isMember = true;
             this.userdata();
+            this.auth.getData().subscribe(function (res) {
+                _this.comment.authorId = res.user._id;
+                _this.comment.author = res.user.first_name + ' ' + res.user.last_name;
+                _this.comment.authorPicture = res.user.picture;
+                console.log(_this.comment);
+            });
         }
-        this.auth.getData().subscribe(function (res) {
-            _this.comment.authorId = res.user._id;
-            _this.comment.author = res.user.first_name + ' ' + res.user.last_name;
-            _this.comment.authorPicture = res.user.picture;
-            console.log(_this.comment);
-        });
         this.commentService.getComments().subscribe(function (res) {
             _this.commentsArray = res.comments;
             console.log('Les commentaires en base', _this.commentsArray);
@@ -1002,7 +1033,7 @@ module.exports = "\n.mat-tab-group {\n  margin-left: 33%;\n  margin-top: 5%;\n  
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-tab-group>\n  \n    <mat-tab label=\"Login\"> \n        <form #loginF=\"ngForm\"  >\n        <div class=\"example-container\">\n            <mat-form-field>\n              <input matInput placeholder=\"Email\" [(ngModel)]=\"userData.email\" name=\"email\"  [formControl]=\"email\" required>\n              <mat-error *ngIf=\"email.invalid\">{{getErrorMessage()}}</mat-error>\n            </mat-form-field>\n            <br>\n            <mat-form-field>\n                <input matInput placeholder=\"Mot de passe\" [(ngModel)]=\"userData.password\" required name=\"password\"  [type]=\"hide ? 'password' : 'text'\">\n                <mat-icon matSuffix (click)=\"hide = !hide\">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>\n              </mat-form-field>\n              <br>\n              <button  mat-button color=\"primary\" [disabled]=\"!loginF.form.valid\" (click)=\"onLogin();loginF.reset()\">Se connecter</button>\n              <mat-error>{{errorMessage}}</mat-error> \n          </div>\n        </form>\n    </mat-tab>\n    <mat-tab label=\"Inscription\"> \n      <app-register></app-register>\n    </mat-tab>\n  </mat-tab-group>\n  \n\n\n\n  "
+module.exports = "<mat-tab-group>\n  \n    <mat-tab label=\"Connexion\"> \n        <form #loginF=\"ngForm\"  >\n        <div class=\"example-container\">\n            <mat-form-field>\n              <input matInput placeholder=\"Email\" [(ngModel)]=\"userData.email\" name=\"email\"  [formControl]=\"email\" required>\n              <mat-error *ngIf=\"email.invalid\">{{getErrorMessage()}}</mat-error>\n            </mat-form-field>\n            <br>\n            <mat-form-field>\n                <input matInput placeholder=\"Mot de passe\" [(ngModel)]=\"userData.password\" required name=\"password\"  [type]=\"hide ? 'password' : 'text'\">\n                <mat-icon matSuffix (click)=\"hide = !hide\">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>\n              </mat-form-field>\n              <br>\n              <button  mat-button color=\"primary\" [disabled]=\"!loginF.form.valid\" (click)=\"onLogin();loginF.reset()\">Se connecter</button>\n              <mat-error>{{errorMessage}}</mat-error> \n              <button mat-button color=\"primary\" routerLink=\"/lostpwd\" >Informations de compte oubliées ? </button>\n          </div>\n        </form>\n    </mat-tab>\n    <mat-tab label=\"Inscription\"> \n      <app-register></app-register>\n    </mat-tab>\n    \n  </mat-tab-group>\n  \n\n\n\n  "
 
 /***/ }),
 
@@ -1126,6 +1157,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../new-password/new-password.component */ "./src/app/new-password/new-password.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1138,10 +1171,13 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
 var LostPasswordComponent = /** @class */ (function () {
-    function LostPasswordComponent(authService, _router) {
+    function LostPasswordComponent(authService, _router, dialog) {
         this.authService = authService;
         this._router = _router;
+        this.dialog = dialog;
         this.userData = {
             email: ''
         };
@@ -1154,8 +1190,13 @@ var LostPasswordComponent = /** @class */ (function () {
         this.authService.lostPassword(this.userData)
             .subscribe(function (res) {
             if (res.success) {
-                alert(res.success);
-                _this._router.navigate(['/login']);
+                var dialog = _this.dialog.open(_new_password_new_password_component__WEBPACK_IMPORTED_MODULE_4__["NewPasswordComponent"], {
+                    width: '400px',
+                    data: res.success
+                });
+                console.log(res);
+                dialog.afterClosed().
+                    subscribe(function (res) { return _this._router.navigate(['/login']); });
             }
             else {
                 _this.message = res.error;
@@ -1163,13 +1204,15 @@ var LostPasswordComponent = /** @class */ (function () {
             }
         });
     };
+    LostPasswordComponent.prototype.onpenDialog = function () {
+    };
     LostPasswordComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-lost-password',
             template: __webpack_require__(/*! ./lost-password.component.html */ "./src/app/lost-password/lost-password.component.html"),
             styles: [__webpack_require__(/*! ./lost-password.component.css */ "./src/app/lost-password/lost-password.component.css")]
         }),
-        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
+        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatDialog"]])
     ], LostPasswordComponent);
     return LostPasswordComponent;
 }());
@@ -1486,6 +1529,72 @@ var NavigationComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [_angular_cdk_layout__WEBPACK_IMPORTED_MODULE_1__["BreakpointObserver"], _auth_service__WEBPACK_IMPORTED_MODULE_3__["AuthService"]])
     ], NavigationComponent);
     return NavigationComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/new-password/new-password.component.css":
+/*!*********************************************************!*\
+  !*** ./src/app/new-password/new-password.component.css ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/new-password/new-password.component.html":
+/*!**********************************************************!*\
+  !*** ./src/app/new-password/new-password.component.html ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n<p>\n\n  Un nouveau mot de passe a été envoyé a votre adresse email, Merci de verifier votre boite aux lettres ainsi que le dossier spam !\n  \n</p>\n"
+
+/***/ }),
+
+/***/ "./src/app/new-password/new-password.component.ts":
+/*!********************************************************!*\
+  !*** ./src/app/new-password/new-password.component.ts ***!
+  \********************************************************/
+/*! exports provided: NewPasswordComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NewPasswordComponent", function() { return NewPasswordComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var NewPasswordComponent = /** @class */ (function () {
+    function NewPasswordComponent(dialogRef) {
+        this.dialogRef = dialogRef;
+    }
+    NewPasswordComponent.prototype.ngOnInit = function () {
+    };
+    NewPasswordComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-new-password',
+            template: __webpack_require__(/*! ./new-password.component.html */ "./src/app/new-password/new-password.component.html"),
+            styles: [__webpack_require__(/*! ./new-password.component.css */ "./src/app/new-password/new-password.component.css")]
+        }),
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialogRef"]])
+    ], NewPasswordComponent);
+    return NewPasswordComponent;
 }());
 
 
@@ -1864,7 +1973,7 @@ module.exports = ".card {\n    width: 400px;\n  }\n\n  .container {\n      width
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n    <mat-card class=\"card\">\n        <mat-card-header>\n          <mat-card-title>\n            {{userData.first_name}}\n            {{userData.last_name}}\n      \n          </mat-card-title>\n          <mat-card-subtitle>\n            {{userData.pseudo}}\n            <img src=\" {{userData.picture}}\" alt=\"\">\n          </mat-card-subtitle>\n        </mat-card-header>\n        <mat-card-content>\n        \n        </mat-card-content>\n       \n      </mat-card>\n      \n      <app-comments></app-comments>\n\n</div>\n\n"
+module.exports = "<div class=\"container\">\n    <mat-card class=\"card\">\n        <mat-card-header>\n          <mat-card-title>\n            {{userData.first_name}}\n            {{userData.last_name}}\n      \n          </mat-card-title>\n          <mat-card-subtitle>\n            {{userData.pseudo}}\n            <img src=\" {{userData.picture}}\" alt=\"\">\n          </mat-card-subtitle>\n        </mat-card-header>\n        <mat-card-content>\n        \n        </mat-card-content>\n       \n      </mat-card>\n      \n      <app-comments></app-comments>\n\n</div>\n"
 
 /***/ }),
 
@@ -1882,6 +1991,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _models_user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/user */ "./src/app/models/user.ts");
 /* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
 /* harmony import */ var _comment_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../comment.service */ "./src/app/comment.service.ts");
+/* harmony import */ var angularfire2_storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! angularfire2/storage */ "./node_modules/angularfire2/storage/index.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1895,10 +2005,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var UserdataComponent = /** @class */ (function () {
-    function UserdataComponent(commentService, auth) {
+    function UserdataComponent(commentService, auth, afStorage) {
         this.commentService = commentService;
         this.auth = auth;
+        this.afStorage = afStorage;
         this.userData = _models_user__WEBPACK_IMPORTED_MODULE_1__["User"];
     }
     UserdataComponent.prototype.ngOnInit = function () {
@@ -1909,13 +2021,17 @@ var UserdataComponent = /** @class */ (function () {
             console.log(_this.userData);
         });
     };
+    UserdataComponent.prototype.upload = function (event) {
+        this.afStorage.upload('/', event.target.files[0]);
+        console.log('fait');
+    };
     UserdataComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-userdata',
             template: __webpack_require__(/*! ./userdata.component.html */ "./src/app/userdata/userdata.component.html"),
             styles: [__webpack_require__(/*! ./userdata.component.css */ "./src/app/userdata/userdata.component.css")]
         }),
-        __metadata("design:paramtypes", [_comment_service__WEBPACK_IMPORTED_MODULE_3__["CommentService"], _auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"]])
+        __metadata("design:paramtypes", [_comment_service__WEBPACK_IMPORTED_MODULE_3__["CommentService"], _auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"], angularfire2_storage__WEBPACK_IMPORTED_MODULE_4__["AngularFireStorage"]])
     ], UserdataComponent);
     return UserdataComponent;
 }());
@@ -1974,7 +2090,15 @@ __webpack_require__.r(__webpack_exports__);
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 var environment = {
-    production: true
+    production: false,
+    firebase: {
+        apiKey: "AIzaSyAlSqMwKKhmxwcaV2yV0JakW1Z3FC-8d3Q",
+        authDomain: "reseau-social-c1b9a.firebaseapp.com",
+        databaseURL: "https://reseau-social-c1b9a.firebaseio.com",
+        projectId: "reseau-social-c1b9a",
+        storageBucket: "reseau-social-c1b9a.appspot.com",
+        messagingSenderId: "217716745845"
+    }
 };
 
 
@@ -2013,7 +2137,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/ofallou/reseau_social/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /home/fallou/projets/reseau_social/src/main.ts */"./src/main.ts");
 
 
 /***/ }),

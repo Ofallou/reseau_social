@@ -38,18 +38,22 @@ commentsArray: Array<Comment>= [];
   }
 
   ngOnInit() {
+
+    
+    
     if (this.auth.loggedIn()) {
       this.isMember = true;
       this.userdata()
+      this.auth.getData().subscribe(
+        res =>{
+          this.comment.authorId= res.user._id;
+          this.comment.author = res.user.first_name + ' ' +res.user.last_name;
+          this.comment.authorPicture = res.user.picture;
+          console.log(this.comment )
+        }
+      )
     }
-    this.auth.getData().subscribe(
-      res =>{
-        this.comment.authorId= res.user._id;
-        this.comment.author = res.user.first_name + ' ' +res.user.last_name;
-        this.comment.authorPicture = res.user.picture;
-        console.log(this.comment )
-      }
-    )
+   
     this.commentService.getComments().subscribe(
       res => {
         this.commentsArray=res.comments;

@@ -34,6 +34,7 @@ export class HeaderComponent implements OnInit {
   }
   logoutUser() {
     this.authService.logoutUser();
+    this.isAuth =false;
     this.com.onLeave();
     console.log('leave ??')
   }

@@ -1,6 +1,6 @@
 <mat-tab-group>
   
-    <mat-tab label="Login"> 
+    <mat-tab label="Connexion"> 
         <form #loginF="ngForm"  >
         <div class="example-container">
             <mat-form-field>
@@ -15,12 +15,14 @@
               <br>
               <button  mat-button color="primary" [disabled]="!loginF.form.valid" (click)="onLogin();loginF.reset()">Se connecter</button>
               <mat-error>{{errorMessage}}</mat-error> 
+              <button mat-button color="primary" routerLink="/lostpwd" >Informations de compte oubliées ? </button>
           </div>
         </form>
     </mat-tab>
     <mat-tab label="Inscription"> 
       <app-register></app-register>
     </mat-tab>
+    
   </mat-tab-group>
   
 

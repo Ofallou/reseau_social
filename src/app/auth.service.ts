@@ -8,16 +8,18 @@ import {Config} from './config'
 @Injectable()
 export class AuthService {
   user = {
+    
     email : '',
     password : ''
   };
-  url = Config.SOCKET_HOST;
+  url = Config.SOCKET_HOST || "http://localhost";
   private _registerURL = this.url + '/api/register';
   private _loginURL = this.url + '/api/login';
   private _userdataURL = this.url + '/api/userdata';
   private _lostPassword = this.url + '/api/lostpwd';
   private _home = this.url + '/api/';
   private _admin = this.url + '/api/admin';
+  private _passCode= this.url+'/api/passCode'
 
   constructor(private http: HttpClient, private _router: Router) {}
   registerUser(user) {
@@ -40,8 +42,13 @@ export class AuthService {
   loggedIn() {
     return !!localStorage.getItem('token');
   }
+
   lostPassword(_email) {
     return this.http.post<any>(this._lostPassword, _email);
+  }
+
+  generatePassword(){
+     return this.http.get<any>(this._passCode);
   }
 
   getData() {

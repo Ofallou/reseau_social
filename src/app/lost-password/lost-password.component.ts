@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { NewPasswordComponent } from '../new-password/new-password.component';
 
 @Component({
   selector: 'app-lost-password',
@@ -13,7 +15,7 @@ export class LostPasswordComponent implements OnInit {
  };
 
  message: '';
-  constructor(private authService: AuthService, private _router: Router) { }
+  constructor(private authService: AuthService, private _router: Router,public dialog: MatDialog) { }
 
   ngOnInit() {
   }
@@ -24,8 +26,17 @@ export class LostPasswordComponent implements OnInit {
     .subscribe(
       res => {
         if (res.success) {
-          alert(res.success);
-          this._router.navigate(['/login']);
+          const dialog = this.dialog.open(NewPasswordComponent,{
+            width : '400px',
+            data :res.success
+           
+          });
+          console.log(res)
+          dialog.afterClosed().
+          subscribe(
+            res => this._router.navigate(['/login'])
+          )
+         
         } else {
 
           this.message = res.error;
@@ -33,6 +44,10 @@ export class LostPasswordComponent implements OnInit {
         }
       }
     );
+
+  }
+
+  onpenDialog() {
 
   }
 
