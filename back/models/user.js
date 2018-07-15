@@ -12,7 +12,7 @@ const userSchema = new Schema({
    isAdmin: Boolean,
   picture:String,
   description:String,
-  friendList:Array
+  friendsList:Array
 
 });
 

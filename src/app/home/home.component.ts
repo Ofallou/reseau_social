@@ -31,29 +31,33 @@ commentsArray: Array<Comment>= [];
 
   constructor(private auth: AuthService, private  commentService: CommentService) {
     this.commentService.onBegin()
-    .subscribe();
-    this.commentService.onPosted()
-    .subscribe(data => this.commentsArray.splice(0,0,data)
+    .subscribe(
+      res => console.log(res)
     );
+     this.commentService.onPosted()
+    .subscribe(data => {
+      this.commentsArray.splice(0,0,data)
+      console.log("Apres ajout",this.commentsArray)
+    }
+    ); 
   }
 
   ngOnInit() {
+        
+   if (this.auth.loggedIn()) {
 
-    
-    
-    if (this.auth.loggedIn()) {
       this.isMember = true;
-      this.userdata()
+      //this.userdata()
       this.auth.getData().subscribe(
         res =>{
           this.comment.authorId= res.user._id;
           this.comment.author = res.user.first_name + ' ' +res.user.last_name;
           this.comment.authorPicture = res.user.picture;
-          console.log(this.comment )
+          //console.log(this.comment )
         }
       )
     }
-   
+    
     this.commentService.getComments().subscribe(
       res => {
         this.commentsArray=res.comments;
@@ -68,20 +72,18 @@ commentsArray: Array<Comment>= [];
 posted() {
   this.comment.date=new Date();
   this.commentService.postMessage(this.comment)
+  
 }
 
 getMessages(){
   this.commentService.onBegin()
-    .subscribe(data => this.message
+    .subscribe(data => {
+      this.message;
+      console.log(data)
+    }
     );
-}
+} 
 
-userdata() {
-  
-    this.auth.getData().subscribe(
-      res => console.log(res)
-    );
-  }
 
 
 

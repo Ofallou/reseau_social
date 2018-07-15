@@ -22,11 +22,10 @@ export class CommentService  {
     (observer => {
       this.socket.on('user join', (data) => {
         observer.next(data);
-        this.socket.disconnect()
-        observer.complete()
       }
         
     );
+
       return () => {this.socket.disconnect();};
     });
     return observable;
@@ -43,22 +42,23 @@ export class CommentService  {
     return observable;
   }
 
-  onLeave() {
-   this.socket.disconnect();
-  }
+  
  
 postMessage(data) {
   this.socket.emit('posted', data)
   this.postComment(data).subscribe();
-  
 }
 
 postComment(comment) {
   return this.http.post<any>(this._postCommentUrl, comment);
-}
+} 
 
 getComments() {
   return this.http.get<any>(this._getUserCommentsUrl);
+}
+
+comments (){
+  
 }
 
 }

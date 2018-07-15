@@ -18,7 +18,10 @@ export class RegisterComponent implements OnInit {
    imageUrl: string;
    email = new FormControl('', [Validators.required, Validators.email]);
    hide = true;
+   passwordConfirm;
+   errormessage;
   constructor( private authService: AuthService, private _router: Router) {
+    
     this.user = new User ({first_name: '',
     last_name: '',
     email: '',
@@ -27,6 +30,7 @@ export class RegisterComponent implements OnInit {
     pseudo: '',
     dateNaissance: '',
     roleAdmin: false,
+    friendsList:[],
       pictures:'',
     });
   }
@@ -42,20 +46,10 @@ export class RegisterComponent implements OnInit {
       this._router.navigate(['/userdata']);
     }
   }
-  /* gere l'upload de photo 
-  onFileSelected(file: FileList) {
-    console.log(file);
-    this.photoUpload= file.item(0);
-     var reader = new FileReader();
-     reader.onload = (event:any) => {
-       this.imageUrl = event.target.result;
-     }
-     reader.readAsDataURL(this.photoUpload);
-     this.user.pictures.push(this.photoUpload);
-  }*/
 
   registerUser() {
  
+
     this.authService.registerUser(this.user)
     .subscribe(
       res => {
@@ -63,8 +57,7 @@ export class RegisterComponent implements OnInit {
         this._router.navigate(['/']);
       }
     );
-   // console.log(this.user);
-   // console.log('+++++' + this.userService.setUserData(this.user));
+
   }
 
 }

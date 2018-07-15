@@ -8,6 +8,7 @@ export class User {
     password: String;
     roleAdmin: Boolean;
     picture:String;
+    friendList:Array<String>;
 
   constructor(user: any) {
     this.first_name = user.first_name;
@@ -19,6 +20,7 @@ export class User {
     this.gender = user.gender;
     this.roleAdmin = false;
     this.picture =user.picture;
+    this.friendList = user.friendsList;
 
   }
 }

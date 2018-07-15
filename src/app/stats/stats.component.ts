@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommentService } from '../comment.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-stats',
@@ -7,13 +8,13 @@ import { CommentService } from '../comment.service';
   styleUrls: ['./stats.component.css']
 })
 export class StatsComponent implements OnInit {
-nbComments: number;
-  constructor(private commentService: CommentService) { }
+
+  constructor(private commentService: CommentService, private authService: AuthService) { }
 
   ngOnInit() {
-    this.commentService.getComments().subscribe(
-      res => this.nbComments = res.comments.length
-    )
   }
+
+
+  
 
 }

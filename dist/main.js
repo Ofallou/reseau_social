@@ -515,6 +515,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./config */ "./src/app/config.ts");
+/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
+/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_4__);
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -528,6 +530,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var AuthService = /** @class */ (function () {
     function AuthService(http, _router) {
         this.http = http;
@@ -536,6 +539,8 @@ var AuthService = /** @class */ (function () {
             email: '',
             password: ''
         };
+        this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_4__(_config__WEBPACK_IMPORTED_MODULE_3__["Config"].SOCKET_HOST);
+        this.userConnected = 0;
         this.url = _config__WEBPACK_IMPORTED_MODULE_3__["Config"].SOCKET_HOST || "http://localhost";
         this._registerURL = this.url + '/api/register';
         this._loginURL = this.url + '/api/login';
@@ -544,6 +549,7 @@ var AuthService = /** @class */ (function () {
         this._home = this.url + '/api/';
         this._admin = this.url + '/api/admin';
         this._passCode = this.url + '/api/passCode';
+        this.connected = 0;
     }
     AuthService.prototype.registerUser = function (user) {
         return this.http.post(this._registerURL, user);
@@ -559,6 +565,7 @@ var AuthService = /** @class */ (function () {
         //this._router.navigate(['/home']);
     };
     AuthService.prototype.loggedIn = function () {
+        this.connected++;
         return !!localStorage.getItem('token');
     };
     AuthService.prototype.lostPassword = function (_email) {
@@ -575,6 +582,13 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.home = function () {
         return this.http.get(this._home);
+    };
+    AuthService.prototype.getConnectedUser = function () {
+        return this.userConnected;
+    };
+    AuthService.prototype.onLeave = function () {
+        this.socket.emit('disconnect');
+        console.log(this.socket.id);
     };
     AuthService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
@@ -634,8 +648,6 @@ var CommentService = /** @class */ (function () {
         var observable = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Observable"](function (observer) {
             _this.socket.on('user join', function (data) {
                 observer.next(data);
-                _this.socket.disconnect();
-                observer.complete();
             });
             return function () { _this.socket.disconnect(); };
         });
@@ -651,9 +663,6 @@ var CommentService = /** @class */ (function () {
         });
         return observable;
     };
-    CommentService.prototype.onLeave = function () {
-        this.socket.disconnect();
-    };
     CommentService.prototype.postMessage = function (data) {
         this.socket.emit('posted', data);
         this.postComment(data).subscribe();
@@ -663,6 +672,8 @@ var CommentService = /** @class */ (function () {
     };
     CommentService.prototype.getComments = function () {
         return this.http.get(this._getUserCommentsUrl);
+    };
+    CommentService.prototype.comments = function () {
     };
     CommentService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
@@ -737,8 +748,7 @@ var CommentsComponent = /** @class */ (function () {
             authorPicture: '',
             explicit: false
         };
-        this.commentService.onBegin()
-            .subscribe();
+        // this.commentService.onBegin().subscribe();
         this.commentService.onPosted()
             .subscribe(function (data) { return _this.commentsArray.splice(0, 0, data); });
     }
@@ -820,7 +830,7 @@ module.exports = "\n.example-icon {\n  padding: 0 14px;\n}\n\n.example-spacer {\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<mat-toolbar color=\"primary\">\n   <mat-toolbar-row>\n        <span>Réseau Social</span>\n        <span class=\"example-spacer\"></span>\n            <span class=\"example-spacer\"> <a routerLink=\"/\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Page d'accueil\">\n            home\n            </i></a> </span>\n        <span class=\"example-spacer\"></span>\n        <div class=\"infos\">\n            <div>\n                <a routerLink=\"userdata\"><img src=\"{{user.picture}}\"  alt=\"\"></a>            \n            </div>\n            <div>\n                {{user.first_name}} {{user.last_name}} \n            </div>\n           </div>\n         <span class=\"example-spacer\"></span>\n      <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Membre - Se connecter\">\n          account_circle\n          </i></a>\n      <span class=\"example-spacer\"></span>\n      <span> <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/register\" routerLinkActive=\"active\"><i class=\"material-icons\">login</i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"!getUserState()\"  routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"user outline icon\"></i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\" routerLink=\"/user-settings\" routerLinkActive=\"active\">  <i class=\"material-icons\" matTooltip=\"Paramettres du compte\">\n            settings\n            </i></a></span>\n      <span class=\"example-spacer\"></span>\n      <!-- <span><a *ngIf=\"getUserState()\"  routerLink=\"/userdata\" routerLinkActive=\"active\"><i class=\"fas fa-user-circle\"></i></a></span> -->\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\"  (click)=\"logoutUser()\" href=\"/home\">Se deconnecter</a></span>\n      \n    </mat-toolbar-row>\n  </mat-toolbar>\n  "
+module.exports = "\n<mat-toolbar color=\"primary\">\n   <mat-toolbar-row>\n        <span>Réseau Social</span>\n        <span class=\"example-spacer\"></span>\n        \n             <a routerLink=\"/\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Page d'accueil\">\n            home\n            </i></a> \n        <span class=\"example-spacer\"></span>\n        <div class=\"infos\">\n            <div>\n                <a routerLink=\"userdata\" matTooltip=\"Mon espace \"><img src=\"{{user.picture}}\"  alt=\"\"></a>            \n            </div>\n            <div>\n                {{user.first_name}} {{user.last_name}} \n            </div>\n           </div>\n           <span class=\"example-spacer\"></span>\n      \n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"!getUserState()\"  routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"user outline icon\"></i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\" routerLink=\"/user-settings\" routerLinkActive=\"active\">  <i class=\"material-icons\" matTooltip=\"Paramettres du compte\">\n            settings\n            </i></a></span>\n      <span class=\"example-spacer\"></span>\n      <!-- <span><a *ngIf=\"getUserState()\"  routerLink=\"/userdata\" routerLinkActive=\"active\"><i class=\"fas fa-user-circle\"></i></a></span> -->\n      \n      <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Membre - Se connecter\">\n            account_circle\n            </i></a>\n      <span><a *ngIf=\"getUserState()\"  (click)=\"logoutUser()\" href=\"/home\"><i class=\"material-icons\"  matTooltip=\"Se deconnecter\"\n        >\n            input\n            </i></a></span>\n      \n    </mat-toolbar-row>\n  </mat-toolbar>\n  "
 
 /***/ }),
 
@@ -836,7 +846,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HeaderComponent", function() { return HeaderComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
-/* harmony import */ var _comment_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../comment.service */ "./src/app/comment.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -848,11 +857,9 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
-
 var HeaderComponent = /** @class */ (function () {
-    function HeaderComponent(authService, com) {
+    function HeaderComponent(authService) {
         this.authService = authService;
-        this.com = com;
         this.isAuth = false;
         this.title = 'app';
         this.user = {
@@ -862,23 +869,10 @@ var HeaderComponent = /** @class */ (function () {
             picture: ''
         };
     }
-    HeaderComponent.prototype.getUserState = function () {
-        this.isAuth = !!this.authService.getToken();
-        return this.isAuth;
-    };
     HeaderComponent.prototype.ngOnInit = function () {
-        this.getUserState();
-        this.isLoged();
-        console.log(this.isAuth);
-    };
-    HeaderComponent.prototype.logoutUser = function () {
-        this.authService.logoutUser();
-        this.isAuth = false;
-        this.com.onLeave();
-        console.log('leave ??');
-    };
-    HeaderComponent.prototype.isLoged = function () {
         var _this = this;
+        this.getUserState();
+        console.log(this.isAuth);
         if (this.isAuth) {
             this.authService.getData()
                 .subscribe(function (res) {
@@ -887,13 +881,22 @@ var HeaderComponent = /** @class */ (function () {
             });
         }
     };
+    HeaderComponent.prototype.getUserState = function () {
+        this.isAuth = !!this.authService.getToken();
+        return this.isAuth;
+    };
+    HeaderComponent.prototype.logoutUser = function () {
+        this.authService.onLeave();
+        this.authService.logoutUser();
+        this.isAuth = false;
+    };
     HeaderComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-header',
             template: __webpack_require__(/*! ./header.component.html */ "./src/app/header/header.component.html"),
             styles: [__webpack_require__(/*! ./header.component.css */ "./src/app/header/header.component.css")]
         }),
-        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"], _comment_service__WEBPACK_IMPORTED_MODULE_2__["CommentService"]])
+        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"]])
     ], HeaderComponent);
     return HeaderComponent;
 }());
@@ -909,7 +912,7 @@ var HeaderComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".card-image > img  {\n    width: 128px;\n  height: 128px;\n}\n\n#stats{\n  padding-top: 30px;\n  position: fixed;\n  max-width: 400px;\n left: 70%;\n}\n\n.example-card {\n  max-width: 400px;\n  height: 100%;\n  margin-bottom: 40px;\n  padding-bottom: 40px;\n  background-color: ivory\n}\n\n.example-header-image {\n\n  background-size: cover;\n}\n\n.mat-card-actions {\n  margin-bottom: 30px;\n}\n\n.container {\n  padding-left: 25%\n}\n\nspan {\n  padding: 25px;\n  \n}\n\n.example-form {\n  min-width: 150px;\n  max-width: 500px;\n  width: 100%;\n}\n\n.example-full-width {\n  width: 100%;\n}"
+module.exports = ".card-image > img  {\n    width: 128px;\n  height: 128px;\n}\n\n#stats{\n  padding-top: 30px;\n  position: fixed;\n  max-width: 400px;\n left: 70%;\n}\n\n.example-card {\n  max-width: 400px;\n  height: 100%;\n  margin-bottom: 40px;\n  padding-bottom: 40px;\n  background-color: ivory\n}\n\n.example-header-image {\n\n  background-size: cover;\n}\n\n.mat-card-actions {\n  margin-bottom: 30px;\n}\n\n.container {\n  padding-left: 25%\n}\n\nspan {\n  padding: 25px;\n  \n}\n\n.example-form {\n  min-width: 150px;\n  max-width: 500px;\n  width: 100%;\n}\n\n.example-full-width {\n  width: 100%;\n}\n\nmat-toolbar{\n  position: fixed;\n  height: 30px;\n}\n\n.card {\n\n  position: fixed;\n  margin-left: 80%;\n  top:20%\n}"
 
 /***/ }),
 
@@ -920,7 +923,7 @@ module.exports = ".card-image > img  {\n    width: 128px;\n  height: 128px;\n}\n
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<div class=\"container\">\n\n    <mat-card id=\"stats\" *ngIf=isMember>\n               \n            <aside>\n              <p>Nous sommes le {{currentDate | date:'dd-MM-yyyy'}} </p>\n                <p>Bienvenue {{comment.author }}</p>\n              </aside>\n\n    </mat-card>\n\n <div class=\"col s6\" *ngIf=!isMember>\n   <p>Visiteurs : Creer un compte pour poster des messages et discuter avec vos amis</p>\n </div>\n\n <div class=\"col s6\" *ngIf=isMember>\n    <app-member-search></app-member-search>  \n   </div>\n  \n   \n    <mat-card class=\"example-card\" *ngIf=isMember>\n      <article >\n        <form class=\"example-form\" #commentF=\"ngForm\" (submit)=\"posted();commentF.reset()\" >\n      <mat-form-field>\n        <input matInput placeholder=\"titre du message\" name=\"title\" id=\"titre\" [(ngModel)]=\"comment.title\" required >\n      </mat-form-field>\n       <br>\n      <mat-form-field class=\"example-full-width\">\n        <textarea matInput placeholder=\"Poster un commentaire......\" name=\"comment\" [(ngModel)]=\"comment.content\"></textarea>\n      </mat-form-field>\n       <br>\n           \n      <button type=\"submit\" mat-fab color=\"accent\" [disabled]=\"!commentF.form.valid\">Poster\n       \n      </button>\n\n  </form>\n        \n    </article>\n    </mat-card>\n</div>\n\n<div class=\"container\">\n\n  <mat-card class=\"example-card\" *ngFor=\"let comment of commentsArray\">\n    <mat-card-header>\n      <div mat-card-avatar class=\"example-header-image\">\n        <img src=\"{{comment.authorPicture}}\" style=\"width: 46px;\" alt=\"\">\n      </div>\n      <mat-card-title>{{comment.author }} </mat-card-title>\n      <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}</mat-card-subtitle>\n    </mat-card-header>\n    <h4> {{comment.title}}</h4>\n   \n    <mat-card-content>\n      <p>\n        {{comment.content}}\n      </p>\n    </mat-card-content>\n    <mat-card-actions>\n<span>  <i class=\"material-icons\">\n    thumb_up_alt\n    </i></span>\n       <span> <i class=\"material-icons\">\n          share\n          </i> </span>\n       <span> <i class=\"material-icons\">\n          thumb_down_alt\n          </i> </span>\n         \n         \n    </mat-card-actions>\n  </mat-card>\n</div>\n\n"
+module.exports = "\n<div class=\"container\">\n             \n   <div class=\"card\">\n    <span matBadge=\"{{commentsArray.length}}\" matBadgeOverlap=\"false\">Posts</span>\n   </div>           \n\n\n\n <div class=\"col s6\" *ngIf=!isMember>\n   <p>Visiteurs : Creer un compte pour poster des messages et discuter avec vos amis</p>\n </div>\n \n\n <div class=\"col s6\" *ngIf=isMember>\n    <app-member-search></app-member-search>  \n   </div>\n  \n  \n    <mat-card class=\"example-card\" *ngIf=isMember>\n      <article >\n        <form class=\"example-form\" #commentF=\"ngForm\" (submit)=\"posted();commentF.reset()\" >\n      <mat-form-field>\n        <input matInput placeholder=\"titre du message\" name=\"title\" id=\"titre\" [(ngModel)]=\"comment.title\" required >\n      </mat-form-field>\n       <br>\n      <mat-form-field class=\"example-full-width\">\n        <textarea matInput placeholder=\"Poster un commentaire......\" name=\"comment\" [(ngModel)]=\"comment.content\"></textarea>\n      </mat-form-field>\n       <br>\n           \n      <button type=\"submit\" mat-fab color=\"accent\" [disabled]=\"!commentF.form.valid\">Poster\n       \n      </button>\n\n  </form>\n        \n    </article>\n    </mat-card>\n</div>\n\n<div class=\"container\">\n  \n\n  <mat-card class=\"example-card\" *ngFor=\"let comment of commentsArray\">\n    <mat-card-header>\n      <div mat-card-avatar class=\"example-header-image\">\n        <img src=\"{{comment.authorPicture}}\" style=\"width: 46px;\" alt=\"\">\n      </div>\n      <mat-card-title>{{comment.author }} </mat-card-title>\n      <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}</mat-card-subtitle>\n    </mat-card-header>\n    <h4> {{comment.title}}</h4>\n   \n    <mat-card-content>\n      <p>\n        {{comment.content}}\n      </p>\n    </mat-card-content>\n   \n  </mat-card>\n</div>\n\n"
 
 /***/ }),
 
@@ -967,20 +970,23 @@ var HomeComponent = /** @class */ (function () {
         };
         this.commentsArray = [];
         this.commentService.onBegin()
-            .subscribe();
+            .subscribe(function (res) { return console.log(res); });
         this.commentService.onPosted()
-            .subscribe(function (data) { return _this.commentsArray.splice(0, 0, data); });
+            .subscribe(function (data) {
+            _this.commentsArray.splice(0, 0, data);
+            console.log("Apres ajout", _this.commentsArray);
+        });
     }
     HomeComponent.prototype.ngOnInit = function () {
         var _this = this;
         if (this.auth.loggedIn()) {
             this.isMember = true;
-            this.userdata();
+            //this.userdata()
             this.auth.getData().subscribe(function (res) {
                 _this.comment.authorId = res.user._id;
                 _this.comment.author = res.user.first_name + ' ' + res.user.last_name;
                 _this.comment.authorPicture = res.user.picture;
-                console.log(_this.comment);
+                //console.log(this.comment )
             });
         }
         this.commentService.getComments().subscribe(function (res) {
@@ -995,10 +1001,10 @@ var HomeComponent = /** @class */ (function () {
     HomeComponent.prototype.getMessages = function () {
         var _this = this;
         this.commentService.onBegin()
-            .subscribe(function (data) { return _this.message; });
-    };
-    HomeComponent.prototype.userdata = function () {
-        this.auth.getData().subscribe(function (res) { return console.log(res); });
+            .subscribe(function (data) {
+            _this.message;
+            console.log(data);
+        });
     };
     HomeComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1081,8 +1087,6 @@ var LoginComponent = /** @class */ (function () {
             this._router.navigate(['/home']);
         }
     };
-    LoginComponent.prototype.showLoginError = function () {
-    };
     LoginComponent.prototype.getErrorMessage = function () {
         return this.email.hasError('required') ? 'Le champs doit etre rempli' :
             this.email.hasError('email') ? "Le format de l'adresse Email est invalide" :
@@ -1101,9 +1105,8 @@ var LoginComponent = /** @class */ (function () {
                 _this.userData.password = null;
             }
             else {
-                console.log(res.messageErr);
                 localStorage.setItem('token', res.token);
-                _this._router.navigate(['/home']);
+                _this._router.navigate(['/userdata']);
             }
         });
     };
@@ -1129,7 +1132,7 @@ var LoginComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = ".example-card {\n    margin-left: 25%;\n    \n    max-width: 400px;\n  }\n  "
 
 /***/ }),
 
@@ -1140,7 +1143,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<div class=\"login-page\">\n  <div style=\"padding-bottom: 20px\">\n    Veuillez indiquer votre adresse Email pour récuperer votre mot de passe.\n  </div>\n<div class=\"form\">\n  <h6 style=\"text-align: left\">Email</h6>\n  <form #password=\"ngForm\">\n    <div>\n      <input type=\"text\" [(ngModel)]=\"userData.email\" name=\"email\" placeholder=\"email\" required/>\n    </div>\n    <p class=\"error\">{{message}}</p>\n   <button class=\"btn btn-success\" [disabled]=\"!password.form.valid\"  (click)=\"passwordRetrival()\">Envoyer</button>\n  </form>\n</div>\n</div>\n"
+module.exports = "\n\n<mat-card class=\"example-card\">\n    <form #password=\"ngForm\">\n<p> Veuillez indiquer votre adresse Email pour envoi  du mot de passe.  </p>\n\n<mat-form-field>\n    <input matInput placeholder=\"Email\" [(ngModel)]=\"userData.email\" name=\"email\"  [formControl]=\"email\" required>\n    <mat-error *ngIf=\"email.invalid\">{{getErrorMessage()}} {{message}}</mat-error>\n</mat-form-field>\n<br>\n <button mat-raised-button [disabled]=\"!email.valid\"  (click)=\"passwordRetrival()\">Envoyer</button>\n</form>\n</mat-card>\n"
 
 /***/ }),
 
@@ -1157,8 +1160,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../new-password/new-password.component */ "./src/app/new-password/new-password.component.ts");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../new-password/new-password.component */ "./src/app/new-password/new-password.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1173,6 +1177,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var LostPasswordComponent = /** @class */ (function () {
     function LostPasswordComponent(authService, _router, dialog) {
         this.authService = authService;
@@ -1181,6 +1186,7 @@ var LostPasswordComponent = /** @class */ (function () {
         this.userData = {
             email: ''
         };
+        this.email = new _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormControl"]('', [_angular_forms__WEBPACK_IMPORTED_MODULE_3__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_3__["Validators"].email]);
     }
     LostPasswordComponent.prototype.ngOnInit = function () {
     };
@@ -1190,7 +1196,7 @@ var LostPasswordComponent = /** @class */ (function () {
         this.authService.lostPassword(this.userData)
             .subscribe(function (res) {
             if (res.success) {
-                var dialog = _this.dialog.open(_new_password_new_password_component__WEBPACK_IMPORTED_MODULE_4__["NewPasswordComponent"], {
+                var dialog = _this.dialog.open(_new_password_new_password_component__WEBPACK_IMPORTED_MODULE_5__["NewPasswordComponent"], {
                     width: '400px',
                     data: res.success
                 });
@@ -1204,7 +1210,10 @@ var LostPasswordComponent = /** @class */ (function () {
             }
         });
     };
-    LostPasswordComponent.prototype.onpenDialog = function () {
+    LostPasswordComponent.prototype.getErrorMessage = function () {
+        return this.email.hasError('required') ? 'Le champs doit etre rempli' :
+            this.email.hasError('email') ? "Le format de l'adresse Email est invalide" :
+                '';
     };
     LostPasswordComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1212,7 +1221,7 @@ var LostPasswordComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./lost-password.component.html */ "./src/app/lost-password/lost-password.component.html"),
             styles: [__webpack_require__(/*! ./lost-password.component.css */ "./src/app/lost-password/lost-password.component.css")]
         }),
-        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatDialog"]])
+        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatDialog"]])
     ], LostPasswordComponent);
     return LostPasswordComponent;
 }());
@@ -1448,6 +1457,7 @@ var User = /** @class */ (function () {
         this.gender = user.gender;
         this.roleAdmin = false;
         this.picture = user.picture;
+        this.friendList = user.friendsList;
     }
     return User;
 }());
@@ -1608,7 +1618,7 @@ var NewPasswordComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "  <!-- <div class=\"container\">\n    <div class=\"row\">\n    <form #register=\"ngForm\" class=\"col s6\">\n    <div class=\"card-panel blue lighten-3\">\n    <h5>Créer un compte </h5>\n   <div class=\"input-field\" [class.has-error]=\"name.invalid && name.touched\">\n      <label for=\"name\" >Nom</label>\n      <input id=\"name\" type=\"text\" class=\"form-control\" [(ngModel)]='user.last_name' name=\"last_name\"  required #name=\"ngModel\">\n   </div>\n    <div class=\"input-field\">\n        <label >Prenom</label>\n        <input type=\"text\" [(ngModel)]='user.first_name' name=\"first_name\"  required >\n    </div>\n    <div class=\"input-field\">\n      <label >Email</label>\n      <input type=\"email\" [(ngModel)]='user.email' name=\"email\"   required email   >\n    </div>\n    <div class=\"input-field\">\n      <label >Mot de passe</label>\n      <input type=\"password\" [(ngModel)]='user.password' name=\"password\"  required >\n    </div>\n      <div class=\"input-field\">\n        <label >Pseudo</label>\n        <input type=\"text\" [(ngModel)]='user.pseudo' name=\"pseudo\"  required >\n      </div>\n  <div class=\"input-field\">\n    <input type=\"date\" [(ngModel)]='user.dateNaissance' name=\"dateNaissance\" id=\"date\"  required >\n    <label for=\"date\" >Date de naissance</label>\n  </div>\n\n  <p>\n    <label>\n      <input name=\"gender\"  type=\"radio\"  value=\"female\" [(ngModel)]=\"user.gender\"  />\n      <span>Femme</span>\n    </label>\n  </p>\n  <p>\n    <label>\n      <input name=\"gender\"  type=\"radio\"  value=\"male\" [(ngModel)]=\"user.gender\"  />\n      <span>Homme</span>\n    </label>\n  </p>\n      <div class=\"file-field input-field\">\n        <div class=\"btn\">\n          <span>Photo</span>\n          <input type=\"file\" accept=\"image/*\" (change)=\"onFileSelected($event.target.files)\" >\n        </div>\n        <div class=\"file-path-wrapper\">\n        <input class=\"file-path validate\" type=\"text\" >\n        </div>\n        <img [src]=\"imageUrl\" style=\"width: 250px; height: 200px\" alt=\"\">\n      </div>\n\n        <button [disabled]=\"!register.form.valid\" class=\"btn btn-success\" (click)=\"registerUser()\" routerLink=\"/userdata\">S'enregistrer</button>\n  </div>\n      </form>\n    </div>\n  </div> -->\n\n  <form #register=\"ngForm\"class=\"example-form\">\n    \n    \n      <table class=\"example-full-width\" cellspacing=\"0\"><tr>\n        <td><mat-form-field class=\"example-full-width\">\n          <input matInput [(ngModel)]='user.first_name' name=\"first_name\"  required  placeholder=\"Prénom\">\n        </mat-form-field></td>\n        <td><mat-form-field class=\"example-full-width\">\n          <input matInput [(ngModel)]='user.last_name' name=\"last_name\"  required  placeholder=\"Nom\">\n        </mat-form-field></td>\n      </tr></table>\n    \n      <p>\n          <mat-form-field>\n              <input matInput placeholder=\"Email\" [(ngModel)]=\"user.email\" name=\"email\"  [formControl]=\"email\" required>\n              <mat-error *ngIf=\"email.invalid\">{{getErrorMessage()}}</mat-error>\n            </mat-form-field>\n            \n      </p>\n      <p>\n          <mat-form-field>\n              <input  #password minlength=\"6\" matInput placeholder=\"Choix du mot de passe\" [(ngModel)]=\"user.password\" required name=\"password\"  [type]=\"hide ? 'password' : 'text'\">\n              <mat-hint align=\"end\">{{password.value.length}} / 6</mat-hint>\n              <mat-icon matSuffix (click)=\"hide = !hide\">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>\n            </mat-form-field>\n             <mat-form-field>\n                <input matInput placeholder=\"Confirmez le mot de passe\" required name=\"verifypassword\"  [type]=\"hide ? 'password' : 'text'\">\n                <mat-icon matSuffix (click)=\"hide = !hide\">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>\n              </mat-form-field> \n      </p>\n  \n      <table class=\"example-full-width\" cellspacing=\"0\"><tr>\n        <td><mat-form-field class=\"example-full-width\">\n          <input type=\"date\" matInput placeholder=\"Date de Naissance\">\n        </mat-form-field></td>\n      \n       \n      </tr></table>\n      \n      <button [disabled]=\"!register.form.valid\" class=\"btn btn-success\" (click)=\"registerUser()\" routerLink=\"/\">S'enregistrer</button>\n\n    </form>\n    \n"
+module.exports = "  <!-- <div class=\"container\">\n    <div class=\"row\">\n    <form #register=\"ngForm\" class=\"col s6\">\n    <div class=\"card-panel blue lighten-3\">\n    <h5>Créer un compte </h5>\n   <div class=\"input-field\" [class.has-error]=\"name.invalid && name.touched\">\n      <label for=\"name\" >Nom</label>\n      <input id=\"name\" type=\"text\" class=\"form-control\" [(ngModel)]='user.last_name' name=\"last_name\"  required #name=\"ngModel\">\n   </div>\n    <div class=\"input-field\">\n        <label >Prenom</label>\n        <input type=\"text\" [(ngModel)]='user.first_name' name=\"first_name\"  required >\n    </div>\n    <div class=\"input-field\">\n      <label >Email</label>\n      <input type=\"email\" [(ngModel)]='user.email' name=\"email\"   required email   >\n    </div>\n    <div class=\"input-field\">\n      <label >Mot de passe</label>\n      <input type=\"password\" [(ngModel)]='user.password' name=\"password\"  required >\n    </div>\n      <div class=\"input-field\">\n        <label >Pseudo</label>\n        <input type=\"text\" [(ngModel)]='user.pseudo' name=\"pseudo\"  required >\n      </div>\n  <div class=\"input-field\">\n    <input type=\"date\" [(ngModel)]='user.dateNaissance' name=\"dateNaissance\" id=\"date\"  required >\n    <label for=\"date\" >Date de naissance</label>\n  </div>\n\n  <p>\n    <label>\n      <input name=\"gender\"  type=\"radio\"  value=\"female\" [(ngModel)]=\"user.gender\"  />\n      <span>Femme</span>\n    </label>\n  </p>\n  <p>\n    <label>\n      <input name=\"gender\"  type=\"radio\"  value=\"male\" [(ngModel)]=\"user.gender\"  />\n      <span>Homme</span>\n    </label>\n  </p>\n      <div class=\"file-field input-field\">\n        <div class=\"btn\">\n          <span>Photo</span>\n          <input type=\"file\" accept=\"image/*\" (change)=\"onFileSelected($event.target.files)\" >\n        </div>\n        <div class=\"file-path-wrapper\">\n        <input class=\"file-path validate\" type=\"text\" >\n        </div>\n        <img [src]=\"imageUrl\" style=\"width: 250px; height: 200px\" alt=\"\">\n      </div>\n\n        <button [disabled]=\"!register.form.valid\" class=\"btn btn-success\" (click)=\"registerUser()\" routerLink=\"/userdata\">S'enregistrer</button>\n  </div>\n      </form>\n    </div>\n  </div> -->\n\n  <form #register=\"ngForm\"class=\"example-form\">\n    \n    \n      <table class=\"example-full-width\" cellspacing=\"20\">\n        <tr>\n        <td><mat-form-field class=\"example-full-width\">\n          <input matInput [(ngModel)]='user.first_name' name=\"first_name\"  required  placeholder=\"Prénom\">\n        </mat-form-field></td>\n        <td><mat-form-field class=\"example-full-width\">\n          <input matInput [(ngModel)]='user.last_name' name=\"last_name\"  required  placeholder=\"Nom\">\n        </mat-form-field></td>\n      </tr>\n    \n      <tr>\n        <td>\n            <mat-form-field>\n                <input matInput placeholder=\"Email\" [(ngModel)]=\"user.email\" name=\"email\"  [formControl]=\"email\" required>\n                <mat-error *ngIf=\"email.invalid\">{{getErrorMessage()}}</mat-error>\n              </mat-form-field>\n        </td>\n        <td>\n            <mat-form-field>\n                <input  #password minlength=\"6\" matInput placeholder=\"Choix du mot de passe\" [(ngModel)]=\"user.password\" required name=\"password\"  [type]=\"hide ? 'password' : 'text'\">\n                <mat-hint align=\"end\">{{password.value.length}} / 6</mat-hint>\n                <mat-icon matSuffix (click)=\"hide = !hide\">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>\n         </mat-form-field>\n        </td>\n      </tr>\n  \n       <tr>\n         <td>\n            <mat-form-field>\n                <mat-select classe=\"example-form\" placeholder=\"Genre\" [(ngModel)]=\"user.gender\" name=\"genre\" value=\"user.gender\" required>\n                    <mat-option selected value=\"femme\">Femme</mat-option>\n                    <mat-option value=\"homme\">Homme</mat-option>\n                  </mat-select>\n            </mat-form-field>\n         </td>\n          \n         <td>\n            <mat-form-field>\n                <input matInput placeholder=\"Choix du pseudo\" [(ngModel)]=\"user.pseudo\" required name=\"pseudo\">\n                \n         </mat-form-field>\n\n         </td>\n\n\n       </tr>\n        \n       \n    \n  \n     <tr>\n        <td><mat-form-field class=\"example-full-width\">\n          <input type=\"date\" matInput placeholder=\"Date de Naissance\" required>\n        </mat-form-field></td>\n    \n      </tr>\n    </table>\n      \n      <button mat-raised-button color=\"primary\" [disabled]=\"!register.form.valid\"  (click)=\"registerUser()\" routerLink=\"/\">S'enregistrer</button>\n\n    </form>\n    \n"
 
 /***/ }),
 
@@ -1656,6 +1666,7 @@ var RegisterComponent = /** @class */ (function () {
             pseudo: '',
             dateNaissance: '',
             roleAdmin: false,
+            friendsList: [],
             pictures: '',
         });
     }
@@ -1669,17 +1680,6 @@ var RegisterComponent = /** @class */ (function () {
             this._router.navigate(['/userdata']);
         }
     };
-    /* gere l'upload de photo
-    onFileSelected(file: FileList) {
-      console.log(file);
-      this.photoUpload= file.item(0);
-       var reader = new FileReader();
-       reader.onload = (event:any) => {
-         this.imageUrl = event.target.result;
-       }
-       reader.readAsDataURL(this.photoUpload);
-       this.user.pictures.push(this.photoUpload);
-    }*/
     RegisterComponent.prototype.registerUser = function () {
         var _this = this;
         this.authService.registerUser(this.user)
@@ -1687,8 +1687,6 @@ var RegisterComponent = /** @class */ (function () {
             localStorage.setItem('token', res.token);
             _this._router.navigate(['/']);
         });
-        // console.log(this.user);
-        // console.log('+++++' + this.userService.setUserData(this.user));
     };
     RegisterComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1712,7 +1710,7 @@ var RegisterComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = "\n.example-spacer {\n    flex: 1 1 auto;\n    width: 100px;\n  }\n\n  .stats{\n      width: 200px;\n      display: flex;\n      flex-flow: row wrap;\n      justify-content: space-around;\n  }"
 
 /***/ }),
 
@@ -1723,7 +1721,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<p>\n    <span matBadge=\"{{nbComments}}\" matBadgeOverlap=\"false\">Nombre de Posts</span>\n</p>"
+module.exports = "\n<div class=\"stats\">\n    <div matBadge=\"{{nbComments}}\" matBadgeOverlap=\"false\" matBadgeColor=\"warn\">Posts</div>\n    \n    <div matBadge=\"{{nbConnected}}\" matBadgeOverlap=\"false\" matBadgeColor=\"warn\">Connectés</div>\n\n</div>"
 
 /***/ }),
 
@@ -1739,6 +1737,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StatsComponent", function() { return StatsComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _comment_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../comment.service */ "./src/app/comment.service.ts");
+/* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1750,13 +1749,13 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var StatsComponent = /** @class */ (function () {
-    function StatsComponent(commentService) {
+    function StatsComponent(commentService, authService) {
         this.commentService = commentService;
+        this.authService = authService;
     }
     StatsComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.commentService.getComments().subscribe(function (res) { return _this.nbComments = res.comments.length; });
     };
     StatsComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1764,7 +1763,7 @@ var StatsComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./stats.component.html */ "./src/app/stats/stats.component.html"),
             styles: [__webpack_require__(/*! ./stats.component.css */ "./src/app/stats/stats.component.css")]
         }),
-        __metadata("design:paramtypes", [_comment_service__WEBPACK_IMPORTED_MODULE_1__["CommentService"]])
+        __metadata("design:paramtypes", [_comment_service__WEBPACK_IMPORTED_MODULE_1__["CommentService"], _auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"]])
     ], StatsComponent);
     return StatsComponent;
 }());
@@ -1973,7 +1972,7 @@ module.exports = ".card {\n    width: 400px;\n  }\n\n  .container {\n      width
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n    <mat-card class=\"card\">\n        <mat-card-header>\n          <mat-card-title>\n            {{userData.first_name}}\n            {{userData.last_name}}\n      \n          </mat-card-title>\n          <mat-card-subtitle>\n            {{userData.pseudo}}\n            <img src=\" {{userData.picture}}\" alt=\"\">\n          </mat-card-subtitle>\n        </mat-card-header>\n        <mat-card-content>\n        \n        </mat-card-content>\n       \n      </mat-card>\n      \n      <app-comments></app-comments>\n\n</div>\n"
+module.exports = "<div class=\"container\">\n    <mat-card class=\"card\">\n        <mat-card-header>\n          <mat-card-title>\n            {{userData.first_name}}\n            {{userData.last_name}}\n                </mat-card-title>\n          <mat-card-subtitle>\n            {{userData.pseudo}}\n            <img src=\" {{userData.picture}}\" alt=\"\">\n          </mat-card-subtitle>\n        </mat-card-header>\n        <mat-card-content>\n        </mat-card-content>\n      </mat-card>\n</div>\n\n<app-comments></app-comments>\n"
 
 /***/ }),
 

@@ -1,24 +1,22 @@
 
 <div class="container">
+             
+   <div class="card">
+    <span matBadge="{{commentsArray.length}}" matBadgeOverlap="false">Posts</span>
+   </div>           
 
-    <mat-card id="stats" *ngIf=isMember>
-               
-            <aside>
-              <p>Nous sommes le {{currentDate | date:'dd-MM-yyyy'}} </p>
-                <p>Bienvenue {{comment.author }}</p>
-              </aside>
 
-    </mat-card>
 
  <div class="col s6" *ngIf=!isMember>
    <p>Visiteurs : Creer un compte pour poster des messages et discuter avec vos amis</p>
  </div>
+ 
 
  <div class="col s6" *ngIf=isMember>
     <app-member-search></app-member-search>  
    </div>
   
-   
+  
     <mat-card class="example-card" *ngIf=isMember>
       <article >
         <form class="example-form" #commentF="ngForm" (submit)="posted();commentF.reset()" >
@@ -42,6 +40,7 @@
 </div>
 
 <div class="container">
+  
 
   <mat-card class="example-card" *ngFor="let comment of commentsArray">
     <mat-card-header>
@@ -58,19 +57,7 @@
         {{comment.content}}
       </p>
     </mat-card-content>
-    <mat-card-actions>
-<span>  <i class="material-icons">
-    thumb_up_alt
-    </i></span>
-       <span> <i class="material-icons">
-          share
-          </i> </span>
-       <span> <i class="material-icons">
-          thumb_down_alt
-          </i> </span>
-         
-         
-    </mat-card-actions>
+   
   </mat-card>
 </div>
 

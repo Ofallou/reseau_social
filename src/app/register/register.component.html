@@ -60,43 +60,65 @@
   <form #register="ngForm"class="example-form">
     
     
-      <table class="example-full-width" cellspacing="0"><tr>
+      <table class="example-full-width" cellspacing="20">
+        <tr>
         <td><mat-form-field class="example-full-width">
           <input matInput [(ngModel)]='user.first_name' name="first_name"  required  placeholder="Prénom">
         </mat-form-field></td>
         <td><mat-form-field class="example-full-width">
           <input matInput [(ngModel)]='user.last_name' name="last_name"  required  placeholder="Nom">
         </mat-form-field></td>
-      </tr></table>
+      </tr>
     
-      <p>
-          <mat-form-field>
-              <input matInput placeholder="Email" [(ngModel)]="user.email" name="email"  [formControl]="email" required>
-              <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
-            </mat-form-field>
-            
-      </p>
-      <p>
-          <mat-form-field>
-              <input  #password minlength="6" matInput placeholder="Choix du mot de passe" [(ngModel)]="user.password" required name="password"  [type]="hide ? 'password' : 'text'">
-              <mat-hint align="end">{{password.value.length}} / 6</mat-hint>
-              <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-            </mat-form-field>
-             <mat-form-field>
-                <input matInput placeholder="Confirmez le mot de passe" required name="verifypassword"  [type]="hide ? 'password' : 'text'">
+      <tr>
+        <td>
+            <mat-form-field>
+                <input matInput placeholder="Email" [(ngModel)]="user.email" name="email"  [formControl]="email" required>
+                <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+              </mat-form-field>
+        </td>
+        <td>
+            <mat-form-field>
+                <input  #password minlength="6" matInput placeholder="Choix du mot de passe" [(ngModel)]="user.password" required name="password"  [type]="hide ? 'password' : 'text'">
+                <mat-hint align="end">{{password.value.length}} / 6</mat-hint>
                 <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-              </mat-form-field> 
-      </p>
+         </mat-form-field>
+        </td>
+      </tr>
   
-      <table class="example-full-width" cellspacing="0"><tr>
-        <td><mat-form-field class="example-full-width">
-          <input type="date" matInput placeholder="Date de Naissance">
-        </mat-form-field></td>
-      
+       <tr>
+         <td>
+            <mat-form-field>
+                <mat-select classe="example-form" placeholder="Genre" [(ngModel)]="user.gender" name="genre" value="user.gender" required>
+                    <mat-option selected value="femme">Femme</mat-option>
+                    <mat-option value="homme">Homme</mat-option>
+                  </mat-select>
+            </mat-form-field>
+         </td>
+          
+         <td>
+            <mat-form-field>
+                <input matInput placeholder="Choix du pseudo" [(ngModel)]="user.pseudo" required name="pseudo">
+                
+         </mat-form-field>
+
+         </td>
+
+
+       </tr>
+        
        
-      </tr></table>
+    
+  
+     <tr>
+        <td><mat-form-field class="example-full-width">
+          <input type="date" matInput placeholder="Date de Naissance" required>
+        </mat-form-field></td>
+    
+      </tr>
+    </table>
       
-      <button [disabled]="!register.form.valid" class="btn btn-success" (click)="registerUser()" routerLink="/">S'enregistrer</button>
+      <button mat-raised-button color="primary" [disabled]="!register.form.valid"  (click)="registerUser()" routerLink="/">S'enregistrer</button>
 
     </form>
     

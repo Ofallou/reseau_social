@@ -3,24 +3,21 @@
    <mat-toolbar-row>
         <span>Réseau Social</span>
         <span class="example-spacer"></span>
-            <span class="example-spacer"> <a routerLink="/" routerLinkActive="active"><i class="material-icons" matTooltip="Page d'accueil">
+        
+             <a routerLink="/" routerLinkActive="active"><i class="material-icons" matTooltip="Page d'accueil">
             home
-            </i></a> </span>
+            </i></a> 
         <span class="example-spacer"></span>
         <div class="infos">
             <div>
-                <a routerLink="userdata"><img src="{{user.picture}}"  alt=""></a>            
+                <a routerLink="userdata" matTooltip="Mon espace "><img src="{{user.picture}}"  alt=""></a>            
             </div>
             <div>
                 {{user.first_name}} {{user.last_name}} 
             </div>
            </div>
-         <span class="example-spacer"></span>
-      <a *ngIf="!getUserState()" class="item" routerLink="/login" routerLinkActive="active"><i class="material-icons" matTooltip="Membre - Se connecter">
-          account_circle
-          </i></a>
-      <span class="example-spacer"></span>
-      <span> <a *ngIf="!getUserState()" class="item" routerLink="/register" routerLinkActive="active"><i class="material-icons">login</i></a></span>
+           <span class="example-spacer"></span>
+      
       <span class="example-spacer"></span>
       <span><a *ngIf="!getUserState()"  routerLink="/login" routerLinkActive="active"><i class="user outline icon"></i></a></span>
       <span class="example-spacer"></span>
@@ -29,8 +26,14 @@
             </i></a></span>
       <span class="example-spacer"></span>
       <!-- <span><a *ngIf="getUserState()"  routerLink="/userdata" routerLinkActive="active"><i class="fas fa-user-circle"></i></a></span> -->
-      <span class="example-spacer"></span>
-      <span><a *ngIf="getUserState()"  (click)="logoutUser()" href="/home">Se deconnecter</a></span>
+      
+      <a *ngIf="!getUserState()" class="item" routerLink="/login" routerLinkActive="active"><i class="material-icons" matTooltip="Membre - Se connecter">
+            account_circle
+            </i></a>
+      <span><a *ngIf="getUserState()"  (click)="logoutUser()" href="/home"><i class="material-icons"  matTooltip="Se deconnecter"
+        >
+            input
+            </i></a></span>
       
     </mat-toolbar-row>
   </mat-toolbar>

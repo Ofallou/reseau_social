@@ -21,34 +21,35 @@ export class HeaderComponent implements OnInit {
   };
 
   
-  constructor( private authService: AuthService, private com: CommentService) {}
+  constructor( private authService: AuthService) {}
+ 
+  ngOnInit() {
+    this.getUserState()
+      console.log(this.isAuth)
+    if(this.isAuth){
+      this.authService.getData()
+      .subscribe(
+        res => {console.log(res)
+        this.user = res.user;
+        })
+    }
+    
+  }
+
   getUserState() {
     this.isAuth = !!this.authService.getToken();
     return this.isAuth;
   }
-  ngOnInit() {
-    this.getUserState()
-    this.isLoged()
-    console.log(this.isAuth)
-   
-  }
+
   logoutUser() {
+    this.authService.onLeave()
     this.authService.logoutUser();
     this.isAuth =false;
-    this.com.onLeave();
-    console.log('leave ??')
+    
+     
+    
   }
 
- isLoged(){
-   if(this.isAuth){
-
-    this.authService.getData()
-    .subscribe(
-      res => {console.log(res)
-      this.user = res.user;
-      })
-   }
- }
  
 
 }

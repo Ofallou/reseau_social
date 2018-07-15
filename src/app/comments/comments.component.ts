@@ -24,8 +24,7 @@ export class CommentsComponent implements OnInit {
 
   }
   constructor(private auth: AuthService, private  commentService: CommentService) {
-    this.commentService.onBegin()
-    .subscribe();
+   // this.commentService.onBegin().subscribe();
     this.commentService.onPosted()
     .subscribe(data => this.commentsArray.splice(0,0,data)
     );

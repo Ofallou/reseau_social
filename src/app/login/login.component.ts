@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService} from '../auth.service';
 import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -12,6 +13,8 @@ export class LoginComponent implements OnInit {
     email: '',
     password: ''
   };
+
+
   email = new FormControl('', [Validators.required, Validators.email]);
 
   errorMessage = '';
@@ -26,9 +29,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  showLoginError() {
-    
-  }
+ 
 
   getErrorMessage() {
     return this.email.hasError('required') ? 'Le champs doit etre rempli' :
@@ -48,14 +49,14 @@ export class LoginComponent implements OnInit {
             
            
           } else {
-
-            console.log(res.messageErr);
+            
             localStorage.setItem('token', res.token);
-            this._router.navigate(['/home']);
+            this._router.navigate(['/userdata']);
           }
 
         }
       );
 
   }
+
 }

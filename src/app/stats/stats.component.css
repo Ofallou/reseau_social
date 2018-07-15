@@ -1,0 +1,12 @@
+
+.example-spacer {
+    flex: 1 1 auto;
+    width: 100px;
+  }
+
+  .stats{
+      width: 200px;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-around;
+  }

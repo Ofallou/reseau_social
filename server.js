@@ -50,23 +50,23 @@ app.get('*', (req, res) => {
 
 io.on('connection' , (socket) =>{
   console.log('User joined', socket.id);
-  // On recupere tous les messages posté et enr  du serveur
+  // socOn recupere tous les messages posté et enr  du serveur
   
-    socket.emit('user join',{message:'Welcome'});
+    //socket.emit('user join',{message:'Welcome'});
       
       socket.on('posted', (data) => {
-        console.log('Message reçu', data);
+        console.log('Message reçu', data, socket.id);
         // Ici connecte toi a la base de donnees et sauvegared les messages
         io.sockets.emit('message',data)
       });
-  
+      socket.on('disconnect',() => {
+        
+        io.emit('user disconnect', socket.id)
+        console.log('user disconnected', socket.id)
+      })
 
 })
-io.on('disconnect',(socket) => {
-        
-  io.emit('user disconnect')
-  console.log('user disconnected', socket.id)
-})
+
 
 
 server.listen(PORT, function () {

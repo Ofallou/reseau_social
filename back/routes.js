@@ -17,36 +17,6 @@ const secret='RffrtejksizikskiksizkskizkskkzikskskksMpp';
 
 
 
-/* var sentPassword =  function(email, password, last_name){
-
-  nodemailer.createTestAccount((err, account) => {
-    let transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      auth: {
-        user: 'ofallou@gmail.com',
-        pass:'meissa1971'
-      }
-    });
-    let mailOptions = {
-      from:'"Socialbook"<exemple@of.fr>',
-      subject:'Information sur votre compte',
-      to:email,
-      replyTo:'ofbk@hotmail.fr',
-      text:'test from nodemail',
-      html:'<p>Bonjour,' +last_name+' <br> Vous trouverez ci-dessous votre mot de passe de connection   </p>'+ password
-    };
-    transporter.sendMail(mailOptions, (error, info) => {
-         if(error){
-           return console.log(error)
-         }
-         console.log('Message sent : %s', info.messageId)
-    })
-  });
-
-} */
-
 
 
 var currentUserId;
@@ -195,13 +165,8 @@ router.post('/lostpwd', (req, res) => {
 })
 
 
-router.get('/passCode/:id', (req, res)=>{
-  var id= req.params.id;
-  console.log(id);
-  res.send('user_id', id)
 
 
-})
 
 // comment recording (register user only)
 

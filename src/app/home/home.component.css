@@ -43,3 +43,15 @@ span {
 .example-full-width {
   width: 100%;
 }
+
+mat-toolbar{
+  position: fixed;
+  height: 30px;
+}
+
+.card {
+
+  position: fixed;
+  margin-left: 80%;
+  top:20%
+}
