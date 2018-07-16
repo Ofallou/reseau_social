@@ -329,6 +329,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var angularfire2_storage__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! angularfire2/storage */ "./node_modules/angularfire2/storage/index.js");
 /* harmony import */ var _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./new-password/new-password.component */ "./src/app/new-password/new-password.component.ts");
 /* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! @angular/material/dialog */ "./node_modules/@angular/material/esm5/dialog.es5.js");
+/* harmony import */ var _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! @angular/material/snack-bar */ "./node_modules/@angular/material/esm5/snack-bar.es5.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -352,6 +353,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 // services
+
 
 
 
@@ -422,6 +424,7 @@ var AppModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatTableModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatCheckboxModule"],
                 _angular_material_dialog__WEBPACK_IMPORTED_MODULE_38__["MatDialogModule"],
+                _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_39__["MatSnackBarModule"],
                 _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_29__["BrowserAnimationsModule"],
                 _angular_material_badge__WEBPACK_IMPORTED_MODULE_15__["MatBadgeModule"],
                 _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_32__["MatTooltipModule"],
@@ -548,11 +551,14 @@ var AuthService = /** @class */ (function () {
         this._lostPassword = this.url + '/api/lostpwd';
         this._home = this.url + '/api/';
         this._admin = this.url + '/api/admin';
-        this._passCode = this.url + '/api/passCode';
+        this._updateUser = this.url + '/api/update';
         this.connected = 0;
     }
     AuthService.prototype.registerUser = function (user) {
         return this.http.post(this._registerURL, user);
+    };
+    AuthService.prototype.updateUser = function (user) {
+        return this.http.post(this._updateUser, user);
     };
     AuthService.prototype.loginUser = function (user) {
         return this.http.post(this._loginURL, user);
@@ -570,9 +576,6 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.lostPassword = function (_email) {
         return this.http.post(this._lostPassword, _email);
-    };
-    AuthService.prototype.generatePassword = function () {
-        return this.http.get(this._passCode);
     };
     AuthService.prototype.getData = function () {
         return this.http.get(this._userdataURL);
@@ -912,7 +915,7 @@ var HeaderComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".card-image > img  {\n    width: 128px;\n  height: 128px;\n}\n\n#stats{\n  padding-top: 30px;\n  position: fixed;\n  max-width: 400px;\n left: 70%;\n}\n\n.example-card {\n  max-width: 400px;\n  height: 100%;\n  margin-bottom: 40px;\n  padding-bottom: 40px;\n  background-color: ivory\n}\n\n.example-header-image {\n\n  background-size: cover;\n}\n\n.mat-card-actions {\n  margin-bottom: 30px;\n}\n\n.container {\n  padding-left: 25%\n}\n\nspan {\n  padding: 25px;\n  \n}\n\n.example-form {\n  min-width: 150px;\n  max-width: 500px;\n  width: 100%;\n}\n\n.example-full-width {\n  width: 100%;\n}\n\nmat-toolbar{\n  position: fixed;\n  height: 30px;\n}\n\n.card {\n\n  position: fixed;\n  margin-left: 80%;\n  top:20%\n}"
+module.exports = ".card-image > img  {\n    width: 128px;\n  height: 128px;\n}\n\n#stats{\n  padding-top: 30px;\n  position: fixed;\n  max-width: 400px;\n left: 70%;\n}\n\n.example-card {\n  max-width: 400px;\n  height: 100%;\n  margin-bottom: 40px;\n  padding-bottom: 40px;\n  background-color: ivory\n}\n\n.example-header-image {\n\n  background-size: cover;\n}\n\n.mat-card-actions {\n  margin-bottom: 30px;\n}\n\n.container {\n  padding-left: 25%\n}\n\nspan {\n  padding: 25px;\n  \n}\n\n.example-form {\n  min-width: 150px;\n  max-width: 500px;\n  width: 100%;\n}\n\n.example-full-width {\n  width: 100%;\n}\n\nmat-toolbar{\n  position: fixed;\n  height: 30px;\n}\n\n.card {\n  position: absolute;\n  margin-left: 60%;\n  top:15%\n}\n\n.test{\n  padding: 10px\n}"
 
 /***/ }),
 
@@ -923,7 +926,7 @@ module.exports = ".card-image > img  {\n    width: 128px;\n  height: 128px;\n}\n
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<div class=\"container\">\n             \n   <div class=\"card\">\n    <span matBadge=\"{{commentsArray.length}}\" matBadgeOverlap=\"false\">Posts</span>\n   </div>           \n\n\n\n <div class=\"col s6\" *ngIf=!isMember>\n   <p>Visiteurs : Creer un compte pour poster des messages et discuter avec vos amis</p>\n </div>\n \n\n <div class=\"col s6\" *ngIf=isMember>\n    <app-member-search></app-member-search>  \n   </div>\n  \n  \n    <mat-card class=\"example-card\" *ngIf=isMember>\n      <article >\n        <form class=\"example-form\" #commentF=\"ngForm\" (submit)=\"posted();commentF.reset()\" >\n      <mat-form-field>\n        <input matInput placeholder=\"titre du message\" name=\"title\" id=\"titre\" [(ngModel)]=\"comment.title\" required >\n      </mat-form-field>\n       <br>\n      <mat-form-field class=\"example-full-width\">\n        <textarea matInput placeholder=\"Poster un commentaire......\" name=\"comment\" [(ngModel)]=\"comment.content\"></textarea>\n      </mat-form-field>\n       <br>\n           \n      <button type=\"submit\" mat-fab color=\"accent\" [disabled]=\"!commentF.form.valid\">Poster\n       \n      </button>\n\n  </form>\n        \n    </article>\n    </mat-card>\n</div>\n\n<div class=\"container\">\n  \n\n  <mat-card class=\"example-card\" *ngFor=\"let comment of commentsArray\">\n    <mat-card-header>\n      <div mat-card-avatar class=\"example-header-image\">\n        <img src=\"{{comment.authorPicture}}\" style=\"width: 46px;\" alt=\"\">\n      </div>\n      <mat-card-title>{{comment.author }} </mat-card-title>\n      <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}</mat-card-subtitle>\n    </mat-card-header>\n    <h4> {{comment.title}}</h4>\n   \n    <mat-card-content>\n      <p>\n        {{comment.content}}\n      </p>\n    </mat-card-content>\n   \n  </mat-card>\n</div>\n\n"
+module.exports = "\n<div class=\"container\">\n             \n   <div class=\"card\">\n     <p style=\"width: 40px;height: 5px;\">\n        <span class=\"test\" matBadgePosition=\"above after\" matBadge=\"{{commentsArray.length}}\">Posts</span>\n     </p>\n    \n   </div>           \n\n\n\n <div class=\"col s6\" *ngIf=!isMember>\n   <p>Visiteurs : Creer un compte pour poster des messages et discuter avec vos amis</p>\n </div>\n \n\n <div class=\"col s6\" *ngIf=isMember>\n    <app-member-search></app-member-search>  \n   </div>\n  \n  \n    <mat-card class=\"example-card\" *ngIf=isMember>\n      <article >\n        <form class=\"example-form\" #commentF=\"ngForm\" (submit)=\"posted();commentF.reset()\" >\n      <mat-form-field>\n        <input matInput placeholder=\"titre du message\" name=\"title\" id=\"titre\" [(ngModel)]=\"comment.title\" required >\n      </mat-form-field>\n       <br>\n      <mat-form-field class=\"example-full-width\">\n        <textarea matInput placeholder=\"Poster un commentaire......\" name=\"comment\" [(ngModel)]=\"comment.content\"></textarea>\n      </mat-form-field>\n       <br>\n           \n      <button type=\"submit\" mat-fab color=\"accent\" [disabled]=\"!commentF.form.valid\">Poster\n       \n      </button>\n\n  </form>\n        \n    </article>\n    </mat-card>\n</div>\n\n<div class=\"container\">\n  \n\n  <mat-card class=\"example-card\" *ngFor=\"let comment of commentsArray\">\n    <mat-card-header>\n      <div mat-card-avatar class=\"example-header-image\">\n        <img src=\"{{comment.authorPicture}}\" style=\"width: 46px;\" alt=\"\">\n      </div>\n      <mat-card-title>{{comment.author }} </mat-card-title>\n      <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}</mat-card-subtitle>\n    </mat-card-header>\n    <h4> {{comment.title}}</h4>\n   \n    <mat-card-content>\n      <p>\n        {{comment.content}}\n      </p>\n    </mat-card-content>\n   \n  </mat-card>\n</div>\n\n"
 
 /***/ }),
 
@@ -1039,7 +1042,7 @@ module.exports = "\n.mat-tab-group {\n  margin-left: 33%;\n  margin-top: 5%;\n  
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-tab-group>\n  \n    <mat-tab label=\"Connexion\"> \n        <form #loginF=\"ngForm\"  >\n        <div class=\"example-container\">\n            <mat-form-field>\n              <input matInput placeholder=\"Email\" [(ngModel)]=\"userData.email\" name=\"email\"  [formControl]=\"email\" required>\n              <mat-error *ngIf=\"email.invalid\">{{getErrorMessage()}}</mat-error>\n            </mat-form-field>\n            <br>\n            <mat-form-field>\n                <input matInput placeholder=\"Mot de passe\" [(ngModel)]=\"userData.password\" required name=\"password\"  [type]=\"hide ? 'password' : 'text'\">\n                <mat-icon matSuffix (click)=\"hide = !hide\">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>\n              </mat-form-field>\n              <br>\n              <button  mat-button color=\"primary\" [disabled]=\"!loginF.form.valid\" (click)=\"onLogin();loginF.reset()\">Se connecter</button>\n              <mat-error>{{errorMessage}}</mat-error> \n              <button mat-button color=\"primary\" routerLink=\"/lostpwd\" >Informations de compte oubliées ? </button>\n          </div>\n        </form>\n    </mat-tab>\n    <mat-tab label=\"Inscription\"> \n      <app-register></app-register>\n    </mat-tab>\n    \n  </mat-tab-group>\n  \n\n\n\n  "
+module.exports = "<mat-tab-group>\n  \n    <mat-tab label=\"Connexion\"> \n        <form #loginF=\"ngForm\"  >\n        <div class=\"example-container\">\n            <mat-form-field>\n              <input matInput placeholder=\"Email\" [(ngModel)]=\"userData.email\" name=\"email\"  [formControl]=\"email\" \n              pattern=\"[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$\"\n              >\n              <mat-error *ngIf=\"email.invalid\">{{getErrorMessage()}}</mat-error>\n            </mat-form-field>\n            <br>\n            <mat-form-field>\n                <input matInput placeholder=\"Mot de passe\" [(ngModel)]=\"userData.password\" required name=\"password\"  [type]=\"hide ? 'password' : 'text'\">\n                <mat-icon matSuffix (click)=\"hide = !hide\">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>\n              </mat-form-field>\n              <br>\n              <button  mat-button color=\"primary\" [disabled]=\"!loginF.form.valid || email.invalid\" (click)=\"onLogin();loginF.reset()\">Se connecter</button>\n              <mat-error>{{errorMessage}}</mat-error> \n              <button mat-button color=\"primary\" routerLink=\"/lostpwd\" >Informations de compte oubliées ? </button>\n          </div>\n        </form>\n    </mat-tab>\n    <mat-tab label=\"Inscription\"> \n      <app-register></app-register>\n    </mat-tab>\n    \n  </mat-tab-group>\n  \n\n\n\n  "
 
 /***/ }),
 
@@ -1618,7 +1621,7 @@ var NewPasswordComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "  <!-- <div class=\"container\">\n    <div class=\"row\">\n    <form #register=\"ngForm\" class=\"col s6\">\n    <div class=\"card-panel blue lighten-3\">\n    <h5>Créer un compte </h5>\n   <div class=\"input-field\" [class.has-error]=\"name.invalid && name.touched\">\n      <label for=\"name\" >Nom</label>\n      <input id=\"name\" type=\"text\" class=\"form-control\" [(ngModel)]='user.last_name' name=\"last_name\"  required #name=\"ngModel\">\n   </div>\n    <div class=\"input-field\">\n        <label >Prenom</label>\n        <input type=\"text\" [(ngModel)]='user.first_name' name=\"first_name\"  required >\n    </div>\n    <div class=\"input-field\">\n      <label >Email</label>\n      <input type=\"email\" [(ngModel)]='user.email' name=\"email\"   required email   >\n    </div>\n    <div class=\"input-field\">\n      <label >Mot de passe</label>\n      <input type=\"password\" [(ngModel)]='user.password' name=\"password\"  required >\n    </div>\n      <div class=\"input-field\">\n        <label >Pseudo</label>\n        <input type=\"text\" [(ngModel)]='user.pseudo' name=\"pseudo\"  required >\n      </div>\n  <div class=\"input-field\">\n    <input type=\"date\" [(ngModel)]='user.dateNaissance' name=\"dateNaissance\" id=\"date\"  required >\n    <label for=\"date\" >Date de naissance</label>\n  </div>\n\n  <p>\n    <label>\n      <input name=\"gender\"  type=\"radio\"  value=\"female\" [(ngModel)]=\"user.gender\"  />\n      <span>Femme</span>\n    </label>\n  </p>\n  <p>\n    <label>\n      <input name=\"gender\"  type=\"radio\"  value=\"male\" [(ngModel)]=\"user.gender\"  />\n      <span>Homme</span>\n    </label>\n  </p>\n      <div class=\"file-field input-field\">\n        <div class=\"btn\">\n          <span>Photo</span>\n          <input type=\"file\" accept=\"image/*\" (change)=\"onFileSelected($event.target.files)\" >\n        </div>\n        <div class=\"file-path-wrapper\">\n        <input class=\"file-path validate\" type=\"text\" >\n        </div>\n        <img [src]=\"imageUrl\" style=\"width: 250px; height: 200px\" alt=\"\">\n      </div>\n\n        <button [disabled]=\"!register.form.valid\" class=\"btn btn-success\" (click)=\"registerUser()\" routerLink=\"/userdata\">S'enregistrer</button>\n  </div>\n      </form>\n    </div>\n  </div> -->\n\n  <form #register=\"ngForm\"class=\"example-form\">\n    \n    \n      <table class=\"example-full-width\" cellspacing=\"20\">\n        <tr>\n        <td><mat-form-field class=\"example-full-width\">\n          <input matInput [(ngModel)]='user.first_name' name=\"first_name\"  required  placeholder=\"Prénom\">\n        </mat-form-field></td>\n        <td><mat-form-field class=\"example-full-width\">\n          <input matInput [(ngModel)]='user.last_name' name=\"last_name\"  required  placeholder=\"Nom\">\n        </mat-form-field></td>\n      </tr>\n    \n      <tr>\n        <td>\n            <mat-form-field>\n                <input matInput placeholder=\"Email\" [(ngModel)]=\"user.email\" name=\"email\"  [formControl]=\"email\" required>\n                <mat-error *ngIf=\"email.invalid\">{{getErrorMessage()}}</mat-error>\n              </mat-form-field>\n        </td>\n        <td>\n            <mat-form-field>\n                <input  #password minlength=\"6\" matInput placeholder=\"Choix du mot de passe\" [(ngModel)]=\"user.password\" required name=\"password\"  [type]=\"hide ? 'password' : 'text'\">\n                <mat-hint align=\"end\">{{password.value.length}} / 6</mat-hint>\n                <mat-icon matSuffix (click)=\"hide = !hide\">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>\n         </mat-form-field>\n        </td>\n      </tr>\n  \n       <tr>\n         <td>\n            <mat-form-field>\n                <mat-select classe=\"example-form\" placeholder=\"Genre\" [(ngModel)]=\"user.gender\" name=\"genre\" value=\"user.gender\" required>\n                    <mat-option selected value=\"femme\">Femme</mat-option>\n                    <mat-option value=\"homme\">Homme</mat-option>\n                  </mat-select>\n            </mat-form-field>\n         </td>\n          \n         <td>\n            <mat-form-field>\n                <input matInput placeholder=\"Choix du pseudo\" [(ngModel)]=\"user.pseudo\" required name=\"pseudo\">\n                \n         </mat-form-field>\n\n         </td>\n\n\n       </tr>\n        \n       \n    \n  \n     <tr>\n        <td><mat-form-field class=\"example-full-width\">\n          <input type=\"date\" matInput placeholder=\"Date de Naissance\" required>\n        </mat-form-field></td>\n    \n      </tr>\n    </table>\n      \n      <button mat-raised-button color=\"primary\" [disabled]=\"!register.form.valid\"  (click)=\"registerUser()\" routerLink=\"/\">S'enregistrer</button>\n\n    </form>\n    \n"
+module.exports = "\n  <form #register=\"ngForm\"class=\"example-form\">\n    \n    \n      <table class=\"example-full-width\" cellspacing=\"20\">\n        <tr>\n        <td><mat-form-field class=\"example-full-width\">\n          <input matInput [(ngModel)]='user.first_name' name=\"first_name\"  required  placeholder=\"Prénom\">\n        </mat-form-field></td>\n        <td><mat-form-field class=\"example-full-width\">\n          <input matInput [(ngModel)]='user.last_name' name=\"last_name\"  required  placeholder=\"Nom\">\n        </mat-form-field></td>\n      </tr>\n    \n      <tr>\n        <td>\n            <mat-form-field>\n                <input matInput placeholder=\"Email\" [(ngModel)]=\"user.email\" name=\"email\"  [formControl]=\"email\" \n                pattern=\"[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$\"\n                required>\n                <mat-error *ngIf=\"email.invalid\">{{getErrorMessage()}}</mat-error>\n              </mat-form-field>\n        </td>\n        <td>\n            <mat-form-field>\n                <input  #password minlength=\"6\" matInput placeholder=\"Choix du mot de passe\" [(ngModel)]=\"user.password\" required name=\"password\"  [type]=\"hide ? 'password' : 'text'\">\n                <mat-hint align=\"end\">{{password.value.length}} / 6</mat-hint>\n                <mat-icon matSuffix (click)=\"hide = !hide\">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>\n         </mat-form-field>\n        </td>\n      </tr>\n  \n       <tr>\n         <td>\n            <mat-form-field>\n                <mat-select classe=\"example-form\" placeholder=\"Genre\" [(ngModel)]=\"user.gender\" name=\"genre\" value=\"user.gender\" required>\n                    <mat-option selected value=\"femme\">Femme</mat-option>\n                    <mat-option value=\"homme\">Homme</mat-option>\n                  </mat-select>\n            </mat-form-field>\n         </td>\n          \n         <td>\n            <mat-form-field>\n                <input matInput placeholder=\"Choix du pseudo\" [(ngModel)]=\"user.pseudo\" required name=\"pseudo\">\n                \n         </mat-form-field>\n\n         </td>\n\n\n       </tr>\n        \n       \n    \n  \n     <tr>\n        <td><mat-form-field class=\"example-full-width\">\n          <input type=\"date\" matInput placeholder=\"Date de Naissance\" required>\n        </mat-form-field></td>\n    \n      </tr>\n    </table>\n      \n      <button mat-raised-button color=\"primary\" [disabled]=\"!register.form.valid ||email.invalid \"  (click)=\"registerUser()\" routerLink=\"userdata\">S'enregistrer</button>\n\n    </form>\n    \n"
 
 /***/ }),
 
@@ -1672,8 +1675,7 @@ var RegisterComponent = /** @class */ (function () {
     }
     RegisterComponent.prototype.getErrorMessage = function () {
         return this.email.hasError('required') ? 'Le champs doit etre rempli' :
-            this.email.hasError('email') ? "Le format de l'adresse Email est invalide" :
-                '';
+            this.email.hasError('email') ? "Le format de l'adresse Email est invalide" : '';
     };
     RegisterComponent.prototype.ngOnInit = function () {
         if (this.authService.getToken()) {
@@ -1685,7 +1687,7 @@ var RegisterComponent = /** @class */ (function () {
         this.authService.registerUser(this.user)
             .subscribe(function (res) {
             localStorage.setItem('token', res.token);
-            _this._router.navigate(['/']);
+            _this._router.navigate(['/userdata']);
         });
     };
     RegisterComponent = __decorate([
@@ -1887,7 +1889,7 @@ var UploaderComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = ".example-form {\n    min-width: 150px;\n    max-width: 300px;\n    width: 100%;\n  }\n  \n  .example-full-width {\n    width: 100%;\n  }\n  \n  .container {\n      padding-left: 20%;\n  }"
 
 /***/ }),
 
@@ -1898,7 +1900,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n \n<mat-tab-group>\n    <mat-tab label=\"Information du compte\"> \n\n<div class=\"container col s6\">\n    \n    <div class=\"row\">\n      <form #info=\"ngForm\">\n    <div class=\"row\">\n      <div class=\"input-field col s6\" >\n        <input type=\"text\" id=\"first_name\" name=\"first_name\" [(ngModel)]=\"user.first_name\" placeholder=\"Prenom\">\n      </div>\n      <div class=\"input-field col s6\" >\n        <input type=\"text\" id=\"last_name\" name=\"last_name\" [(ngModel)]=\"user.last_name\" placeholder=\"Nom\" >\n      </div>\n      <div class=\"input-field\">\n        <input type=\"email\" id=\"email\" name=\"email\" [(ngModel)]=\"user.email\" placeholder=\"Email\">\n      </div>\n    \n      <div class=\"input-field \">\n        <input type=\"text\" id=\"pseudo\" name=\"pseudo\" [(ngModel)]=\"user.pseudo\" placeholder=\"Pseudo\">\n      </div>\n    </div>\n    \n          <a class=\"waves-effect waves-light btn-large\"><i class=\"material-icons left\">cloud</i>Mettre a jour</a>\n        </form>\n      </div>\n      </div>\n</mat-tab>\n    <mat-tab label=\"Connexion\"> Content 2 </mat-tab>\n    <mat-tab label=\"Inscription\"> Content 3 </mat-tab>\n  </mat-tab-group>"
+module.exports = "\n<div class=\"container\">\n<mat-tab-group>\n    <mat-tab label=\"Information du compte\"> \n\n      <form class=\"example-form\" form #info=\"ngForm\">\n        <mat-form-field class=\"example-full-width\">\n          <input matInput placeholder=\"Prenom\"  disabled value=\"{{user.first_name}}\">\n        </mat-form-field>\n        <mat-form-field class=\"example-full-width\">\n          <input matInput placeholder=\"Nom\"  disabled value=\"{{user.last_name}}\" >\n        </mat-form-field>\n        <mat-form-field class=\"example-full-width\">\n          <input matInput name=\"email\" [(ngModel)]=\"user.email\" placeholder=\"Email\" \n           [formControl]=\"email\" \n           pattern=\"[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$\"\n           required >\n          <mat-error *ngIf=\"email.invalid\">{{getErrorMessage()}}</mat-error>\n        </mat-form-field>\n        <mat-form-field class=\"example-full-width\">\n          <input matInput name=\"pseudo\" [(ngModel)]=\"user.pseudo\" placeholder=\"Pseudo\"\n           required>\n        </mat-form-field>\n        <button mat-button color=\"primary\" [disabled]=\"!info.form.valid || email.invalid\" (click)=\"update()\" >Mettre à jour </button>\n    \n      </form>\n    \n</mat-tab>\n\n    <mat-tab label=\"Mot de passe\">\n        <form class=\"example-form\" form #passF=\"ngForm\">\n        <mat-form-field>\n            <input  matInput placeholder=\"Nouveau mot de passe\" [(ngModel)]=\"password\" required name=\"password\"  [type]=\"hide ? 'password' : 'text'\">\n            <mat-icon matSuffix (click)=\"!hide = hide\">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>\n          </mat-form-field>\n          <br>\n          <mat-form-field>\n              <input matInput placeholder=\"Confirmez le mot de passe\" [(ngModel)]=\"retype_password\" required name=\"retype_password\"  [type]=\"hide ? 'password' : 'text'\">\n              <mat-icon matSuffix (click)=\"!hide = hide\">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>\n            </mat-form-field>\n            <mat-error>\n              {{error}}\n            </mat-error>\n            <button mat-button color=\"primary\" [disabled]=\"!passF.form.valid\" (click)=\"passwordUpdate();passF.reset()\" >Mettre à jour </button>\n\n          </form>\n    </mat-tab>\n   \n    <mat-tab label=\"Photo\"> Content 3 </mat-tab>\n  </mat-tab-group>\n\n</div>"
 
 /***/ }),
 
@@ -1914,6 +1916,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserSettingsComponent", function() { return UserSettingsComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1925,12 +1929,22 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
+
 var UserSettingsComponent = /** @class */ (function () {
-    function UserSettingsComponent(authService) {
+    function UserSettingsComponent(authService, snackBar) {
         this.authService = authService;
+        this.snackBar = snackBar;
+        this.email = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]('', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].email]);
+        this.hide = true;
     }
     UserSettingsComponent.prototype.ngOnInit = function () {
         this.userSettings();
+    };
+    UserSettingsComponent.prototype.getErrorMessage = function () {
+        return this.email.hasError('required') ? 'Le champs doit etre rempli' :
+            this.email.hasError('email') ? "Le format de l'adresse Email est invalide" :
+                '';
     };
     UserSettingsComponent.prototype.userSettings = function () {
         var _this = this;
@@ -1939,13 +1953,36 @@ var UserSettingsComponent = /** @class */ (function () {
             console.log(_this.user);
         });
     };
+    UserSettingsComponent.prototype.openSnackBar = function (message, action) {
+        this.snackBar.open(message, action, {
+            duration: 3000,
+        });
+    };
+    UserSettingsComponent.prototype.update = function () {
+        var _this = this;
+        this.authService.updateUser(this.user)
+            .subscribe(function (response) {
+            console.log(response);
+            _this.messageFromSpace = response;
+            _this.openSnackBar(_this.messageFromSpace, null);
+        });
+    };
+    UserSettingsComponent.prototype.passwordUpdate = function () {
+        if (this.retype_password === this.password) {
+            console.log('password match !!');
+        }
+        else {
+            this.error = "Les mots de passe ne sont pas identiques";
+            console.log('password does not match !!');
+        }
+    };
     UserSettingsComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-user-settings',
             template: __webpack_require__(/*! ./user-settings.component.html */ "./src/app/user-settings/user-settings.component.html"),
             styles: [__webpack_require__(/*! ./user-settings.component.css */ "./src/app/user-settings/user-settings.component.css")]
         }),
-        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"]])
+        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatSnackBar"]])
     ], UserSettingsComponent);
     return UserSettingsComponent;
 }());

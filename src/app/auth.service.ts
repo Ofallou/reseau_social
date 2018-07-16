@@ -24,14 +24,17 @@ export class AuthService {
   private _lostPassword = this.url + '/api/lostpwd';
   private _home = this.url + '/api/';
   private _admin = this.url + '/api/admin';
-  private _passCode= this.url+'/api/passCode'
+  private _updateUser= this.url+'/api/update'
   connected: number=0;
 
   constructor(private http: HttpClient, private _router: Router) {}
+
   registerUser(user) {
     return this.http.post<any>(this._registerURL, user);
   }
-
+  updateUser(user) {
+    return this.http.post<any>(this._updateUser, user);
+  }
   loginUser(user) {
     return this.http.post<any>(this._loginURL, user);
   }
@@ -54,10 +57,7 @@ export class AuthService {
     return this.http.post<any>(this._lostPassword, _email);
   }
 
-  generatePassword(){
-     return this.http.get<any>(this._passCode);
-  }
-
+ 
   getData() {
     return this.http.get<any>(this._userdataURL);
   }

@@ -35,11 +35,9 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-
   getErrorMessage() {
     return this.email.hasError('required') ? 'Le champs doit etre rempli' :
-        this.email.hasError('email') ? "Le format de l'adresse Email est invalide" :
-            '';
+        this.email.hasError('email') ? "Le format de l'adresse Email est invalide" :'';
   }
   ngOnInit() {
     if (this.authService.getToken()) {
@@ -48,13 +46,11 @@ export class RegisterComponent implements OnInit {
   }
 
   registerUser() {
- 
-
-    this.authService.registerUser(this.user)
+     this.authService.registerUser(this.user)
     .subscribe(
       res => {
         localStorage.setItem('token', res.token );
-        this._router.navigate(['/']);
+        this._router.navigate(['/userdata']);
       }
     );
 

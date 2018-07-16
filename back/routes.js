@@ -5,16 +5,21 @@ const mongoose= require('mongoose');
 const jwt = require('jsonwebtoken');
 var gravatar = require('gravatar');
 var generator = require ('generate-password');
+var bcrypt = require('bcrypt')
 //Models
 const User = require ('./models/user.js');
 const Comment = require ('./models/comment');
 const SentPassword = require ('./mails/sendPassword')
+const Register =  require ('./mails/register')
+
 
 //Mongodb
 const db="mongodb://ofallou:meissa71@ds249079.mlab.com:49079/reseau_social";
 
 const secret='RffrtejksizikskiksizkskizkskkzikskskksMpp';
 
+const myPassword= 'meissa71'
+const saltRounds = 10;
 
 
 
@@ -58,12 +63,14 @@ router.post('/register',  (req, res) => {
         s: '150',
         r: 'pg',
         d: 'robohash'});
-        
+       
+      user.password= bcrypt.hashSync(user.password, saltRounds);
       user.save((err, dataUser)=>{
         if(err){
           console.log(err)
         }else {
           console.log(dataUser)
+          Register(dataUser.first_name,dataUser.email)
           let payload = {subject: dataUser._id};
           let token = jwt.sign(payload, secret);
           res.status(200).send({token})
@@ -88,8 +95,9 @@ router.post('/login', (req, res)=> {
      if(!data){
       res.json({message:'Email invalide '});
      } else {
-
-       if(data.password === req.body.password){
+          var pass=bcrypt.compareSync(req.body.password, data.password)
+          console.log(pass)
+       if(pass){
          let payload = {subject: data._id};
          let token = jwt.sign(payload, secret);
          res.json({success: true, token : token})
@@ -122,6 +130,38 @@ res.send({message: 'connecté'})
 })
 
 
+router.post('/update',veriFyToken, (req,res)=> {
+ User.findById(req.body._id).exec((err,data) => {
+
+  console.log('qui est data', data)
+
+  if(JSON.stringify(data)=== JSON.stringify(req.body)){
+     
+
+    res.json('pas de changement');
+    
+  }else {
+
+    User.update({_id: req.body._id}, {$set: {email: req.body.email, pseudo:req.body.pseudo}},
+      (err,data) => {
+        if(!err) {
+          console.log( "Mise a jour effectuée ",data)
+          res.json('Mise a jour ok !');
+        } else {
+          res.json('Mise a jour KO !!!! !');
+          console.log(err)
+        }
+        
+      })
+  }
+
+ })
+
+ 
+
+})
+
+
 router.get('/admin', veriFyToken, (req,res) => {
 
   res.send('admin welcome !')
@@ -145,7 +185,10 @@ router.post('/lostpwd', (req, res) => {
           length:8,
           numbers:true
         });
-        User.update({_id: data._id}, {$set: {password: new_password}}, (err, data) => {
+
+        var new_password_crypt= bcrypt.hashSync(new_password, saltRounds);
+
+        User.update({_id: data._id}, {$set: {password: new_password_crypt}}, (err, data) => {
           if(err) console.log(err);
           console.log('info mises a jours en base', data , new_password)
         })

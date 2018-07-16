@@ -40,6 +40,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { NewPasswordComponent } from './new-password/new-password.component';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 
@@ -87,6 +88,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatTableModule,
     MatCheckboxModule,
     MatDialogModule,
+    MatSnackBarModule,
     BrowserAnimationsModule,
     MatBadgeModule,
     MatTooltipModule,

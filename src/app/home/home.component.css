@@ -50,8 +50,11 @@ mat-toolbar{
 }
 
 .card {
+  position: absolute;
+  margin-left: 60%;
+  top:15%
+}
 
-  position: fixed;
-  margin-left: 80%;
-  top:20%
+.test{
+  padding: 10px
 }

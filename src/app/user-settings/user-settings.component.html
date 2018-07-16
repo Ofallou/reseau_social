@@ -1,33 +1,52 @@
 
- 
+<div class="container">
 <mat-tab-group>
     <mat-tab label="Information du compte"> 
 
-<div class="container col s6">
+      <form class="example-form" form #info="ngForm">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Prenom"  disabled value="{{user.first_name}}">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Nom"  disabled value="{{user.last_name}}" >
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <input matInput name="email" [(ngModel)]="user.email" placeholder="Email" 
+           [formControl]="email" 
+           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+           required >
+          <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <input matInput name="pseudo" [(ngModel)]="user.pseudo" placeholder="Pseudo"
+           required>
+        </mat-form-field>
+        <button mat-button color="primary" [disabled]="!info.form.valid || email.invalid" (click)="update()" >Mettre à jour </button>
     
-    <div class="row">
-      <form #info="ngForm">
-    <div class="row">
-      <div class="input-field col s6" >
-        <input type="text" id="first_name" name="first_name" [(ngModel)]="user.first_name" placeholder="Prenom">
-      </div>
-      <div class="input-field col s6" >
-        <input type="text" id="last_name" name="last_name" [(ngModel)]="user.last_name" placeholder="Nom" >
-      </div>
-      <div class="input-field">
-        <input type="email" id="email" name="email" [(ngModel)]="user.email" placeholder="Email">
-      </div>
+      </form>
     
-      <div class="input-field ">
-        <input type="text" id="pseudo" name="pseudo" [(ngModel)]="user.pseudo" placeholder="Pseudo">
-      </div>
-    </div>
-    
-          <a class="waves-effect waves-light btn-large"><i class="material-icons left">cloud</i>Mettre a jour</a>
-        </form>
-      </div>
-      </div>
 </mat-tab>
-    <mat-tab label="Connexion"> Content 2 </mat-tab>
-    <mat-tab label="Inscription"> Content 3 </mat-tab>
+
+    <mat-tab label="Mot de passe">
+        <form class="example-form" form #passF="ngForm">
+        <mat-form-field>
+            <input  matInput placeholder="Nouveau mot de passe" [(ngModel)]="password" required name="password"  [type]="hide ? 'password' : 'text'">
+            <mat-icon matSuffix (click)="!hide = hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+          </mat-form-field>
+          <br>
+          <mat-form-field>
+              <input matInput placeholder="Confirmez le mot de passe" [(ngModel)]="retype_password" required name="retype_password"  [type]="hide ? 'password' : 'text'">
+              <mat-icon matSuffix (click)="!hide = hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+            </mat-form-field>
+            <mat-error>
+              {{error}}
+            </mat-error>
+            <button mat-button color="primary" [disabled]="!passF.form.valid" (click)="passwordUpdate();passF.reset()" >Mettre à jour </button>
+
+          </form>
+    </mat-tab>
+   
+    <mat-tab label="Photo"> Content 3 </mat-tab>
   </mat-tab-group>
+
+</div>

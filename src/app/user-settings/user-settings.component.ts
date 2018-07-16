@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../auth.service";
 import {User} from "../models/user";
+import { FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-user-settings',
@@ -9,12 +11,22 @@ import {User} from "../models/user";
 })
 export class UserSettingsComponent implements OnInit {
 user:{};
-  constructor(private authService: AuthService) {}
+email = new FormControl('', [Validators.required, Validators.email]);
+password;
+retype_password;
+error;
+hide = true;
+messageFromSpace;
+  constructor(private authService: AuthService,private snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.userSettings();
   }
-
+  getErrorMessage() {
+    return this.email.hasError('required') ? 'Le champs doit etre rempli' :
+        this.email.hasError('email') ? "Le format de l'adresse Email est invalide" :
+            '';
+  }
 
   userSettings() {
     this.user = this.authService.getData().subscribe(
@@ -24,5 +36,37 @@ user:{};
       }
 
     );
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000,
+    });
+  }
+
+
+
+
+  update() {
+    this.authService.updateUser(this.user)
+    .subscribe(
+      response => {
+        console.log(response)
+       
+        this.messageFromSpace = response;
+        this.openSnackBar(this.messageFromSpace,null)
+      }
+    )
+  }
+
+  passwordUpdate(){
+    if(this.retype_password === this.password){
+
+      console.log('password match !!');
+    } else {
+      this.error="Les mots de passe ne sont pas identiques";
+      console.log('password does not match !!');
+    }
+    
   }
 }
