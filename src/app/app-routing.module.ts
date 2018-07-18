@@ -24,6 +24,7 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'lostpwd', component: LostPasswordComponent},
   {path: 'passCode/:id', component: NewPasswordComponent},
+  {path:'sendRequestInvitation/:id', component: UserdataComponent},
   {path: 'userdata', component: UserdataComponent,
   canActivate : [AuthGuard]},
   {path: 'user-settings', component: UserSettingsComponent,

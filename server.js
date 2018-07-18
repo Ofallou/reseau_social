@@ -55,6 +55,7 @@ io.on('connection' , (socket) =>{
     //socket.emit('user join',{message:'Welcome'});
       
       socket.on('posted', (data) => {
+        
         console.log('Message reçu', data, socket.id);
         // Ici connecte toi a la base de donnees et sauvegared les messages
         io.sockets.emit('message',data)

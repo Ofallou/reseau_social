@@ -11,6 +11,7 @@ import * as io from 'socket.io-client';
 @Injectable()
 export class AuthService {
   user = {
+    _id:'',
     email : '',
     password : ''
   };
@@ -77,5 +78,6 @@ export class AuthService {
     console.log(this.socket.id)
     }
     
+  
 
 }

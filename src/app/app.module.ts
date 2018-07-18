@@ -16,6 +16,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatSelectModule} from '@angular/material/select';
 import { LayoutModule } from '@angular/cdk/layout';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatExpansionModule} from '@angular/material/expansion';
+
 // services
 import {TokenService} from './token.service';
 import {AuthService} from './auth.service';
@@ -41,6 +43,7 @@ import { AngularFireStorageModule } from 'angularfire2/storage';
 import { NewPasswordComponent } from './new-password/new-password.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { FriendslistComponent } from './friendslist/friendslist.component';
 
 
 
@@ -62,7 +65,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MainComponent,
     NavigationComponent,
     AdminDashboardComponent,
-    NewPasswordComponent
+    NewPasswordComponent,
+    FriendslistComponent
   ],
   imports: [
     BrowserModule,
@@ -90,6 +94,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatDialogModule,
     MatSnackBarModule,
     BrowserAnimationsModule,
+    MatExpansionModule,
     MatBadgeModule,
     MatTooltipModule,
     AngularFireModule.initializeApp({

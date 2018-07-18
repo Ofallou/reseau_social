@@ -21,7 +21,7 @@ module.exports  = register =  (first_name, email)=>{
              "<h6>Bonjour "+first_name+"<h6>"+
              "<p>Merci pour votre inscription.  </p> "+
              "<br> Vous pouvez maintenant poster des messages, inviter des amis et chater"+
-             "<a href='https://dry-fortress-71234.herokuapp.com/'>Le Reseau Social  Socialbook </a>"+
+             "<a href='https://dry-fortress-71234.herokuapp.com/'>Socialbook </a>"+
              "<br> Cordialement,</html>"
                
       };

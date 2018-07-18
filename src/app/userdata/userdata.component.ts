@@ -7,6 +7,7 @@ import {CommentService} from '../comment.service';
 import { WebsocketService } from '../websocket.service';
 import { subscribeOn } from 'rxjs/operators';
 import { AngularFireStorage } from 'angularfire2/storage';
+import { MemberActionService } from '../member-action.service';
 
 
 @Component({
@@ -15,8 +16,26 @@ import { AngularFireStorage } from 'angularfire2/storage';
   styleUrls: ['./userdata.component.css']
 })
 export class UserdataComponent implements OnInit {
-userData =  User;
-  constructor(private commentService: CommentService, private auth: AuthService, private afStorage:AngularFireStorage   ) {
+userData = User;
+step=0;
+keyword = {
+  name:''
+};
+
+member ={
+  first_name:'',
+  pseudo:'',
+  _id:'',
+}
+currentUser_id;
+messageErreur;
+resultList:any[];
+  constructor(private commentService: CommentService,
+     private auth: AuthService,
+     private afStorage:AngularFireStorage,
+     private memberActionService: MemberActionService,
+    
+    ) {
   }
 
   ngOnInit() {
@@ -25,7 +44,7 @@ userData =  User;
     .subscribe(
       data => {
         this.userData =  data.user;
-        console.log(this.userData)
+        this.currentUser_id= data.user._id
       }
     )
     
@@ -36,5 +55,53 @@ userData =  User;
     console.log('fait')
   }
  
+  setStep(index: number) {
+    this.step = index;
+  }
+
+  nextStep() {
+    this.step++;
+  }
+
+  prevStep() {
+    this.step--;
+  }
+  
+
+  removeFromList(member){
+    
+
+  }
+
+  searchfriend(){
+    console.log(this.keyword)
+    this.memberActionService.searchResult(this.keyword)
+    .subscribe(
+      res => {
+        //Liste non vide..
+        if(res.length>0){
+          this.resultList = res;
+          console.log('liste amis trouvé : ',this.resultList);
+        }else {
+          console.log(res.message)
+          this.messageErreur=res.message
+
+        }
+        
+         
+        
+          
+      })
+    
+  }
+
+
+  sendInvitationrequest() {
+    this.memberActionService.add_friend(this.resultList[0])
+    .subscribe(
+      res => {
+        console.log('ki es ce q',res)
+      }) 
+  }
 
 }

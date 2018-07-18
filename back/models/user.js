@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
+const friends = require("mongoose-friends")
 
-const Schema = mongoose.Schema;
-
-const userSchema = new Schema({
+var Schema = mongoose.Schema;
+var userSchema = new Schema({
   first_name: String,
   last_name: String,
   pseudo: String,
@@ -16,4 +16,5 @@ const userSchema = new Schema({
 
 });
 
+userSchema.plugin(friends)
 module.exports = mongoose.model('user', userSchema, 'users');

@@ -8,9 +8,12 @@ var generator = require ('generate-password');
 var bcrypt = require('bcrypt')
 //Models
 const User = require ('./models/user.js');
-const Comment = require ('./models/comment');
-const SentPassword = require ('./mails/sendPassword')
-const Register =  require ('./mails/register')
+const Comment = require ('./models/comment.js');
+const SentPassword = require ('./mails/sendPassword.js');
+const SendNotificationFriendRequest = require ('./mails/sendNotifications')
+const Register =  require ('./mails/register.js');
+const FriendRequest =  require('./member/member_request.js')
+
 
 
 //Mongodb
@@ -112,7 +115,7 @@ router.post('/login', (req, res)=> {
 });
 
 
-
+// Recup des infos utilisateurs (membres)
 router.get('/userdata',veriFyToken ,(req, res) => {
 
   User.findOne({_id:currentUserId}, (err, user)=>{
@@ -123,6 +126,7 @@ router.get('/userdata',veriFyToken ,(req, res) => {
 
 })
 
+
 router.get('/',(req, res) => {
 
 res.send({message: 'connecté'})
@@ -130,6 +134,10 @@ res.send({message: 'connecté'})
 })
 
 
+
+
+
+// Mise a jour des données membre email et pseudo (nom et prenom ne changes pas)
 router.post('/update',veriFyToken, (req,res)=> {
  User.findById(req.body._id).exec((err,data) => {
 
@@ -256,24 +264,36 @@ router.get('/comments', (req,res) => {
 
 })
 
+//recherche de membre
 router.post('/member',veriFyToken, (req,res)=> {
-  let key = req.body.name
-  User.find({email:key},(err, data) =>{
-    if(err) throw err;
-    if(data.length>0){
-      console.log(data);
-      res.json(data)
-    }else {
-      console.log(data);
-     res.json({message:'pas de membre trouvé avec cette adresse email'})
-    }
-     
-  })
- 
+
+   //find if email request exist
+   console.log(req.body);
+   let key = req.body.name;
+   User.find({ $or: [{pseudo:key},{last_name:key}, {first_name: key}]} ,(err, data) =>{
+     if(err) throw err;
+     if(data.length>0){
+       console.log('demande de friend',data)
+       res.json(data)
+     }else {
+       console.log(data);
+      res.json({message:'Aucun membre trouvé'})
+     }
+      
+   })
 })
 
 
-router.post('/notification')
+//Ajouter un amis
+router.post('/addfriend', (req,res) => {
+  var member= req.body
+  SendNotificationFriendRequest(member.email,member.last_name); 
+  res.json({response:"Demande d'ajout d'amis envoyé a "+member.last_name+ " "+member.first_name})
+
+
+
+})
+
 
 
 module.exports= router;

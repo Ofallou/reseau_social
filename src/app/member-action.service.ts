@@ -6,9 +6,18 @@ import * as io from 'socket.io-client';
 
 @Injectable()
 export class MemberActionService {
-  private _findMember = 'http://localhost:5000/api/member';
-  private socket = io(Config.SOCKET_HOST);
+  member = {
+    _id:'',
+    email : '',
+    password : ''
+  };
+ 
+  url = Config.SOCKET_HOST || "http://localhost";
+  private _findMember = this.url+'/api/member';
+  private _addFriendUrl= this.url+'/api/addfriend';
 
+  private socket = io(Config.SOCKET_HOST);
+  
   constructor(private http:HttpClient) { }
    
 /*   onSearch(){
@@ -27,5 +36,13 @@ export class MemberActionService {
 
   searchResult(keyword) {
     return this.http.post<any>(this._findMember, keyword);
+  }
+
+
+  add_friend (member){
+    
+    console.log('******************',member)
+    
+        return this.http.post<any>(this._addFriendUrl, member)
   }
 }

@@ -3,7 +3,25 @@
   }
 
   .container {
-      width: 800px;
+      margin-top: 5%;
       display:flex;
       flex-flow: row wrap;
+      justify-content: space-around;
   }
+
+
+  .example-headers-align .mat-expansion-panel-header-title, 
+.example-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+mat-list-item  img {
+  width: 46px;
+  border-radius: 50%;
+  padding-right: 10px;
+}

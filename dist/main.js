@@ -199,6 +199,7 @@ var routes = [
     { path: 'register', component: _register_register_component__WEBPACK_IMPORTED_MODULE_4__["RegisterComponent"] },
     { path: 'lostpwd', component: _lost_password_lost_password_component__WEBPACK_IMPORTED_MODULE_7__["LostPasswordComponent"] },
     { path: 'passCode/:id', component: _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_12__["NewPasswordComponent"] },
+    { path: 'sendRequestInvitation/:id', component: _userdata_userdata_component__WEBPACK_IMPORTED_MODULE_6__["UserdataComponent"] },
     { path: 'userdata', component: _userdata_userdata_component__WEBPACK_IMPORTED_MODULE_6__["UserdataComponent"],
         canActivate: [_auth_guard__WEBPACK_IMPORTED_MODULE_8__["AuthGuard"]] },
     { path: 'user-settings', component: _user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_9__["UserSettingsComponent"],
@@ -306,36 +307,39 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_material_select__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/material/select */ "./node_modules/@angular/material/esm5/select.es5.js");
 /* harmony import */ var _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/cdk/layout */ "./node_modules/@angular/cdk/esm5/layout.es5.js");
 /* harmony import */ var _angular_material_badge__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/material/badge */ "./node_modules/@angular/material/esm5/badge.es5.js");
-/* harmony import */ var _token_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./token.service */ "./src/app/token.service.ts");
-/* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./auth.service */ "./src/app/auth.service.ts");
-/* harmony import */ var _lost_password_lost_password_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./lost-password/lost-password.component */ "./src/app/lost-password/lost-password.component.ts");
-/* harmony import */ var _auth_guard__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./auth.guard */ "./src/app/auth.guard.ts");
-/* harmony import */ var _comments_comments_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./comments/comments.component */ "./src/app/comments/comments.component.ts");
-/* harmony import */ var _comment_service__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./comment.service */ "./src/app/comment.service.ts");
-/* harmony import */ var _uploader_uploader_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./uploader/uploader.component */ "./src/app/uploader/uploader.component.ts");
-/* harmony import */ var _user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./user-settings/user-settings.component */ "./src/app/user-settings/user-settings.component.ts");
-/* harmony import */ var _websocket_service__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./websocket.service */ "./src/app/websocket.service.ts");
-/* harmony import */ var _stats_stats_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./stats/stats.component */ "./src/app/stats/stats.component.ts");
-/* harmony import */ var _header_header_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./header/header.component */ "./src/app/header/header.component.ts");
-/* harmony import */ var _member_search_member_search_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./member-search/member-search.component */ "./src/app/member-search/member-search.component.ts");
-/* harmony import */ var _member_action_service__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./member-action.service */ "./src/app/member-action.service.ts");
-/* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @angular/platform-browser/animations */ "./node_modules/@angular/platform-browser/fesm5/animations.js");
-/* harmony import */ var _main_main_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./main/main.component */ "./src/app/main/main.component.ts");
-/* harmony import */ var _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./navigation/navigation.component */ "./src/app/navigation/navigation.component.ts");
-/* harmony import */ var _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! @angular/material/tooltip */ "./node_modules/@angular/material/esm5/tooltip.es5.js");
-/* harmony import */ var _admin_dashboard_admin_dashboard_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./admin-dashboard/admin-dashboard.component */ "./src/app/admin-dashboard/admin-dashboard.component.ts");
-/* harmony import */ var _admin_guard__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./admin.guard */ "./src/app/admin.guard.ts");
-/* harmony import */ var angularfire2__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! angularfire2 */ "./node_modules/angularfire2/index.js");
-/* harmony import */ var angularfire2_storage__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! angularfire2/storage */ "./node_modules/angularfire2/storage/index.js");
-/* harmony import */ var _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./new-password/new-password.component */ "./src/app/new-password/new-password.component.ts");
-/* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! @angular/material/dialog */ "./node_modules/@angular/material/esm5/dialog.es5.js");
-/* harmony import */ var _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! @angular/material/snack-bar */ "./node_modules/@angular/material/esm5/snack-bar.es5.js");
+/* harmony import */ var _angular_material_expansion__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/material/expansion */ "./node_modules/@angular/material/esm5/expansion.es5.js");
+/* harmony import */ var _token_service__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./token.service */ "./src/app/token.service.ts");
+/* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./auth.service */ "./src/app/auth.service.ts");
+/* harmony import */ var _lost_password_lost_password_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./lost-password/lost-password.component */ "./src/app/lost-password/lost-password.component.ts");
+/* harmony import */ var _auth_guard__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./auth.guard */ "./src/app/auth.guard.ts");
+/* harmony import */ var _comments_comments_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./comments/comments.component */ "./src/app/comments/comments.component.ts");
+/* harmony import */ var _comment_service__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./comment.service */ "./src/app/comment.service.ts");
+/* harmony import */ var _uploader_uploader_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./uploader/uploader.component */ "./src/app/uploader/uploader.component.ts");
+/* harmony import */ var _user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./user-settings/user-settings.component */ "./src/app/user-settings/user-settings.component.ts");
+/* harmony import */ var _websocket_service__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./websocket.service */ "./src/app/websocket.service.ts");
+/* harmony import */ var _stats_stats_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./stats/stats.component */ "./src/app/stats/stats.component.ts");
+/* harmony import */ var _header_header_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./header/header.component */ "./src/app/header/header.component.ts");
+/* harmony import */ var _member_search_member_search_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./member-search/member-search.component */ "./src/app/member-search/member-search.component.ts");
+/* harmony import */ var _member_action_service__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./member-action.service */ "./src/app/member-action.service.ts");
+/* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @angular/platform-browser/animations */ "./node_modules/@angular/platform-browser/fesm5/animations.js");
+/* harmony import */ var _main_main_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./main/main.component */ "./src/app/main/main.component.ts");
+/* harmony import */ var _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./navigation/navigation.component */ "./src/app/navigation/navigation.component.ts");
+/* harmony import */ var _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! @angular/material/tooltip */ "./node_modules/@angular/material/esm5/tooltip.es5.js");
+/* harmony import */ var _admin_dashboard_admin_dashboard_component__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./admin-dashboard/admin-dashboard.component */ "./src/app/admin-dashboard/admin-dashboard.component.ts");
+/* harmony import */ var _admin_guard__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./admin.guard */ "./src/app/admin.guard.ts");
+/* harmony import */ var angularfire2__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! angularfire2 */ "./node_modules/angularfire2/index.js");
+/* harmony import */ var angularfire2_storage__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! angularfire2/storage */ "./node_modules/angularfire2/storage/index.js");
+/* harmony import */ var _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./new-password/new-password.component */ "./src/app/new-password/new-password.component.ts");
+/* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! @angular/material/dialog */ "./node_modules/@angular/material/esm5/dialog.es5.js");
+/* harmony import */ var _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! @angular/material/snack-bar */ "./node_modules/@angular/material/esm5/snack-bar.es5.js");
+/* harmony import */ var _friendslist_friendslist_component__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./friendslist/friendslist.component */ "./src/app/friendslist/friendslist.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -377,6 +381,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -388,17 +393,18 @@ var AppModule = /** @class */ (function () {
                 _register_register_component__WEBPACK_IMPORTED_MODULE_5__["RegisterComponent"],
                 _login_login_component__WEBPACK_IMPORTED_MODULE_6__["LoginComponent"],
                 _userdata_userdata_component__WEBPACK_IMPORTED_MODULE_7__["UserdataComponent"],
-                _lost_password_lost_password_component__WEBPACK_IMPORTED_MODULE_18__["LostPasswordComponent"],
-                _comments_comments_component__WEBPACK_IMPORTED_MODULE_20__["CommentsComponent"],
-                _uploader_uploader_component__WEBPACK_IMPORTED_MODULE_22__["UploaderComponent"],
-                _user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_23__["UserSettingsComponent"],
-                _stats_stats_component__WEBPACK_IMPORTED_MODULE_25__["StatsComponent"],
-                _header_header_component__WEBPACK_IMPORTED_MODULE_26__["HeaderComponent"],
-                _member_search_member_search_component__WEBPACK_IMPORTED_MODULE_27__["MemberSearchComponent"],
-                _main_main_component__WEBPACK_IMPORTED_MODULE_30__["MainComponent"],
-                _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_31__["NavigationComponent"],
-                _admin_dashboard_admin_dashboard_component__WEBPACK_IMPORTED_MODULE_33__["AdminDashboardComponent"],
-                _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_37__["NewPasswordComponent"]
+                _lost_password_lost_password_component__WEBPACK_IMPORTED_MODULE_19__["LostPasswordComponent"],
+                _comments_comments_component__WEBPACK_IMPORTED_MODULE_21__["CommentsComponent"],
+                _uploader_uploader_component__WEBPACK_IMPORTED_MODULE_23__["UploaderComponent"],
+                _user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_24__["UserSettingsComponent"],
+                _stats_stats_component__WEBPACK_IMPORTED_MODULE_26__["StatsComponent"],
+                _header_header_component__WEBPACK_IMPORTED_MODULE_27__["HeaderComponent"],
+                _member_search_member_search_component__WEBPACK_IMPORTED_MODULE_28__["MemberSearchComponent"],
+                _main_main_component__WEBPACK_IMPORTED_MODULE_31__["MainComponent"],
+                _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_32__["NavigationComponent"],
+                _admin_dashboard_admin_dashboard_component__WEBPACK_IMPORTED_MODULE_34__["AdminDashboardComponent"],
+                _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_38__["NewPasswordComponent"],
+                _friendslist_friendslist_component__WEBPACK_IMPORTED_MODULE_41__["FriendslistComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -423,12 +429,13 @@ var AppModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatRadioModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatTableModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatCheckboxModule"],
-                _angular_material_dialog__WEBPACK_IMPORTED_MODULE_38__["MatDialogModule"],
-                _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_39__["MatSnackBarModule"],
-                _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_29__["BrowserAnimationsModule"],
+                _angular_material_dialog__WEBPACK_IMPORTED_MODULE_39__["MatDialogModule"],
+                _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_40__["MatSnackBarModule"],
+                _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_30__["BrowserAnimationsModule"],
+                _angular_material_expansion__WEBPACK_IMPORTED_MODULE_16__["MatExpansionModule"],
                 _angular_material_badge__WEBPACK_IMPORTED_MODULE_15__["MatBadgeModule"],
-                _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_32__["MatTooltipModule"],
-                angularfire2__WEBPACK_IMPORTED_MODULE_35__["AngularFireModule"].initializeApp({
+                _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_33__["MatTooltipModule"],
+                angularfire2__WEBPACK_IMPORTED_MODULE_36__["AngularFireModule"].initializeApp({
                     apiKey: "AIzaSyAlSqMwKKhmxwcaV2yV0JakW1Z3FC-8d3Q",
                     authDomain: "reseau-social-c1b9a.firebaseapp.com",
                     databaseURL: "https://reseau-social-c1b9a.firebaseio.com",
@@ -436,12 +443,12 @@ var AppModule = /** @class */ (function () {
                     storageBucket: "reseau-social-c1b9a.appspot.com",
                     messagingSenderId: "217716745845"
                 }),
-                angularfire2_storage__WEBPACK_IMPORTED_MODULE_36__["AngularFireStorageModule"]
+                angularfire2_storage__WEBPACK_IMPORTED_MODULE_37__["AngularFireStorageModule"]
             ],
-            providers: [_auth_service__WEBPACK_IMPORTED_MODULE_17__["AuthService"], _admin_guard__WEBPACK_IMPORTED_MODULE_34__["AdminGuard"], _auth_guard__WEBPACK_IMPORTED_MODULE_19__["AuthGuard"], _websocket_service__WEBPACK_IMPORTED_MODULE_24__["WebsocketService"], _comment_service__WEBPACK_IMPORTED_MODULE_21__["CommentService"], _member_action_service__WEBPACK_IMPORTED_MODULE_28__["MemberActionService"],
+            providers: [_auth_service__WEBPACK_IMPORTED_MODULE_18__["AuthService"], _admin_guard__WEBPACK_IMPORTED_MODULE_35__["AdminGuard"], _auth_guard__WEBPACK_IMPORTED_MODULE_20__["AuthGuard"], _websocket_service__WEBPACK_IMPORTED_MODULE_25__["WebsocketService"], _comment_service__WEBPACK_IMPORTED_MODULE_22__["CommentService"], _member_action_service__WEBPACK_IMPORTED_MODULE_29__["MemberActionService"],
                 {
                     provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_8__["HTTP_INTERCEPTORS"],
-                    useClass: _token_service__WEBPACK_IMPORTED_MODULE_16__["TokenService"],
+                    useClass: _token_service__WEBPACK_IMPORTED_MODULE_17__["TokenService"],
                     multi: true
                 }],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]]
@@ -539,6 +546,7 @@ var AuthService = /** @class */ (function () {
         this.http = http;
         this._router = _router;
         this.user = {
+            _id: '',
             email: '',
             password: ''
         };
@@ -620,7 +628,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
 /* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var _app_config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../app/config */ "./src/app/config.ts");
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./config */ "./src/app/config.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -640,10 +648,10 @@ var CommentService = /** @class */ (function () {
     function CommentService(http, _router) {
         this.http = http;
         this._router = _router;
-        this.url = _app_config__WEBPACK_IMPORTED_MODULE_5__["Config"].SOCKET_HOST || "http://localhost";
+        this.url = _config__WEBPACK_IMPORTED_MODULE_5__["Config"].SOCKET_HOST || "http://localhost";
         this._postCommentUrl = this.url + '/api/post_comment';
         this._getUserCommentsUrl = this.url + '/api/comments';
-        this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_3__(_app_config__WEBPACK_IMPORTED_MODULE_5__["Config"].SOCKET_HOST);
+        this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_3__(_config__WEBPACK_IMPORTED_MODULE_5__["Config"].SOCKET_HOST);
     }
     ;
     CommentService.prototype.onBegin = function () {
@@ -809,6 +817,72 @@ var Config = /** @class */ (function () {
         configurable: true
     });
     return Config;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/friendslist/friendslist.component.css":
+/*!*******************************************************!*\
+  !*** ./src/app/friendslist/friendslist.component.css ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/friendslist/friendslist.component.html":
+/*!********************************************************!*\
+  !*** ./src/app/friendslist/friendslist.component.html ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  friendslist works!\n</p>\n"
+
+/***/ }),
+
+/***/ "./src/app/friendslist/friendslist.component.ts":
+/*!******************************************************!*\
+  !*** ./src/app/friendslist/friendslist.component.ts ***!
+  \******************************************************/
+/*! exports provided: FriendslistComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FriendslistComponent", function() { return FriendslistComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var FriendslistComponent = /** @class */ (function () {
+    function FriendslistComponent(authService) {
+        this.authService = authService;
+    }
+    FriendslistComponent.prototype.ngOnInit = function () {
+    };
+    FriendslistComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-friendslist',
+            template: __webpack_require__(/*! ./friendslist.component.html */ "./src/app/friendslist/friendslist.component.html"),
+            styles: [__webpack_require__(/*! ./friendslist.component.css */ "./src/app/friendslist/friendslist.component.css")]
+        }),
+        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"]])
+    ], FriendslistComponent);
+    return FriendslistComponent;
 }());
 
 
@@ -1332,7 +1406,14 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var MemberActionService = /** @class */ (function () {
     function MemberActionService(http) {
         this.http = http;
-        this._findMember = 'http://localhost:5000/api/member';
+        this.member = {
+            _id: '',
+            email: '',
+            password: ''
+        };
+        this.url = _config__WEBPACK_IMPORTED_MODULE_2__["Config"].SOCKET_HOST || "http://localhost";
+        this._findMember = this.url + '/api/member';
+        this._addFriendUrl = this.url + '/api/addfriend';
         this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_3__(_config__WEBPACK_IMPORTED_MODULE_2__["Config"].SOCKET_HOST);
     }
     /*   onSearch(){
@@ -1350,6 +1431,10 @@ var MemberActionService = /** @class */ (function () {
       } */
     MemberActionService.prototype.searchResult = function (keyword) {
         return this.http.post(this._findMember, keyword);
+    };
+    MemberActionService.prototype.add_friend = function (member) {
+        console.log('******************', member);
+        return this.http.post(this._addFriendUrl, member);
     };
     MemberActionService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
@@ -1462,6 +1547,9 @@ var User = /** @class */ (function () {
         this.picture = user.picture;
         this.friendList = user.friendsList;
     }
+    User._id = function (arg0) {
+        throw new Error("Method not implemented.");
+    };
     return User;
 }());
 
@@ -1998,7 +2086,7 @@ var UserSettingsComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".card {\n    width: 400px;\n  }\n\n  .container {\n      width: 800px;\n      display:flex;\n      flex-flow: row wrap;\n  }"
+module.exports = ".card {\n    width: 400px;\n  }\n\n  .container {\n      margin-top: 5%;\n      display:flex;\n      flex-flow: row wrap;\n      justify-content: space-around;\n  }\n\n  .example-headers-align .mat-expansion-panel-header-title, \n.example-headers-align .mat-expansion-panel-header-description {\n  flex-basis: 0;\n}\n\n  .example-headers-align .mat-expansion-panel-header-description {\n  justify-content: space-between;\n  align-items: center;\n}\n\n  mat-list-item  img {\n  width: 46px;\n  border-radius: 50%;\n  padding-right: 10px;\n}"
 
 /***/ }),
 
@@ -2009,7 +2097,7 @@ module.exports = ".card {\n    width: 400px;\n  }\n\n  .container {\n      width
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n    <mat-card class=\"card\">\n        <mat-card-header>\n          <mat-card-title>\n            {{userData.first_name}}\n            {{userData.last_name}}\n                </mat-card-title>\n          <mat-card-subtitle>\n            {{userData.pseudo}}\n            <img src=\" {{userData.picture}}\" alt=\"\">\n          </mat-card-subtitle>\n        </mat-card-header>\n        <mat-card-content>\n        </mat-card-content>\n      </mat-card>\n</div>\n\n<app-comments></app-comments>\n"
+module.exports = "<div class=\"container\">\n    <div>\n        <mat-card class=\"card\">\n            <mat-card-header>\n              <mat-card-title>\n                {{userData.first_name}}\n                {{userData.last_name}}\n                    </mat-card-title>\n              <mat-card-subtitle>\n                {{userData.pseudo}}\n                <img src=\" {{userData.picture}}\" alt=\"\">\n              </mat-card-subtitle>\n            </mat-card-header>\n            <mat-card-content>\n            </mat-card-content>\n          </mat-card>\n    </div>\n  \n\n      <div class=\"request\">\n        <form class=\"example-form\" #search=\"ngForm\" >\n        <mat-accordion class=\"example-headers-align\">\n          <mat-expansion-panel [expanded]=\"step === 0\" (opened)=\"setStep(0)\" hideToggle>\n            <mat-expansion-panel-header>\n              <mat-panel-title>\n                recherche de membre\n              </mat-panel-title>\n              <mat-panel-description>\n          \n                <mat-icon>account_circle</mat-icon>\n              </mat-panel-description>\n            </mat-expansion-panel-header>\n        \n            <mat-form-field>\n              <input matInput placeholder=\"nom, prenom ou pseudo\" name=\"name\" [(ngModel)]=\"keyword.name\" \n              >\n              \n            </mat-form-field>\n            <button type=\"submit\" mat-button color=\"primary\" (click)=\"searchfriend()\" >OK</button>\n\n            <mat-list *ngFor=\"let member of resultList\">\n              \n                <mat-list-item> \n                 <form class=\"example-form\" >\n                    <mat-form-field>\n                      <input matInput name=\"_id\" [ngModel]=\"member._id\">\n                    </mat-form-field>\n                    <img src=\" {{userData.picture}}\" alt=\"\"> {{member.first_name}} {{member.pseudo}} \n                    \n                    <button type=\"submit\" mat-button (click)=\"sendInvitationrequest(member)\" >value</button>\n                  </form>\n                 </mat-list-item>\n      \n               </mat-list>\n            \n        \n            <mat-action-row>\n              <button mat-button color=\"primary\" (click)=\"nextStep()\">Next</button>\n            </mat-action-row>\n          </mat-expansion-panel>\n        \n          <mat-expansion-panel [expanded]=\"step === 1\" (opened)=\"setStep(1)\" hideToggle>\n            <mat-expansion-panel-header>\n              <mat-panel-title>\n                Demandes d'ajout\n              </mat-panel-title>\n              <mat-panel-description>\n                Liste des demandes d'ajout\n                <mat-icon>map</mat-icon>\n              </mat-panel-description>\n            </mat-expansion-panel-header>\n        \n            <mat-form-field>\n              <input matInput placeholder=\"Country\">\n            </mat-form-field>\n        \n            <mat-action-row>\n              <button mat-button color=\"warn\" (click)=\"prevStep()\">Previous</button>\n            </mat-action-row>\n          </mat-expansion-panel>\n        \n        \n        \n        </mat-accordion>\n      </form>\n      </div>\n      \n</div>\n\n\n<!-- <app-comments></app-comments> -->\n"
 
 /***/ }),
 
@@ -2028,6 +2116,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
 /* harmony import */ var _comment_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../comment.service */ "./src/app/comment.service.ts");
 /* harmony import */ var angularfire2_storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! angularfire2/storage */ "./node_modules/angularfire2/storage/index.js");
+/* harmony import */ var _member_action_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../member-action.service */ "./src/app/member-action.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2042,24 +2131,68 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var UserdataComponent = /** @class */ (function () {
-    function UserdataComponent(commentService, auth, afStorage) {
+    function UserdataComponent(commentService, auth, afStorage, memberActionService) {
         this.commentService = commentService;
         this.auth = auth;
         this.afStorage = afStorage;
+        this.memberActionService = memberActionService;
         this.userData = _models_user__WEBPACK_IMPORTED_MODULE_1__["User"];
+        this.step = 0;
+        this.keyword = {
+            name: ''
+        };
+        this.member = {
+            first_name: '',
+            pseudo: '',
+            _id: '',
+        };
     }
     UserdataComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.auth.getData()
             .subscribe(function (data) {
             _this.userData = data.user;
-            console.log(_this.userData);
+            _this.currentUser_id = data.user._id;
         });
     };
     UserdataComponent.prototype.upload = function (event) {
         this.afStorage.upload('/', event.target.files[0]);
         console.log('fait');
+    };
+    UserdataComponent.prototype.setStep = function (index) {
+        this.step = index;
+    };
+    UserdataComponent.prototype.nextStep = function () {
+        this.step++;
+    };
+    UserdataComponent.prototype.prevStep = function () {
+        this.step--;
+    };
+    UserdataComponent.prototype.removeFromList = function (member) {
+    };
+    UserdataComponent.prototype.searchfriend = function () {
+        var _this = this;
+        console.log(this.keyword);
+        this.memberActionService.searchResult(this.keyword)
+            .subscribe(function (res) {
+            //Liste non vide..
+            if (res.length > 0) {
+                _this.resultList = res;
+                console.log('liste amis trouvé : ', _this.resultList);
+            }
+            else {
+                console.log(res.message);
+                _this.messageErreur = res.message;
+            }
+        });
+    };
+    UserdataComponent.prototype.sendInvitationrequest = function () {
+        this.memberActionService.add_friend(this.resultList[0])
+            .subscribe(function (res) {
+            console.log('ki es ce q', res);
+        });
     };
     UserdataComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -2067,7 +2200,10 @@ var UserdataComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./userdata.component.html */ "./src/app/userdata/userdata.component.html"),
             styles: [__webpack_require__(/*! ./userdata.component.css */ "./src/app/userdata/userdata.component.css")]
         }),
-        __metadata("design:paramtypes", [_comment_service__WEBPACK_IMPORTED_MODULE_3__["CommentService"], _auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"], angularfire2_storage__WEBPACK_IMPORTED_MODULE_4__["AngularFireStorage"]])
+        __metadata("design:paramtypes", [_comment_service__WEBPACK_IMPORTED_MODULE_3__["CommentService"],
+            _auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"],
+            angularfire2_storage__WEBPACK_IMPORTED_MODULE_4__["AngularFireStorage"],
+            _member_action_service__WEBPACK_IMPORTED_MODULE_5__["MemberActionService"]])
     ], UserdataComponent);
     return UserdataComponent;
 }());
