@@ -12,7 +12,10 @@ import { User } from './models/user';
 export class CommentService  {
   url = Config.SOCKET_HOST || "http://localhost";;
   private _postCommentUrl = this.url+'/api/post_comment';
-  private _getUserCommentsUrl = this.url+'/api/comments';
+  //For each member's space
+  private _getCommentPostedUrl =this.url+'/api/get_member_comments';
+  //Admin & stats
+  private _getAllUserCommentsUrl = this.url+'/api/comments';
   private socket = io(Config.SOCKET_HOST);
   message:any;
   constructor(private http: HttpClient, private _router: Router) {}
@@ -42,7 +45,9 @@ export class CommentService  {
     return observable;
   }
 
-  
+getMemberComments (){
+  return this.http.get<any>(this._getCommentPostedUrl)
+}
  
 postMessage(data) {
   this.socket.emit('posted', data)
@@ -54,7 +59,7 @@ postComment(comment) {
 } 
 
 getComments() {
-  return this.http.get<any>(this._getUserCommentsUrl);
+  return this.http.get<any>(this._getAllUserCommentsUrl);
 }
 
 comments (){

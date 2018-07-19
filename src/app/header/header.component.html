@@ -24,6 +24,10 @@
       <span><a *ngIf="getUserState()" routerLink="/user-settings" routerLinkActive="active">  <i class="material-icons" matTooltip="Paramettres du compte">
             settings
             </i></a></span>
+      <span><a *ngIf="user.admin" routerLink="/admin" routerLinkActive="active">  <i class="material-icons" matTooltip="Admin">
+            supervised_user_circle
+      </i></a></span>
+
       <span class="example-spacer"></span>
       <!-- <span><a *ngIf="getUserState()"  routerLink="/userdata" routerLinkActive="active"><i class="fas fa-user-circle"></i></a></span> -->
       

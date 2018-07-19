@@ -16,7 +16,9 @@ export class HeaderComponent implements OnInit {
     first_name :'',
     last_name:'',
     email:'',
-    picture:''
+    picture:'',
+    admin:false,
+    online:false,
 
   };
 

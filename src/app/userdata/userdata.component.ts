@@ -8,7 +8,7 @@ import { WebsocketService } from '../websocket.service';
 import { subscribeOn } from 'rxjs/operators';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { MemberActionService } from '../member-action.service';
-
+import { Comment} from '../../app/models/comment';
 
 @Component({
   selector: 'app-userdata',
@@ -22,6 +22,20 @@ keyword = {
   name:''
 };
 
+comment:Comment ={
+  title: '',
+author: '',
+content: '',
+date:null,
+authorId: '',
+authorPicture:'',
+explicit: false
+
+}
+userPicture:String;
+
+comments :Array<any>=[];
+
 member ={
   first_name:'',
   pseudo:'',
@@ -30,22 +44,46 @@ member ={
 currentUser_id;
 messageErreur;
 resultList:any[];
+
   constructor(private commentService: CommentService,
      private auth: AuthService,
      private afStorage:AngularFireStorage,
      private memberActionService: MemberActionService,
     
     ) {
+      this.commentService.onBegin()
+      .subscribe(
+        res => console.log(res)
+      );
+       this.commentService.onPosted()
+      .subscribe(data => {
+        this.comments.splice(0,0,data)
+        console.log("Apres ajout",this.comments)
+      }
+      );
   }
 
   ngOnInit() {
 
     this.auth.getData()
     .subscribe(
+
       data => {
         this.userData =  data.user;
-        this.currentUser_id= data.user._id
+        console.log(this.userData)
+        this.currentUser_id= data.user._id;
+        this.comment.author=data.user.first_name + ' ' +data.user.last_name;
+        this.comment.authorId=this.currentUser_id
+        this.comment.authorPicture = data.user.picture;
       }
+    );
+
+    this.commentService.getMemberComments()
+    .subscribe(
+      res => {
+        this.comments = res.comments;
+        console.log(res)
+      } 
     )
     
   }
@@ -67,10 +105,11 @@ resultList:any[];
     this.step--;
   }
   
-
-  removeFromList(member){
+ // Post copmment on space or friend space
+  posted() {
+    this.comment.date=new Date();
+    this.commentService.postMessage(this.comment)
     
-
   }
 
   searchfriend(){

@@ -41,7 +41,7 @@ module.exports = ".grid-container {\n  margin: 20px;\n}\n\n.dashboard-card {\n  
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"grid-container\">\n  <h1 class=\"mat-h1\">Dashboard</h1>\n  <mat-grid-list cols=\"1\" rowHeight=\"350px\">\n    <mat-grid-tile [colspan]=\"1\" [rowspan]=\"1\">\n      <mat-card class=\"dashboard-card\">\n        <mat-card-header>\n          <mat-card-title>\n           \n            <button mat-icon-button class=\"more-button\" [matMenuTriggerFor]=\"menu\" aria-label=\"Toggle menu\">\n              <mat-icon>more_vert</mat-icon>\n            </button>\n            <mat-menu #menu=\"matMenu\" xPosition=\"before\">\n              <button mat-menu-item>Expand</button>\n              <button mat-menu-item>Remove</button>\n            </mat-menu>\n          </mat-card-title>\n        </mat-card-header>\n        <mat-card-content class=\"dashboard-card-content\">\n          <app-stats></app-stats>\n        </mat-card-content>\n      </mat-card>\n    </mat-grid-tile>\n  </mat-grid-list>\n</div>"
+module.exports = "<div class=\"grid-container\">\n  <h1 class=\"mat-h1\">Dashboard</h1>\n  <mat-grid-list cols=\"1\" rowHeight=\"350px\">\n    <mat-grid-tile [colspan]=\"1\" [rowspan]=\"1\">\n      <mat-card class=\"dashboard-card\">\n        <mat-card-header>\n          <mat-card-title>\n           \n            <button mat-icon-button class=\"more-button\" [matMenuTriggerFor]=\"menu\" aria-label=\"Toggle menu\">\n              <mat-icon>more_vert</mat-icon>\n            </button>\n            <mat-menu #menu=\"matMenu\" xPosition=\"before\">\n              <app-stats></app-stats>\n            </mat-menu>\n          </mat-card-title>\n        </mat-card-header>\n        <mat-card-content class=\"dashboard-card-content\">\n          <app-stats></app-stats>\n        </mat-card-content>\n      </mat-card>\n    </mat-grid-tile>\n  </mat-grid-list>\n</div>"
 
 /***/ }),
 
@@ -662,7 +662,10 @@ var CommentService = /** @class */ (function () {
         this._router = _router;
         this.url = _config__WEBPACK_IMPORTED_MODULE_5__["Config"].SOCKET_HOST || "http://localhost";
         this._postCommentUrl = this.url + '/api/post_comment';
-        this._getUserCommentsUrl = this.url + '/api/comments';
+        //For each member's space
+        this._getCommentPostedUrl = this.url + '/api/get_member_comments';
+        //Admin & stats
+        this._getAllUserCommentsUrl = this.url + '/api/comments';
         this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_3__(_config__WEBPACK_IMPORTED_MODULE_5__["Config"].SOCKET_HOST);
     }
     ;
@@ -686,6 +689,9 @@ var CommentService = /** @class */ (function () {
         });
         return observable;
     };
+    CommentService.prototype.getMemberComments = function () {
+        return this.http.get(this._getCommentPostedUrl);
+    };
     CommentService.prototype.postMessage = function (data) {
         this.socket.emit('posted', data);
         this.postComment(data).subscribe();
@@ -694,7 +700,7 @@ var CommentService = /** @class */ (function () {
         return this.http.post(this._postCommentUrl, comment);
     };
     CommentService.prototype.getComments = function () {
-        return this.http.get(this._getUserCommentsUrl);
+        return this.http.get(this._getAllUserCommentsUrl);
     };
     CommentService.prototype.comments = function () {
     };
@@ -919,7 +925,7 @@ module.exports = "\n.example-icon {\n  padding: 0 14px;\n}\n\n.example-spacer {\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<mat-toolbar color=\"primary\">\n   <mat-toolbar-row>\n        <span>Réseau Social</span>\n        <span class=\"example-spacer\"></span>\n        \n             <a routerLink=\"/\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Page d'accueil\">\n            home\n            </i></a> \n        <span class=\"example-spacer\"></span>\n        <div class=\"infos\">\n            <div>\n                <a routerLink=\"userdata\" matTooltip=\"Mon espace \"><img src=\"{{user.picture}}\"  alt=\"\"></a>            \n            </div>\n            <div>\n                {{user.first_name}} {{user.last_name}} \n            </div>\n           </div>\n           <span class=\"example-spacer\"></span>\n      \n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"!getUserState()\"  routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"user outline icon\"></i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\" routerLink=\"/user-settings\" routerLinkActive=\"active\">  <i class=\"material-icons\" matTooltip=\"Paramettres du compte\">\n            settings\n            </i></a></span>\n      <span class=\"example-spacer\"></span>\n      <!-- <span><a *ngIf=\"getUserState()\"  routerLink=\"/userdata\" routerLinkActive=\"active\"><i class=\"fas fa-user-circle\"></i></a></span> -->\n      \n      <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Membre - Se connecter\">\n            account_circle\n            </i></a>\n      <span><a *ngIf=\"getUserState()\"  (click)=\"logoutUser()\" href=\"/home\"><i class=\"material-icons\"  matTooltip=\"Se deconnecter\"\n        >\n            input\n            </i></a></span>\n      \n    </mat-toolbar-row>\n  </mat-toolbar>\n  "
+module.exports = "\n<mat-toolbar color=\"primary\">\n   <mat-toolbar-row>\n        <span>Réseau Social</span>\n        <span class=\"example-spacer\"></span>\n        \n             <a routerLink=\"/\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Page d'accueil\">\n            home\n            </i></a> \n        <span class=\"example-spacer\"></span>\n        <div class=\"infos\">\n            <div>\n                <a routerLink=\"userdata\" matTooltip=\"Mon espace \"><img src=\"{{user.picture}}\"  alt=\"\"></a>            \n            </div>\n            <div>\n                {{user.first_name}} {{user.last_name}} \n            </div>\n           </div>\n           <span class=\"example-spacer\"></span>\n      \n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"!getUserState()\"  routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"user outline icon\"></i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\" routerLink=\"/user-settings\" routerLinkActive=\"active\">  <i class=\"material-icons\" matTooltip=\"Paramettres du compte\">\n            settings\n            </i></a></span>\n      <span><a *ngIf=\"user.admin\" routerLink=\"/admin\" routerLinkActive=\"active\">  <i class=\"material-icons\" matTooltip=\"Admin\">\n            supervised_user_circle\n      </i></a></span>\n\n      <span class=\"example-spacer\"></span>\n      <!-- <span><a *ngIf=\"getUserState()\"  routerLink=\"/userdata\" routerLinkActive=\"active\"><i class=\"fas fa-user-circle\"></i></a></span> -->\n      \n      <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Membre - Se connecter\">\n            account_circle\n            </i></a>\n      <span><a *ngIf=\"getUserState()\"  (click)=\"logoutUser()\" href=\"/home\"><i class=\"material-icons\"  matTooltip=\"Se deconnecter\"\n        >\n            input\n            </i></a></span>\n      \n    </mat-toolbar-row>\n  </mat-toolbar>\n  "
 
 /***/ }),
 
@@ -955,7 +961,9 @@ var HeaderComponent = /** @class */ (function () {
             first_name: '',
             last_name: '',
             email: '',
-            picture: ''
+            picture: '',
+            admin: false,
+            online: false,
         };
     }
     HeaderComponent.prototype.ngOnInit = function () {
@@ -1012,7 +1020,7 @@ module.exports = ".card-image > img  {\n    width: 128px;\n  height: 128px;\n}\n
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<div class=\"container\">\n             \n   <div class=\"card\">\n     <p style=\"width: 40px;height: 5px;\">\n        <span class=\"test\" matBadgePosition=\"above after\" matBadge=\"{{commentsArray.length}}\">Posts</span>\n     </p>\n    \n   </div>           \n\n\n\n <div class=\"col s6\" *ngIf=!isMember>\n   <p>Visiteurs : Creer un compte pour poster des messages et discuter avec vos amis</p>\n </div>\n \n\n <div class=\"col s6\" *ngIf=isMember>\n   </div>\n  \n  \n    <mat-card class=\"example-card\" *ngIf=isMember>\n      <article >\n        <form class=\"example-form\" #commentF=\"ngForm\" (submit)=\"posted();commentF.reset()\" >\n      <mat-form-field>\n        <input matInput placeholder=\"titre du message\" name=\"title\" id=\"titre\" [(ngModel)]=\"comment.title\" required >\n      </mat-form-field>\n       <br>\n      <mat-form-field class=\"example-full-width\">\n        <textarea matInput placeholder=\"Poster un commentaire......\" name=\"comment\" [(ngModel)]=\"comment.content\"></textarea>\n      </mat-form-field>\n       <br>\n           \n      <button type=\"submit\" mat-fab color=\"accent\" [disabled]=\"!commentF.form.valid\">Poster\n       \n      </button>\n\n  </form>\n        \n    </article>\n    </mat-card>\n</div>\n\n<div class=\"container\">\n  \n\n  <mat-card class=\"example-card\" *ngFor=\"let comment of commentsArray\">\n    <mat-card-header>\n      <div mat-card-avatar class=\"example-header-image\">\n        <img src=\"{{comment.authorPicture}}\" style=\"width: 46px;\" alt=\"\">\n      </div>\n      <mat-card-title>{{comment.author }} </mat-card-title>\n      <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}</mat-card-subtitle>\n    </mat-card-header>\n    <h4> {{comment.title}}</h4>\n   \n    <mat-card-content>\n      <p>\n        {{comment.content}}\n      </p>\n    </mat-card-content>\n   \n  </mat-card>\n</div>\n\n"
+module.exports = "\n<div class=\"container\">\n             \n   <div class=\"card\">\n     <p style=\"width: 40px;height: 5px;\">\n        <span class=\"test\" matBadgePosition=\"above after\" matBadge=\"{{commentsArray.length}}\">Posts</span>\n     </p>\n    \n   </div>           \n\n\n\n <div class=\"col s6\" *ngIf=!isMember>\n   <p>Visiteurs : Creer un compte pour poster des messages et discuter avec vos amis</p>\n </div>\n     \n    <mat-card class=\"example-card\" *ngIf=isMember>\n      <article >\n        <form class=\"example-form\" #commentF=\"ngForm\" (submit)=\"posted();commentF.reset()\" >\n      <mat-form-field>\n        <input matInput placeholder=\"titre du message\" name=\"title\" id=\"titre\" [(ngModel)]=\"comment.title\" required >\n      </mat-form-field>\n       <br>\n      <mat-form-field class=\"example-full-width\">\n        <textarea matInput placeholder=\"Poster un commentaire......\" name=\"comment\" [(ngModel)]=\"comment.content\"></textarea>\n      </mat-form-field>\n       <br>\n           \n      <button type=\"submit\" mat-fab color=\"accent\" [disabled]=\"!commentF.form.valid\">Poster\n       \n      </button>\n\n  </form>\n        \n    </article>\n    </mat-card>\n</div>\n\n<div class=\"container\">\n  \n\n  <mat-card class=\"example-card\" *ngFor=\"let comment of commentsArray\">\n    <mat-card-header>\n      <div mat-card-avatar class=\"example-header-image\">\n        <img src=\"{{comment.authorPicture}}\" style=\"width: 46px;\" alt=\"\">\n      </div>\n      <mat-card-title>{{comment.author }} </mat-card-title>\n      <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}</mat-card-subtitle>\n    </mat-card-header>\n    <h4> {{comment.title}}</h4>\n   \n    <mat-card-content>\n      <p>\n        {{comment.content}}\n      </p>\n    </mat-card-content>\n   \n  </mat-card>\n</div>\n\n"
 
 /***/ }),
 
@@ -2195,7 +2203,7 @@ var UserSettingsComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".card {\n    width: 400px;\n  }\n\n  .container {\n      margin-top: 5%;\n      display:flex;\n      flex-flow: row wrap;\n      justify-content: space-around;\n  }\n\n  .example-headers-align .mat-expansion-panel-header-title, \n.example-headers-align .mat-expansion-panel-header-description {\n  flex-basis: 0;\n}\n\n  .example-headers-align .mat-expansion-panel-header-description {\n  justify-content: space-between;\n  align-items: center;\n}\n\n  mat-list-item  img {\n  width: 46px;\n  border-radius: 50%;\n  padding-right: 10px;\n}"
+module.exports = ".card {\n    width: 200px;\n  }\n\n  .container-fixe {\n   \n      margin-top: 2%;\n      display:flex;\n      flex-flow: row wrap;\n      justify-content: space-around;\n  }\n\n  .example-headers-align .mat-expansion-panel-header-title, \n.example-headers-align .mat-expansion-panel-header-description {\n  flex-basis: 0;\n}\n\n  .example-headers-align .mat-expansion-panel-header-description {\n  justify-content: space-between;\n  align-items: center;\n}\n\n  mat-list-item  img {\n  width: 46px;\n  border-radius: 50%;\n  padding-right: 10px;\n}\n\n  .example-card {\n  width: 300px;\n  height: 100%;\n  margin-bottom: 40px;\n  padding-bottom: 40px;\n  background-color: ivory\n}\n\n  .container {\n  display: flex;\n  flex-flow: column wrap;\n  justify-items: center;\n  padding-left: 25%;\n\n}"
 
 /***/ }),
 
@@ -2206,7 +2214,7 @@ module.exports = ".card {\n    width: 400px;\n  }\n\n  .container {\n      margi
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n    <div>\n        <mat-card class=\"card\">\n            <mat-card-header>\n              <mat-card-title>\n                {{userData.first_name}}\n                {{userData.last_name}}\n                    </mat-card-title>\n              <mat-card-subtitle>\n                {{userData.pseudo}}\n                <img src=\" {{userData.picture}}\" alt=\"\">\n              </mat-card-subtitle>\n            </mat-card-header>\n            <mat-card-content>\n            </mat-card-content>\n          </mat-card>\n    </div>\n    \n  \n\n      <div class=\"request\">\n        <form class=\"example-form\" #search=\"ngForm\" >\n        <mat-accordion class=\"example-headers-align\">\n          <mat-expansion-panel [expanded]=\"step === 0\" (opened)=\"setStep(0)\" hideToggle>\n            <mat-expansion-panel-header>\n              <mat-panel-title>\n                recherche de membre\n              </mat-panel-title>\n              <mat-panel-description>\n          \n                <mat-icon>account_circle</mat-icon>\n              </mat-panel-description>\n            </mat-expansion-panel-header>\n        \n            <mat-form-field>\n              <input matInput placeholder=\"nom, prenom ou pseudo\" name=\"name\" [(ngModel)]=\"keyword.name\" \n              >\n              \n            </mat-form-field>\n            <button type=\"submit\" mat-button color=\"primary\" (click)=\"searchfriend()\" >OK</button>\n\n            <mat-list *ngFor=\"let member of resultList\">\n              \n                <mat-list-item> \n                 <form class=\"example-form\" >\n                    <mat-form-field>\n                      <input matInput name=\"_id\" [ngModel]=\"member._id\">\n                    </mat-form-field>\n                    <img src=\" {{userData.picture}}\" alt=\"\"> {{member.first_name}} {{member.pseudo}} \n                    \n                    <button type=\"submit\" mat-button (click)=\"sendInvitationrequest(member)\" >value</button>\n                  </form>\n                 </mat-list-item>\n      \n               </mat-list>\n            \n        \n            <mat-action-row>\n              <button mat-button color=\"primary\" (click)=\"nextStep()\">Next</button>\n            </mat-action-row>\n          </mat-expansion-panel>\n        \n          <mat-expansion-panel [expanded]=\"step === 1\" (opened)=\"setStep(1)\" hideToggle>\n            <mat-expansion-panel-header>\n              <mat-panel-title>\n                Demandes d'ajout\n              </mat-panel-title>\n              <mat-panel-description>\n                Liste des demandes d'ajout\n                <mat-icon>map</mat-icon>\n              </mat-panel-description>\n            </mat-expansion-panel-header>\n        \n            <mat-form-field>\n              <input matInput placeholder=\"Country\">\n            </mat-form-field>\n        \n            <mat-action-row>\n              <button mat-button color=\"warn\" (click)=\"prevStep()\">Previous</button>\n            </mat-action-row>\n          </mat-expansion-panel>\n        \n        \n        \n        </mat-accordion>\n      </form>\n      </div>\n      \n</div>\n\n\n<!-- <app-comments></app-comments> -->\n"
+module.exports = "<div class=\"container-fixe\">\n    <div>\n        <mat-card class=\"card\">\n            <mat-card-header>\n              <mat-card-title>\n                {{userData.first_name}}\n                {{userData.last_name}}\n                    </mat-card-title>\n              <mat-card-subtitle>\n                {{userData.pseudo}}\n                <img src=\" {{userData.picture}}\" alt=\"\">\n              </mat-card-subtitle>\n            </mat-card-header>\n            <mat-card-content>\n            </mat-card-content>\n          </mat-card>\n    </div>\n    \n    <mat-card class=\"example-card\">\n        <article >\n          <form class=\"example-form\" #commentF=\"ngForm\" (submit)=\"posted();commentF.reset()\" >\n        <mat-form-field>\n          <input matInput placeholder=\"titre du message\" name=\"title\" id=\"titre\" [(ngModel)]=\"comment.title\" required >\n        </mat-form-field>\n         <br>\n        <mat-form-field class=\"example-full-width\">\n          <textarea matInput placeholder=\"Poster un commentaire......\" name=\"comment\" [(ngModel)]=\"comment.content\"></textarea>\n        </mat-form-field>\n         <br>\n             \n        <button type=\"submit\" mat-fab color=\"accent\" [disabled]=\"!commentF.form.valid\">Poster\n         \n        </button>\n    \n    </form>\n          \n      </article>\n      </mat-card>\n\n      <div class=\"request\">\n        <form class=\"example-form\" #search=\"ngForm\" >\n        <mat-accordion class=\"example-headers-align\">\n          <mat-expansion-panel [expanded]=\"step === 0\" (opened)=\"setStep(0)\" hideToggle>\n            <mat-expansion-panel-header>\n              <mat-panel-title>\n                recherche de membre\n              </mat-panel-title>\n              <mat-panel-description>\n          \n                <mat-icon>account_circle</mat-icon>\n              </mat-panel-description>\n            </mat-expansion-panel-header>\n        \n            <mat-form-field>\n              <input matInput placeholder=\"nom, prenom ou pseudo\" name=\"name\" [(ngModel)]=\"keyword.name\" \n              >\n              \n            </mat-form-field>\n            <button type=\"submit\" mat-button color=\"primary\" (click)=\"searchfriend()\" >OK</button>\n\n            <mat-list *ngFor=\"let member of resultList\">\n              \n                <mat-list-item> \n                 <form class=\"example-form\" >\n                    <mat-form-field>\n                      <input matInput name=\"_id\" [ngModel]=\"member._id\">\n                    </mat-form-field>\n                    <img src=\" {{userData.picture}}\" alt=\"\"> {{member.first_name}} {{member.pseudo}} \n                    \n                    <button type=\"submit\" mat-button (click)=\"sendInvitationrequest(member)\" >value</button>\n                  </form>\n                 </mat-list-item>\n      \n               </mat-list>\n            \n        \n            <mat-action-row>\n              <button mat-button color=\"primary\" (click)=\"nextStep()\">Next</button>\n            </mat-action-row>\n          </mat-expansion-panel>\n        \n          <mat-expansion-panel [expanded]=\"step === 1\" (opened)=\"setStep(1)\" hideToggle>\n            <mat-expansion-panel-header>\n              <mat-panel-title>\n                Demandes d'ajout\n              </mat-panel-title>\n              <mat-panel-description>\n                Liste des demandes d'ajout\n                <mat-icon>map</mat-icon>\n              </mat-panel-description>\n            </mat-expansion-panel-header>\n        \n            <mat-form-field>\n              <input matInput placeholder=\"Country\">\n            </mat-form-field>\n        \n            <mat-action-row>\n              <button mat-button color=\"warn\" (click)=\"prevStep()\">Previous</button>\n            </mat-action-row>\n          </mat-expansion-panel>\n        \n        \n        \n        </mat-accordion>\n      </form>\n      </div>\n      \n     \n\n\n    </div>\n\n\n\n\n<div class=\"container\">\n  \n    <mat-card class=\"example-card\" *ngFor=\"let comment of comments\">\n      <mat-card-header>\n        <div mat-card-avatar class=\"example-header-image\">\n          <img src=\"{{comment.authorPicture}}\" style=\"width: 46px;\" alt=\"\">\n        </div>\n        <mat-card-title>{{comment.author }} </mat-card-title>\n        <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}</mat-card-subtitle>\n      </mat-card-header>\n      <h4> {{comment.title}}</h4>\n     \n      <mat-card-content>\n        <p>\n          {{comment.content}}\n        </p>\n      </mat-card-content>\n     \n    </mat-card>\n  </div>\n\n\n<!-- <app-comments></app-comments> -->\n"
 
 /***/ }),
 
@@ -2243,6 +2251,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 var UserdataComponent = /** @class */ (function () {
     function UserdataComponent(commentService, auth, afStorage, memberActionService) {
+        var _this = this;
         this.commentService = commentService;
         this.auth = auth;
         this.afStorage = afStorage;
@@ -2252,18 +2261,44 @@ var UserdataComponent = /** @class */ (function () {
         this.keyword = {
             name: ''
         };
+        this.comment = {
+            title: '',
+            author: '',
+            content: '',
+            date: null,
+            authorId: '',
+            authorPicture: '',
+            explicit: false
+        };
+        this.comments = [];
         this.member = {
             first_name: '',
             pseudo: '',
             _id: '',
         };
+        this.commentService.onBegin()
+            .subscribe(function (res) { return console.log(res); });
+        this.commentService.onPosted()
+            .subscribe(function (data) {
+            _this.comments.splice(0, 0, data);
+            console.log("Apres ajout", _this.comments);
+        });
     }
     UserdataComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.auth.getData()
             .subscribe(function (data) {
             _this.userData = data.user;
+            console.log(_this.userData);
             _this.currentUser_id = data.user._id;
+            _this.comment.author = data.user.first_name + ' ' + data.user.last_name;
+            _this.comment.authorId = _this.currentUser_id;
+            _this.comment.authorPicture = data.user.picture;
+        });
+        this.commentService.getMemberComments()
+            .subscribe(function (res) {
+            _this.comments = res.comments;
+            console.log(res);
         });
     };
     UserdataComponent.prototype.upload = function (event) {
@@ -2279,7 +2314,10 @@ var UserdataComponent = /** @class */ (function () {
     UserdataComponent.prototype.prevStep = function () {
         this.step--;
     };
-    UserdataComponent.prototype.removeFromList = function (member) {
+    // Post copmment on space or friend space
+    UserdataComponent.prototype.posted = function () {
+        this.comment.date = new Date();
+        this.commentService.postMessage(this.comment);
     };
     UserdataComponent.prototype.searchfriend = function () {
         var _this = this;

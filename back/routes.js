@@ -24,9 +24,13 @@ const secret='RffrtejksizikskiksizkskizkskkzikskskksMpp';
 const myPassword= 'meissa71'
 const saltRounds = 10;
 
+/*
 
+ LOGIN AND REGISTER SECTION
 
+*/
 
+//To be sure to have current member ..
 var currentUserId;
 function veriFyToken(req,res, next){
   if(!req.headers.authorization){
@@ -48,6 +52,10 @@ function veriFyToken(req,res, next){
     next();
   }
 }
+
+
+
+
 
 //check if the pseudo is available
 router.post('/checkPseudo', (req,res) => {
@@ -140,6 +148,20 @@ router.post('/login', (req, res)=> {
 });
 
 
+
+
+
+router.get('/get_member_comments', (req,res) => {
+  
+  Comment.find({authorId:currentUserId},null,{sort:{date: -1}}, (err,comments)=>{
+    if(err) throw err;
+    res.status('200').send({comments});
+  })
+})
+
+
+
+
 // Recup des infos utilisateurs (membres)
 router.get('/userdata',veriFyToken ,(req, res) => {
 
@@ -165,8 +187,6 @@ res.send({message: 'connecté'})
 // Mise a jour des données membre email et pseudo (nom et prenom ne changes pas)
 router.post('/update',veriFyToken, (req,res)=> {
  User.findById(req.body._id).exec((err,data) => {
-
-  console.log('qui est data', data)
 
   if(JSON.stringify(data)=== JSON.stringify(req.body)){
      
