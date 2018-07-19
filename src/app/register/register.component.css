@@ -22,3 +22,6 @@ form{
   align-items: center;
 }
 
+.error{
+  text-decoration-color: red;
+}

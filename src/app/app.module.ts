@@ -44,6 +44,7 @@ import { NewPasswordComponent } from './new-password/new-password.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { FriendslistComponent } from './friendslist/friendslist.component';
+import { MembersListComponent } from './members-list/members-list.component';
 
 
 
@@ -66,7 +67,8 @@ import { FriendslistComponent } from './friendslist/friendslist.component';
     NavigationComponent,
     AdminDashboardComponent,
     NewPasswordComponent,
-    FriendslistComponent
+    FriendslistComponent,
+    MembersListComponent
   ],
   imports: [
     BrowserModule,

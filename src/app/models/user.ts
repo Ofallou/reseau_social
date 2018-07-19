@@ -10,9 +10,10 @@ export class User {
    dateNaissance: Date;
     gender: String;
     password: String;
-    roleAdmin: Boolean;
+    admin: Boolean;
     picture:String;
     friendList:Array<String>;
+    online:Boolean
 
   constructor(user: any) {
   
@@ -23,9 +24,10 @@ export class User {
     this.dateNaissance = user.dateNaissance;
     this.password = user.password;
     this.gender = user.gender;
-    this.roleAdmin = false;
+    this.admin = user.admin= false;
     this.picture =user.picture;
     this.friendList = user.friendsList;
+    this.online = user.online;
 
   }
 }

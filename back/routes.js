@@ -49,19 +49,43 @@ function veriFyToken(req,res, next){
   }
 }
 
+//check if the pseudo is available
+router.post('/checkPseudo', (req,res) => {
+let myPseudo = req.body.pseudo;
+User.findOne({pseudo:myPseudo}, (err,data)=> {
+  if(err)console.log(err);
+  if(data){
+    res.json({error:"pseudo non disponible"})
+  }else {
+    res.json({message:"Le pseudo est disponible"})
+  }
+})
+
+})
+//like the pseudo check if email is already registered
+router.post('/checkEmail', (req,res)=> {
+  let myEmail = req.body.email;
+  User.findOne({email:myEmail},(err, data)=>{
+    if(err)console.log(err);
+    if(data)res.json({message:"Email déjà associé à un compte."});
+     
+    })
+  })
+
 
 
 
 // Enregistrement de l'utilisateur
 router.post('/register',  (req, res) => {
   let userdata= req.body;
-  
   let user = new User(userdata);
+  
    User.findOne({email:req.body.email},(err,data) => {
     if(data){
-      console.log(data)
-      console.log('deja enregistré avec email ' + req.body.email);
+
+      res.json({message:'Un compte avec cette adresse email existe déjà, Merci de recuperer le mot de passe associé'})
     } else {
+
       user.picture = gravatar.url(req.body.email, {
         s: '150',
         r: 'pg',
@@ -73,6 +97,7 @@ router.post('/register',  (req, res) => {
           console.log(err)
         }else {
           console.log(dataUser)
+
           Register(dataUser.first_name,dataUser.email)
           let payload = {subject: dataUser._id};
           let token = jwt.sign(payload, secret);
@@ -270,7 +295,7 @@ router.post('/member',veriFyToken, (req,res)=> {
    //find if email request exist
    console.log(req.body);
    let key = req.body.name;
-   User.find({ $or: [{pseudo:key},{last_name:key}, {first_name: key}]} ,(err, data) =>{
+   User.find({ $or: [{pseudo:key},{email:key},{last_name:key}, {first_name: key}]} ,(err, data) =>{
      if(err) throw err;
      if(data.length>0){
        console.log('demande de friend',data)

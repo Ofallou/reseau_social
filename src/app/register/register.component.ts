@@ -18,8 +18,10 @@ export class RegisterComponent implements OnInit {
    imageUrl: string;
    email = new FormControl('', [Validators.required, Validators.email]);
    hide = true;
-   passwordConfirm;
+   pseudoEnable;
+   pseudoNotEnable;
    errormessage;
+   emailAvailable;
   constructor( private authService: AuthService, private _router: Router) {
     
     this.user = new User ({first_name: '',
@@ -29,9 +31,10 @@ export class RegisterComponent implements OnInit {
     password: '',
     pseudo: '',
     dateNaissance: '',
-    roleAdmin: false,
+    admin: false,
     friendsList:[],
       pictures:'',
+      online: false
     });
   }
 
@@ -45,12 +48,46 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  checkEmail (){
+    this.authService.checkEmail(this.user)
+    .subscribe(
+      res => {
+        this.emailAvailable=res.message
+        console.log(this.emailAvailable)
+      } 
+    )
+  }
+
+  checkPseudo(){
+    this.authService.checkPseudo(this.user)
+    .subscribe(
+      res => {
+        if(res.message){
+          this.pseudoEnable = res.message
+          this.pseudoNotEnable=null
+        }else {
+          this.pseudoNotEnable =res.error
+          this.pseudoEnable=null
+        }
+      }
+       
+  )
+  }
+
   registerUser() {
      this.authService.registerUser(this.user)
     .subscribe(
       res => {
-        localStorage.setItem('token', res.token );
-        this._router.navigate(['/userdata']);
+        if(res.message){
+          this.errormessage = res.message;
+          //alert(this.errormessage);
+          this.user.email="";
+        }else {
+
+          localStorage.setItem('token', res.token );
+          this._router.navigate(['/userdata']);
+        }
+        
       }
     );
 

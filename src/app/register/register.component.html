@@ -17,9 +17,13 @@
             <mat-form-field>
                 <input matInput placeholder="Email" [(ngModel)]="user.email" name="email"  [formControl]="email" 
                 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
-                required>
+                required  (keyup)="checkEmail()">
                 <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+                <mat-hint *ngIf="!email.invalid"><span style="color: red">{{emailAvailable}}</span></mat-hint>
+                
               </mat-form-field>
+              
+
         </td>
         <td>
             <mat-form-field>
@@ -42,9 +46,16 @@
           
          <td>
             <mat-form-field>
-                <input matInput placeholder="Choix du pseudo" [(ngModel)]="user.pseudo" required name="pseudo">
+                <input type="text" matInput #pseudo minlength="5" maxlength="10" placeholder="Choix du pseudo" [(ngModel)]="user.pseudo" (change)="checkPseudo()" required name="pseudo">
+                <mat-hint align="end">{{pseudo.value.length}} / 5  -
+                  
+                   <span style="color:green"> {{pseudoEnable}}   </span>
+                    <span style="color: red">{{pseudoNotEnable}}</span>
+                  
+                   </mat-hint>
                 
          </mat-form-field>
+         
 
          </td>
 
@@ -62,7 +73,7 @@
       </tr>
     </table>
       
-      <button mat-raised-button color="primary" [disabled]="!register.form.valid ||email.invalid "  (click)="registerUser()" routerLink="userdata">S'enregistrer</button>
+      <button mat-raised-button color="primary" [disabled]="!register.form.valid ||email.invalid || pseudoNotEnable || emailAvailable"  (click)="registerUser()" routerLink="/userdata">S'enregistrer</button>
 
     </form>
     

@@ -13,6 +13,7 @@ export class AuthService {
   user = {
     _id:'',
     email : '',
+    pseudo:'',
     password : ''
   };
 
@@ -20,6 +21,8 @@ export class AuthService {
   userConnected: number=0;
   url = Config.SOCKET_HOST || "http://localhost";
   private _registerURL = this.url + '/api/register';
+  private _checkPseudoURL = this.url + '/api/checkPseudo';
+  private _checkEmailURL = this.url + '/api/checkEmail';
   private _loginURL = this.url + '/api/login';
   private _userdataURL = this.url + '/api/userdata';
   private _lostPassword = this.url + '/api/lostpwd';
@@ -30,6 +33,14 @@ export class AuthService {
 
   constructor(private http: HttpClient, private _router: Router) {}
 
+  checkPseudo(user){
+    return this.http.post<any>(this._checkPseudoURL, user);
+  }
+
+  checkEmail(user){
+    return this.http.post<any>(this._checkEmailURL, user);
+
+  }
   registerUser(user) {
     return this.http.post<any>(this._registerURL, user);
   }

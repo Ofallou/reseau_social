@@ -9,10 +9,11 @@ var userSchema = new Schema({
   email: String,
    gender: String,
    password: String,
-   isAdmin: Boolean,
+   admin: Boolean,
   picture:String,
   description:String,
-  friendsList:Array
+  friendsList:Array,
+  online:Boolean,
 
 });
 

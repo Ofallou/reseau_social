@@ -333,6 +333,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! @angular/material/dialog */ "./node_modules/@angular/material/esm5/dialog.es5.js");
 /* harmony import */ var _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! @angular/material/snack-bar */ "./node_modules/@angular/material/esm5/snack-bar.es5.js");
 /* harmony import */ var _friendslist_friendslist_component__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./friendslist/friendslist.component */ "./src/app/friendslist/friendslist.component.ts");
+/* harmony import */ var _members_list_members_list_component__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./members-list/members-list.component */ "./src/app/members-list/members-list.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -382,6 +383,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -404,7 +406,8 @@ var AppModule = /** @class */ (function () {
                 _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_32__["NavigationComponent"],
                 _admin_dashboard_admin_dashboard_component__WEBPACK_IMPORTED_MODULE_34__["AdminDashboardComponent"],
                 _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_38__["NewPasswordComponent"],
-                _friendslist_friendslist_component__WEBPACK_IMPORTED_MODULE_41__["FriendslistComponent"]
+                _friendslist_friendslist_component__WEBPACK_IMPORTED_MODULE_41__["FriendslistComponent"],
+                _members_list_members_list_component__WEBPACK_IMPORTED_MODULE_42__["MembersListComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -548,12 +551,15 @@ var AuthService = /** @class */ (function () {
         this.user = {
             _id: '',
             email: '',
+            pseudo: '',
             password: ''
         };
         this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_4__(_config__WEBPACK_IMPORTED_MODULE_3__["Config"].SOCKET_HOST);
         this.userConnected = 0;
         this.url = _config__WEBPACK_IMPORTED_MODULE_3__["Config"].SOCKET_HOST || "http://localhost";
         this._registerURL = this.url + '/api/register';
+        this._checkPseudoURL = this.url + '/api/checkPseudo';
+        this._checkEmailURL = this.url + '/api/checkEmail';
         this._loginURL = this.url + '/api/login';
         this._userdataURL = this.url + '/api/userdata';
         this._lostPassword = this.url + '/api/lostpwd';
@@ -562,6 +568,12 @@ var AuthService = /** @class */ (function () {
         this._updateUser = this.url + '/api/update';
         this.connected = 0;
     }
+    AuthService.prototype.checkPseudo = function (user) {
+        return this.http.post(this._checkPseudoURL, user);
+    };
+    AuthService.prototype.checkEmail = function (user) {
+        return this.http.post(this._checkEmailURL, user);
+    };
     AuthService.prototype.registerUser = function (user) {
         return this.http.post(this._registerURL, user);
     };
@@ -1000,7 +1012,7 @@ module.exports = ".card-image > img  {\n    width: 128px;\n  height: 128px;\n}\n
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<div class=\"container\">\n             \n   <div class=\"card\">\n     <p style=\"width: 40px;height: 5px;\">\n        <span class=\"test\" matBadgePosition=\"above after\" matBadge=\"{{commentsArray.length}}\">Posts</span>\n     </p>\n    \n   </div>           \n\n\n\n <div class=\"col s6\" *ngIf=!isMember>\n   <p>Visiteurs : Creer un compte pour poster des messages et discuter avec vos amis</p>\n </div>\n \n\n <div class=\"col s6\" *ngIf=isMember>\n    <app-member-search></app-member-search>  \n   </div>\n  \n  \n    <mat-card class=\"example-card\" *ngIf=isMember>\n      <article >\n        <form class=\"example-form\" #commentF=\"ngForm\" (submit)=\"posted();commentF.reset()\" >\n      <mat-form-field>\n        <input matInput placeholder=\"titre du message\" name=\"title\" id=\"titre\" [(ngModel)]=\"comment.title\" required >\n      </mat-form-field>\n       <br>\n      <mat-form-field class=\"example-full-width\">\n        <textarea matInput placeholder=\"Poster un commentaire......\" name=\"comment\" [(ngModel)]=\"comment.content\"></textarea>\n      </mat-form-field>\n       <br>\n           \n      <button type=\"submit\" mat-fab color=\"accent\" [disabled]=\"!commentF.form.valid\">Poster\n       \n      </button>\n\n  </form>\n        \n    </article>\n    </mat-card>\n</div>\n\n<div class=\"container\">\n  \n\n  <mat-card class=\"example-card\" *ngFor=\"let comment of commentsArray\">\n    <mat-card-header>\n      <div mat-card-avatar class=\"example-header-image\">\n        <img src=\"{{comment.authorPicture}}\" style=\"width: 46px;\" alt=\"\">\n      </div>\n      <mat-card-title>{{comment.author }} </mat-card-title>\n      <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}</mat-card-subtitle>\n    </mat-card-header>\n    <h4> {{comment.title}}</h4>\n   \n    <mat-card-content>\n      <p>\n        {{comment.content}}\n      </p>\n    </mat-card-content>\n   \n  </mat-card>\n</div>\n\n"
+module.exports = "\n<div class=\"container\">\n             \n   <div class=\"card\">\n     <p style=\"width: 40px;height: 5px;\">\n        <span class=\"test\" matBadgePosition=\"above after\" matBadge=\"{{commentsArray.length}}\">Posts</span>\n     </p>\n    \n   </div>           \n\n\n\n <div class=\"col s6\" *ngIf=!isMember>\n   <p>Visiteurs : Creer un compte pour poster des messages et discuter avec vos amis</p>\n </div>\n \n\n <div class=\"col s6\" *ngIf=isMember>\n   </div>\n  \n  \n    <mat-card class=\"example-card\" *ngIf=isMember>\n      <article >\n        <form class=\"example-form\" #commentF=\"ngForm\" (submit)=\"posted();commentF.reset()\" >\n      <mat-form-field>\n        <input matInput placeholder=\"titre du message\" name=\"title\" id=\"titre\" [(ngModel)]=\"comment.title\" required >\n      </mat-form-field>\n       <br>\n      <mat-form-field class=\"example-full-width\">\n        <textarea matInput placeholder=\"Poster un commentaire......\" name=\"comment\" [(ngModel)]=\"comment.content\"></textarea>\n      </mat-form-field>\n       <br>\n           \n      <button type=\"submit\" mat-fab color=\"accent\" [disabled]=\"!commentF.form.valid\">Poster\n       \n      </button>\n\n  </form>\n        \n    </article>\n    </mat-card>\n</div>\n\n<div class=\"container\">\n  \n\n  <mat-card class=\"example-card\" *ngFor=\"let comment of commentsArray\">\n    <mat-card-header>\n      <div mat-card-avatar class=\"example-header-image\">\n        <img src=\"{{comment.authorPicture}}\" style=\"width: 46px;\" alt=\"\">\n      </div>\n      <mat-card-title>{{comment.author }} </mat-card-title>\n      <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}</mat-card-subtitle>\n    </mat-card-header>\n    <h4> {{comment.title}}</h4>\n   \n    <mat-card-content>\n      <p>\n        {{comment.content}}\n      </p>\n    </mat-card-content>\n   \n  </mat-card>\n</div>\n\n"
 
 /***/ }),
 
@@ -1524,6 +1536,72 @@ var MemberSearchComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/members-list/members-list.component.css":
+/*!*********************************************************!*\
+  !*** ./src/app/members-list/members-list.component.css ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/members-list/members-list.component.html":
+/*!**********************************************************!*\
+  !*** ./src/app/members-list/members-list.component.html ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/members-list/members-list.component.ts":
+/*!********************************************************!*\
+  !*** ./src/app/members-list/members-list.component.ts ***!
+  \********************************************************/
+/*! exports provided: MembersListComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MembersListComponent", function() { return MembersListComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var MembersListComponent = /** @class */ (function () {
+    function MembersListComponent(authService) {
+        this.authService = authService;
+    }
+    MembersListComponent.prototype.ngOnInit = function () {
+    };
+    MembersListComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-members-list',
+            template: __webpack_require__(/*! ./members-list.component.html */ "./src/app/members-list/members-list.component.html"),
+            styles: [__webpack_require__(/*! ./members-list.component.css */ "./src/app/members-list/members-list.component.css")]
+        }),
+        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"]])
+    ], MembersListComponent);
+    return MembersListComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/models/user.ts":
 /*!********************************!*\
   !*** ./src/app/models/user.ts ***!
@@ -1543,9 +1621,10 @@ var User = /** @class */ (function () {
         this.dateNaissance = user.dateNaissance;
         this.password = user.password;
         this.gender = user.gender;
-        this.roleAdmin = false;
+        this.admin = user.admin = false;
         this.picture = user.picture;
         this.friendList = user.friendsList;
+        this.online = user.online;
     }
     User._id = function (arg0) {
         throw new Error("Method not implemented.");
@@ -1709,7 +1788,7 @@ var NewPasswordComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n  <form #register=\"ngForm\"class=\"example-form\">\n    \n    \n      <table class=\"example-full-width\" cellspacing=\"20\">\n        <tr>\n        <td><mat-form-field class=\"example-full-width\">\n          <input matInput [(ngModel)]='user.first_name' name=\"first_name\"  required  placeholder=\"Prénom\">\n        </mat-form-field></td>\n        <td><mat-form-field class=\"example-full-width\">\n          <input matInput [(ngModel)]='user.last_name' name=\"last_name\"  required  placeholder=\"Nom\">\n        </mat-form-field></td>\n      </tr>\n    \n      <tr>\n        <td>\n            <mat-form-field>\n                <input matInput placeholder=\"Email\" [(ngModel)]=\"user.email\" name=\"email\"  [formControl]=\"email\" \n                pattern=\"[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$\"\n                required>\n                <mat-error *ngIf=\"email.invalid\">{{getErrorMessage()}}</mat-error>\n              </mat-form-field>\n        </td>\n        <td>\n            <mat-form-field>\n                <input  #password minlength=\"6\" matInput placeholder=\"Choix du mot de passe\" [(ngModel)]=\"user.password\" required name=\"password\"  [type]=\"hide ? 'password' : 'text'\">\n                <mat-hint align=\"end\">{{password.value.length}} / 6</mat-hint>\n                <mat-icon matSuffix (click)=\"hide = !hide\">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>\n         </mat-form-field>\n        </td>\n      </tr>\n  \n       <tr>\n         <td>\n            <mat-form-field>\n                <mat-select classe=\"example-form\" placeholder=\"Genre\" [(ngModel)]=\"user.gender\" name=\"genre\" value=\"user.gender\" required>\n                    <mat-option selected value=\"femme\">Femme</mat-option>\n                    <mat-option value=\"homme\">Homme</mat-option>\n                  </mat-select>\n            </mat-form-field>\n         </td>\n          \n         <td>\n            <mat-form-field>\n                <input matInput placeholder=\"Choix du pseudo\" [(ngModel)]=\"user.pseudo\" required name=\"pseudo\">\n                \n         </mat-form-field>\n\n         </td>\n\n\n       </tr>\n        \n       \n    \n  \n     <tr>\n        <td><mat-form-field class=\"example-full-width\">\n          <input type=\"date\" matInput placeholder=\"Date de Naissance\" required>\n        </mat-form-field></td>\n    \n      </tr>\n    </table>\n      \n      <button mat-raised-button color=\"primary\" [disabled]=\"!register.form.valid ||email.invalid \"  (click)=\"registerUser()\" routerLink=\"userdata\">S'enregistrer</button>\n\n    </form>\n    \n"
+module.exports = "\n  <form #register=\"ngForm\"class=\"example-form\">\n    \n    \n      <table class=\"example-full-width\" cellspacing=\"20\">\n        <tr>\n        <td><mat-form-field class=\"example-full-width\">\n          <input matInput [(ngModel)]='user.first_name' name=\"first_name\"  required  placeholder=\"Prénom\">\n        </mat-form-field></td>\n        <td><mat-form-field class=\"example-full-width\">\n          <input matInput [(ngModel)]='user.last_name' name=\"last_name\"  required  placeholder=\"Nom\">\n        </mat-form-field></td>\n      </tr>\n    \n      <tr>\n        <td>\n            <mat-form-field>\n                <input matInput placeholder=\"Email\" [(ngModel)]=\"user.email\" name=\"email\"  [formControl]=\"email\" \n                pattern=\"[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$\"\n                required  (keyup)=\"checkEmail()\">\n                <mat-error *ngIf=\"email.invalid\">{{getErrorMessage()}}</mat-error>\n                <mat-hint *ngIf=\"!email.invalid\"><span style=\"color: red\">{{emailAvailable}}</span></mat-hint>\n                \n              </mat-form-field>\n              \n\n        </td>\n        <td>\n            <mat-form-field>\n                <input  #password minlength=\"6\" matInput placeholder=\"Choix du mot de passe\" [(ngModel)]=\"user.password\" required name=\"password\"  [type]=\"hide ? 'password' : 'text'\">\n                <mat-hint align=\"end\">{{password.value.length}} / 6</mat-hint>\n                <mat-icon matSuffix (click)=\"hide = !hide\">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>\n         </mat-form-field>\n        </td>\n      </tr>\n  \n       <tr>\n         <td>\n            <mat-form-field>\n                <mat-select classe=\"example-form\" placeholder=\"Genre\" [(ngModel)]=\"user.gender\" name=\"genre\" value=\"user.gender\" required>\n                    <mat-option selected value=\"femme\">Femme</mat-option>\n                    <mat-option value=\"homme\">Homme</mat-option>\n                  </mat-select>\n            </mat-form-field>\n         </td>\n          \n         <td>\n            <mat-form-field>\n                <input type=\"text\" matInput #pseudo minlength=\"5\" maxlength=\"10\" placeholder=\"Choix du pseudo\" [(ngModel)]=\"user.pseudo\" (change)=\"checkPseudo()\" required name=\"pseudo\">\n                <mat-hint align=\"end\">{{pseudo.value.length}} / 5  -\n                  \n                   <span style=\"color:green\"> {{pseudoEnable}}   </span>\n                    <span style=\"color: red\">{{pseudoNotEnable}}</span>\n                  \n                   </mat-hint>\n                \n         </mat-form-field>\n         \n\n         </td>\n\n\n       </tr>\n        \n       \n    \n  \n     <tr>\n        <td><mat-form-field class=\"example-full-width\">\n          <input type=\"date\" matInput placeholder=\"Date de Naissance\" required>\n        </mat-form-field></td>\n    \n      </tr>\n    </table>\n      \n      <button mat-raised-button color=\"primary\" [disabled]=\"!register.form.valid ||email.invalid || pseudoNotEnable || emailAvailable\"  (click)=\"registerUser()\" routerLink=\"/userdata\">S'enregistrer</button>\n\n    </form>\n    \n"
 
 /***/ }),
 
@@ -1756,9 +1835,10 @@ var RegisterComponent = /** @class */ (function () {
             password: '',
             pseudo: '',
             dateNaissance: '',
-            roleAdmin: false,
+            admin: false,
             friendsList: [],
             pictures: '',
+            online: false
         });
     }
     RegisterComponent.prototype.getErrorMessage = function () {
@@ -1770,12 +1850,41 @@ var RegisterComponent = /** @class */ (function () {
             this._router.navigate(['/userdata']);
         }
     };
+    RegisterComponent.prototype.checkEmail = function () {
+        var _this = this;
+        this.authService.checkEmail(this.user)
+            .subscribe(function (res) {
+            _this.emailAvailable = res.message;
+            console.log(_this.emailAvailable);
+        });
+    };
+    RegisterComponent.prototype.checkPseudo = function () {
+        var _this = this;
+        this.authService.checkPseudo(this.user)
+            .subscribe(function (res) {
+            if (res.message) {
+                _this.pseudoEnable = res.message;
+                _this.pseudoNotEnable = null;
+            }
+            else {
+                _this.pseudoNotEnable = res.error;
+                _this.pseudoEnable = null;
+            }
+        });
+    };
     RegisterComponent.prototype.registerUser = function () {
         var _this = this;
         this.authService.registerUser(this.user)
             .subscribe(function (res) {
-            localStorage.setItem('token', res.token);
-            _this._router.navigate(['/userdata']);
+            if (res.message) {
+                _this.errormessage = res.message;
+                //alert(this.errormessage);
+                _this.user.email = "";
+            }
+            else {
+                localStorage.setItem('token', res.token);
+                _this._router.navigate(['/userdata']);
+            }
         });
     };
     RegisterComponent = __decorate([
@@ -2097,7 +2206,7 @@ module.exports = ".card {\n    width: 400px;\n  }\n\n  .container {\n      margi
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n    <div>\n        <mat-card class=\"card\">\n            <mat-card-header>\n              <mat-card-title>\n                {{userData.first_name}}\n                {{userData.last_name}}\n                    </mat-card-title>\n              <mat-card-subtitle>\n                {{userData.pseudo}}\n                <img src=\" {{userData.picture}}\" alt=\"\">\n              </mat-card-subtitle>\n            </mat-card-header>\n            <mat-card-content>\n            </mat-card-content>\n          </mat-card>\n    </div>\n  \n\n      <div class=\"request\">\n        <form class=\"example-form\" #search=\"ngForm\" >\n        <mat-accordion class=\"example-headers-align\">\n          <mat-expansion-panel [expanded]=\"step === 0\" (opened)=\"setStep(0)\" hideToggle>\n            <mat-expansion-panel-header>\n              <mat-panel-title>\n                recherche de membre\n              </mat-panel-title>\n              <mat-panel-description>\n          \n                <mat-icon>account_circle</mat-icon>\n              </mat-panel-description>\n            </mat-expansion-panel-header>\n        \n            <mat-form-field>\n              <input matInput placeholder=\"nom, prenom ou pseudo\" name=\"name\" [(ngModel)]=\"keyword.name\" \n              >\n              \n            </mat-form-field>\n            <button type=\"submit\" mat-button color=\"primary\" (click)=\"searchfriend()\" >OK</button>\n\n            <mat-list *ngFor=\"let member of resultList\">\n              \n                <mat-list-item> \n                 <form class=\"example-form\" >\n                    <mat-form-field>\n                      <input matInput name=\"_id\" [ngModel]=\"member._id\">\n                    </mat-form-field>\n                    <img src=\" {{userData.picture}}\" alt=\"\"> {{member.first_name}} {{member.pseudo}} \n                    \n                    <button type=\"submit\" mat-button (click)=\"sendInvitationrequest(member)\" >value</button>\n                  </form>\n                 </mat-list-item>\n      \n               </mat-list>\n            \n        \n            <mat-action-row>\n              <button mat-button color=\"primary\" (click)=\"nextStep()\">Next</button>\n            </mat-action-row>\n          </mat-expansion-panel>\n        \n          <mat-expansion-panel [expanded]=\"step === 1\" (opened)=\"setStep(1)\" hideToggle>\n            <mat-expansion-panel-header>\n              <mat-panel-title>\n                Demandes d'ajout\n              </mat-panel-title>\n              <mat-panel-description>\n                Liste des demandes d'ajout\n                <mat-icon>map</mat-icon>\n              </mat-panel-description>\n            </mat-expansion-panel-header>\n        \n            <mat-form-field>\n              <input matInput placeholder=\"Country\">\n            </mat-form-field>\n        \n            <mat-action-row>\n              <button mat-button color=\"warn\" (click)=\"prevStep()\">Previous</button>\n            </mat-action-row>\n          </mat-expansion-panel>\n        \n        \n        \n        </mat-accordion>\n      </form>\n      </div>\n      \n</div>\n\n\n<!-- <app-comments></app-comments> -->\n"
+module.exports = "<div class=\"container\">\n    <div>\n        <mat-card class=\"card\">\n            <mat-card-header>\n              <mat-card-title>\n                {{userData.first_name}}\n                {{userData.last_name}}\n                    </mat-card-title>\n              <mat-card-subtitle>\n                {{userData.pseudo}}\n                <img src=\" {{userData.picture}}\" alt=\"\">\n              </mat-card-subtitle>\n            </mat-card-header>\n            <mat-card-content>\n            </mat-card-content>\n          </mat-card>\n    </div>\n    \n  \n\n      <div class=\"request\">\n        <form class=\"example-form\" #search=\"ngForm\" >\n        <mat-accordion class=\"example-headers-align\">\n          <mat-expansion-panel [expanded]=\"step === 0\" (opened)=\"setStep(0)\" hideToggle>\n            <mat-expansion-panel-header>\n              <mat-panel-title>\n                recherche de membre\n              </mat-panel-title>\n              <mat-panel-description>\n          \n                <mat-icon>account_circle</mat-icon>\n              </mat-panel-description>\n            </mat-expansion-panel-header>\n        \n            <mat-form-field>\n              <input matInput placeholder=\"nom, prenom ou pseudo\" name=\"name\" [(ngModel)]=\"keyword.name\" \n              >\n              \n            </mat-form-field>\n            <button type=\"submit\" mat-button color=\"primary\" (click)=\"searchfriend()\" >OK</button>\n\n            <mat-list *ngFor=\"let member of resultList\">\n              \n                <mat-list-item> \n                 <form class=\"example-form\" >\n                    <mat-form-field>\n                      <input matInput name=\"_id\" [ngModel]=\"member._id\">\n                    </mat-form-field>\n                    <img src=\" {{userData.picture}}\" alt=\"\"> {{member.first_name}} {{member.pseudo}} \n                    \n                    <button type=\"submit\" mat-button (click)=\"sendInvitationrequest(member)\" >value</button>\n                  </form>\n                 </mat-list-item>\n      \n               </mat-list>\n            \n        \n            <mat-action-row>\n              <button mat-button color=\"primary\" (click)=\"nextStep()\">Next</button>\n            </mat-action-row>\n          </mat-expansion-panel>\n        \n          <mat-expansion-panel [expanded]=\"step === 1\" (opened)=\"setStep(1)\" hideToggle>\n            <mat-expansion-panel-header>\n              <mat-panel-title>\n                Demandes d'ajout\n              </mat-panel-title>\n              <mat-panel-description>\n                Liste des demandes d'ajout\n                <mat-icon>map</mat-icon>\n              </mat-panel-description>\n            </mat-expansion-panel-header>\n        \n            <mat-form-field>\n              <input matInput placeholder=\"Country\">\n            </mat-form-field>\n        \n            <mat-action-row>\n              <button mat-button color=\"warn\" (click)=\"prevStep()\">Previous</button>\n            </mat-action-row>\n          </mat-expansion-panel>\n        \n        \n        \n        </mat-accordion>\n      </form>\n      </div>\n      \n</div>\n\n\n<!-- <app-comments></app-comments> -->\n"
 
 /***/ }),
 
