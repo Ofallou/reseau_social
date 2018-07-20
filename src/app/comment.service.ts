@@ -34,6 +34,8 @@ export class CommentService  {
     return observable;
   }
 
+
+
   onPosted() {
     let observable = new Observable<any>
     (observer => {
@@ -45,6 +47,22 @@ export class CommentService  {
     return observable;
   }
 
+ isConnected(){
+  let observable = new Observable<any>
+  (observer => {
+    this.socket.on('isconnected', (data) => {
+      observer.next(data);
+    });
+    return () => {this.socket.disconnect();};
+  });
+  return observable;
+ }
+
+
+  onLogin(data) {
+    this.socket.emit('login', data)
+  }
+
 getMemberComments (){
   return this.http.get<any>(this._getCommentPostedUrl)
 }
@@ -54,6 +72,8 @@ postMessage(data) {
   this.postComment(data).subscribe();
 }
 
+
+
 postComment(comment) {
   return this.http.post<any>(this._postCommentUrl, comment);
 } 
@@ -62,9 +82,7 @@ getComments() {
   return this.http.get<any>(this._getAllUserCommentsUrl);
 }
 
-comments (){
-  
-}
+
 
 }
 

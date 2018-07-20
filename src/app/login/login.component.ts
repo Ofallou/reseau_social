@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService} from '../auth.service';
 import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
+import { CommentService } from '../comment.service';
 
 @Component({
   selector: 'app-login',
@@ -20,13 +21,15 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   hide = true;
 
-  constructor(private authService: AuthService, private _router: Router) {
+  constructor(private authService: AuthService, private _router: Router,private commentService: CommentService) {
   }
 
   ngOnInit() {
     if (this.authService.getToken()) {
       this._router.navigate(['/home']);
     }
+
+
   }
 
  
@@ -37,6 +40,7 @@ export class LoginComponent implements OnInit {
             '';
   }
   onLogin() {
+   
 
     this.authService.loginUser(this.userData)
       .subscribe(
@@ -49,13 +53,25 @@ export class LoginComponent implements OnInit {
             
            
           } else {
+
             
+
+            this.commentService.onLogin(this.userData.email);
+
             localStorage.setItem('token', res.token);
+            this.authService.getData().subscribe(
+              res => {
+                this.userData = res.user;
+                console.log('**/***/***/', this.userData)
+              }
+            )
             this._router.navigate(['/userdata']);
           }
 
         }
       );
+
+      
 
   }
 

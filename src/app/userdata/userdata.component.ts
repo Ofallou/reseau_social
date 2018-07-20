@@ -51,10 +51,7 @@ resultList:any[];
      private memberActionService: MemberActionService,
     
     ) {
-      this.commentService.onBegin()
-      .subscribe(
-        res => console.log(res)
-      );
+    
        this.commentService.onPosted()
       .subscribe(data => {
         this.comments.splice(0,0,data)
@@ -64,13 +61,16 @@ resultList:any[];
   }
 
   ngOnInit() {
+    
 
-    this.auth.getData()
+      this.auth.getData()
     .subscribe(
 
       data => {
+        data.user.online = true;
         this.userData =  data.user;
-        console.log(this.userData)
+        
+        console.log('mes infos',this.userData)
         this.currentUser_id= data.user._id;
         this.comment.author=data.user.first_name + ' ' +data.user.last_name;
         this.comment.authorId=this.currentUser_id
@@ -78,11 +78,11 @@ resultList:any[];
       }
     );
 
+
     this.commentService.getMemberComments()
     .subscribe(
       res => {
         this.comments = res.comments;
-        console.log(res)
       } 
     )
     
@@ -142,5 +142,7 @@ resultList:any[];
         console.log('ki es ce q',res)
       }) 
   }
+
+
 
 }

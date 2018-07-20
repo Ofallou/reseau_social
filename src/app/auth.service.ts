@@ -28,7 +28,8 @@ export class AuthService {
   private _lostPassword = this.url + '/api/lostpwd';
   private _home = this.url + '/api/';
   private _admin = this.url + '/api/admin';
-  private _updateUser= this.url+'/api/update'
+  private _updateUser= this.url+'/api/update';
+  private _getAllMembers= this.url+'/api/getAllMembers'
   connected: number=0;
 
   constructor(private http: HttpClient, private _router: Router) {}
@@ -56,12 +57,13 @@ export class AuthService {
   }
 
   logoutUser() {
+    
     localStorage.removeItem('token');
     //this._router.navigate(['/home']);
   }
 
   loggedIn() {
-    this.connected++;
+    
     return !!localStorage.getItem('token');
   }
 
@@ -80,8 +82,8 @@ export class AuthService {
   home() {
     return this.http.get<any>(this._home);
   }
-  getConnectedUser(){
-    return this.userConnected;
+  getAllMembers(){
+    return this.http.get<any>(this._getAllMembers);
   }
   
   onLeave() {

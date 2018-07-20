@@ -52,8 +52,11 @@ export class RegisterComponent implements OnInit {
     this.authService.checkEmail(this.user)
     .subscribe(
       res => {
-        this.emailAvailable=res.message
-        console.log(this.emailAvailable)
+          if(res.message){
+            this.emailAvailable = res.message
+          }else {
+            this.emailAvailable =res.error
+          }
       } 
     )
   }

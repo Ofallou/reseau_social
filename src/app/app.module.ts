@@ -17,6 +17,8 @@ import {MatSelectModule} from '@angular/material/select';
 import { LayoutModule } from '@angular/cdk/layout';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { FlexLayoutModule } from "@angular/flex-layout";
+
 
 // services
 import {TokenService} from './token.service';
@@ -74,6 +76,7 @@ import { MembersListComponent } from './members-list/members-list.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    FlexLayoutModule,
     ReactiveFormsModule,
     HttpClientModule,
     DragulaModule,

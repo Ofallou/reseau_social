@@ -30,7 +30,7 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".grid-container {\n  margin: 20px;\n}\n\n.dashboard-card {\n  position: absolute;\n  top: 15px;\n  left: 15px;\n  right: 15px;\n  bottom: 15px;\n}\n\n.more-button {\n  position: absolute;\n  top: 5px;\n  right: 10px;\n}\n\n.dashboard-card-content {\n  text-align: center;\n}"
+module.exports = ".grid-container {\n  margin: 10px;\n  max-width: 300px;\n}\n\n.dashboard-card {\n  position: absolute;\n  top: 15px;\n  left: 15px;\n  right: 15px;\n  bottom: 15px;\n}\n\n.more-button {\n  position: absolute;\n  top: 5px;\n  right: 10px;\n}\n\n"
 
 /***/ }),
 
@@ -41,7 +41,7 @@ module.exports = ".grid-container {\n  margin: 20px;\n}\n\n.dashboard-card {\n  
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"grid-container\">\n  <h1 class=\"mat-h1\">Dashboard</h1>\n  <mat-grid-list cols=\"1\" rowHeight=\"350px\">\n    <mat-grid-tile [colspan]=\"1\" [rowspan]=\"1\">\n      <mat-card class=\"dashboard-card\">\n        <mat-card-header>\n          <mat-card-title>\n           \n            <button mat-icon-button class=\"more-button\" [matMenuTriggerFor]=\"menu\" aria-label=\"Toggle menu\">\n              <mat-icon>more_vert</mat-icon>\n            </button>\n            <mat-menu #menu=\"matMenu\" xPosition=\"before\">\n              <app-stats></app-stats>\n            </mat-menu>\n          </mat-card-title>\n        </mat-card-header>\n        <mat-card-content class=\"dashboard-card-content\">\n          <app-stats></app-stats>\n        </mat-card-content>\n      </mat-card>\n    </mat-grid-tile>\n  </mat-grid-list>\n</div>"
+module.exports = "<div class=\"grid-container\">\n  <h1 class=\"mat-h1\">Admin</h1>\n  <mat-grid-list cols=\"1\" rowHeight=\"150px\">\n    <mat-grid-tile [colspan]=\"1\" [rowspan]=\"1\">\n      <mat-card class=\"dashboard-card\">\n        <mat-card-header>\n  \n        </mat-card-header>\n        <mat-card-content class=\"dashboard-card-content\">\n          <app-stats></app-stats>\n        </mat-card-content>\n      </mat-card>\n    </mat-grid-tile>\n  </mat-grid-list>\n</div>\n\n\n<div class=\"grid-container\">\n    \n    <mat-grid-list cols=\"2\">\n      <mat-grid-tile [colspan]=\"1\" [rowspan]=\"1\">\n        <mat-card class=\"dashboard-card\">\n          <mat-card-header>\n            Liste des membres\n          </mat-card-header>\n          <mat-card-content class=\"dashboard-card-content\">\n            <app-members-list></app-members-list>\n          </mat-card-content>\n        </mat-card>\n      </mat-grid-tile>\n    </mat-grid-list>\n  </div>"
 
 /***/ }),
 
@@ -57,6 +57,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AdminDashboardComponent", function() { return AdminDashboardComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
+/* harmony import */ var _comment_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../comment.service */ "./src/app/comment.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -68,11 +69,14 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var AdminDashboardComponent = /** @class */ (function () {
-    function AdminDashboardComponent(authService) {
+    function AdminDashboardComponent(authService, commentService) {
         this.authService = authService;
+        this.commentService = commentService;
     }
     AdminDashboardComponent.prototype.ngOnInit = function () {
+        this.commentService.isConnected().subscribe(function (res) { return console.log('le rest', res); });
         this.authService.getData().subscribe(function (res) { return console.log(res); });
     };
     AdminDashboardComponent = __decorate([
@@ -81,7 +85,7 @@ var AdminDashboardComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./admin-dashboard.component.html */ "./src/app/admin-dashboard/admin-dashboard.component.html"),
             styles: [__webpack_require__(/*! ./admin-dashboard.component.css */ "./src/app/admin-dashboard/admin-dashboard.component.css")]
         }),
-        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"]])
+        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"], _comment_service__WEBPACK_IMPORTED_MODULE_2__["CommentService"]])
     ], AdminDashboardComponent);
     return AdminDashboardComponent;
 }());
@@ -308,38 +312,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/cdk/layout */ "./node_modules/@angular/cdk/esm5/layout.es5.js");
 /* harmony import */ var _angular_material_badge__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/material/badge */ "./node_modules/@angular/material/esm5/badge.es5.js");
 /* harmony import */ var _angular_material_expansion__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/material/expansion */ "./node_modules/@angular/material/esm5/expansion.es5.js");
-/* harmony import */ var _token_service__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./token.service */ "./src/app/token.service.ts");
-/* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./auth.service */ "./src/app/auth.service.ts");
-/* harmony import */ var _lost_password_lost_password_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./lost-password/lost-password.component */ "./src/app/lost-password/lost-password.component.ts");
-/* harmony import */ var _auth_guard__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./auth.guard */ "./src/app/auth.guard.ts");
-/* harmony import */ var _comments_comments_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./comments/comments.component */ "./src/app/comments/comments.component.ts");
-/* harmony import */ var _comment_service__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./comment.service */ "./src/app/comment.service.ts");
-/* harmony import */ var _uploader_uploader_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./uploader/uploader.component */ "./src/app/uploader/uploader.component.ts");
-/* harmony import */ var _user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./user-settings/user-settings.component */ "./src/app/user-settings/user-settings.component.ts");
-/* harmony import */ var _websocket_service__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./websocket.service */ "./src/app/websocket.service.ts");
-/* harmony import */ var _stats_stats_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./stats/stats.component */ "./src/app/stats/stats.component.ts");
-/* harmony import */ var _header_header_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./header/header.component */ "./src/app/header/header.component.ts");
-/* harmony import */ var _member_search_member_search_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./member-search/member-search.component */ "./src/app/member-search/member-search.component.ts");
-/* harmony import */ var _member_action_service__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./member-action.service */ "./src/app/member-action.service.ts");
-/* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @angular/platform-browser/animations */ "./node_modules/@angular/platform-browser/fesm5/animations.js");
-/* harmony import */ var _main_main_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./main/main.component */ "./src/app/main/main.component.ts");
-/* harmony import */ var _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./navigation/navigation.component */ "./src/app/navigation/navigation.component.ts");
-/* harmony import */ var _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! @angular/material/tooltip */ "./node_modules/@angular/material/esm5/tooltip.es5.js");
-/* harmony import */ var _admin_dashboard_admin_dashboard_component__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./admin-dashboard/admin-dashboard.component */ "./src/app/admin-dashboard/admin-dashboard.component.ts");
-/* harmony import */ var _admin_guard__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./admin.guard */ "./src/app/admin.guard.ts");
-/* harmony import */ var angularfire2__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! angularfire2 */ "./node_modules/angularfire2/index.js");
-/* harmony import */ var angularfire2_storage__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! angularfire2/storage */ "./node_modules/angularfire2/storage/index.js");
-/* harmony import */ var _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./new-password/new-password.component */ "./src/app/new-password/new-password.component.ts");
-/* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! @angular/material/dialog */ "./node_modules/@angular/material/esm5/dialog.es5.js");
-/* harmony import */ var _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! @angular/material/snack-bar */ "./node_modules/@angular/material/esm5/snack-bar.es5.js");
-/* harmony import */ var _friendslist_friendslist_component__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./friendslist/friendslist.component */ "./src/app/friendslist/friendslist.component.ts");
-/* harmony import */ var _members_list_members_list_component__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./members-list/members-list.component */ "./src/app/members-list/members-list.component.ts");
+/* harmony import */ var _angular_flex_layout__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @angular/flex-layout */ "./node_modules/@angular/flex-layout/esm5/flex-layout.es5.js");
+/* harmony import */ var _token_service__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./token.service */ "./src/app/token.service.ts");
+/* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./auth.service */ "./src/app/auth.service.ts");
+/* harmony import */ var _lost_password_lost_password_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./lost-password/lost-password.component */ "./src/app/lost-password/lost-password.component.ts");
+/* harmony import */ var _auth_guard__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./auth.guard */ "./src/app/auth.guard.ts");
+/* harmony import */ var _comments_comments_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./comments/comments.component */ "./src/app/comments/comments.component.ts");
+/* harmony import */ var _comment_service__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./comment.service */ "./src/app/comment.service.ts");
+/* harmony import */ var _uploader_uploader_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./uploader/uploader.component */ "./src/app/uploader/uploader.component.ts");
+/* harmony import */ var _user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./user-settings/user-settings.component */ "./src/app/user-settings/user-settings.component.ts");
+/* harmony import */ var _websocket_service__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./websocket.service */ "./src/app/websocket.service.ts");
+/* harmony import */ var _stats_stats_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./stats/stats.component */ "./src/app/stats/stats.component.ts");
+/* harmony import */ var _header_header_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./header/header.component */ "./src/app/header/header.component.ts");
+/* harmony import */ var _member_search_member_search_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./member-search/member-search.component */ "./src/app/member-search/member-search.component.ts");
+/* harmony import */ var _member_action_service__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./member-action.service */ "./src/app/member-action.service.ts");
+/* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! @angular/platform-browser/animations */ "./node_modules/@angular/platform-browser/fesm5/animations.js");
+/* harmony import */ var _main_main_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./main/main.component */ "./src/app/main/main.component.ts");
+/* harmony import */ var _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./navigation/navigation.component */ "./src/app/navigation/navigation.component.ts");
+/* harmony import */ var _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! @angular/material/tooltip */ "./node_modules/@angular/material/esm5/tooltip.es5.js");
+/* harmony import */ var _admin_dashboard_admin_dashboard_component__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./admin-dashboard/admin-dashboard.component */ "./src/app/admin-dashboard/admin-dashboard.component.ts");
+/* harmony import */ var _admin_guard__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./admin.guard */ "./src/app/admin.guard.ts");
+/* harmony import */ var angularfire2__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! angularfire2 */ "./node_modules/angularfire2/index.js");
+/* harmony import */ var angularfire2_storage__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! angularfire2/storage */ "./node_modules/angularfire2/storage/index.js");
+/* harmony import */ var _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./new-password/new-password.component */ "./src/app/new-password/new-password.component.ts");
+/* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! @angular/material/dialog */ "./node_modules/@angular/material/esm5/dialog.es5.js");
+/* harmony import */ var _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! @angular/material/snack-bar */ "./node_modules/@angular/material/esm5/snack-bar.es5.js");
+/* harmony import */ var _friendslist_friendslist_component__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./friendslist/friendslist.component */ "./src/app/friendslist/friendslist.component.ts");
+/* harmony import */ var _members_list_members_list_component__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./members-list/members-list.component */ "./src/app/members-list/members-list.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -395,24 +401,25 @@ var AppModule = /** @class */ (function () {
                 _register_register_component__WEBPACK_IMPORTED_MODULE_5__["RegisterComponent"],
                 _login_login_component__WEBPACK_IMPORTED_MODULE_6__["LoginComponent"],
                 _userdata_userdata_component__WEBPACK_IMPORTED_MODULE_7__["UserdataComponent"],
-                _lost_password_lost_password_component__WEBPACK_IMPORTED_MODULE_19__["LostPasswordComponent"],
-                _comments_comments_component__WEBPACK_IMPORTED_MODULE_21__["CommentsComponent"],
-                _uploader_uploader_component__WEBPACK_IMPORTED_MODULE_23__["UploaderComponent"],
-                _user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_24__["UserSettingsComponent"],
-                _stats_stats_component__WEBPACK_IMPORTED_MODULE_26__["StatsComponent"],
-                _header_header_component__WEBPACK_IMPORTED_MODULE_27__["HeaderComponent"],
-                _member_search_member_search_component__WEBPACK_IMPORTED_MODULE_28__["MemberSearchComponent"],
-                _main_main_component__WEBPACK_IMPORTED_MODULE_31__["MainComponent"],
-                _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_32__["NavigationComponent"],
-                _admin_dashboard_admin_dashboard_component__WEBPACK_IMPORTED_MODULE_34__["AdminDashboardComponent"],
-                _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_38__["NewPasswordComponent"],
-                _friendslist_friendslist_component__WEBPACK_IMPORTED_MODULE_41__["FriendslistComponent"],
-                _members_list_members_list_component__WEBPACK_IMPORTED_MODULE_42__["MembersListComponent"]
+                _lost_password_lost_password_component__WEBPACK_IMPORTED_MODULE_20__["LostPasswordComponent"],
+                _comments_comments_component__WEBPACK_IMPORTED_MODULE_22__["CommentsComponent"],
+                _uploader_uploader_component__WEBPACK_IMPORTED_MODULE_24__["UploaderComponent"],
+                _user_settings_user_settings_component__WEBPACK_IMPORTED_MODULE_25__["UserSettingsComponent"],
+                _stats_stats_component__WEBPACK_IMPORTED_MODULE_27__["StatsComponent"],
+                _header_header_component__WEBPACK_IMPORTED_MODULE_28__["HeaderComponent"],
+                _member_search_member_search_component__WEBPACK_IMPORTED_MODULE_29__["MemberSearchComponent"],
+                _main_main_component__WEBPACK_IMPORTED_MODULE_32__["MainComponent"],
+                _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_33__["NavigationComponent"],
+                _admin_dashboard_admin_dashboard_component__WEBPACK_IMPORTED_MODULE_35__["AdminDashboardComponent"],
+                _new_password_new_password_component__WEBPACK_IMPORTED_MODULE_39__["NewPasswordComponent"],
+                _friendslist_friendslist_component__WEBPACK_IMPORTED_MODULE_42__["FriendslistComponent"],
+                _members_list_members_list_component__WEBPACK_IMPORTED_MODULE_43__["MembersListComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
                 _app_routing_module__WEBPACK_IMPORTED_MODULE_2__["AppRoutingModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_9__["FormsModule"],
+                _angular_flex_layout__WEBPACK_IMPORTED_MODULE_17__["FlexLayoutModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_9__["ReactiveFormsModule"],
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_8__["HttpClientModule"],
                 ng2_dragula__WEBPACK_IMPORTED_MODULE_10__["DragulaModule"],
@@ -432,13 +439,13 @@ var AppModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatRadioModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatTableModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatCheckboxModule"],
-                _angular_material_dialog__WEBPACK_IMPORTED_MODULE_39__["MatDialogModule"],
-                _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_40__["MatSnackBarModule"],
-                _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_30__["BrowserAnimationsModule"],
+                _angular_material_dialog__WEBPACK_IMPORTED_MODULE_40__["MatDialogModule"],
+                _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_41__["MatSnackBarModule"],
+                _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_31__["BrowserAnimationsModule"],
                 _angular_material_expansion__WEBPACK_IMPORTED_MODULE_16__["MatExpansionModule"],
                 _angular_material_badge__WEBPACK_IMPORTED_MODULE_15__["MatBadgeModule"],
-                _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_33__["MatTooltipModule"],
-                angularfire2__WEBPACK_IMPORTED_MODULE_36__["AngularFireModule"].initializeApp({
+                _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_34__["MatTooltipModule"],
+                angularfire2__WEBPACK_IMPORTED_MODULE_37__["AngularFireModule"].initializeApp({
                     apiKey: "AIzaSyAlSqMwKKhmxwcaV2yV0JakW1Z3FC-8d3Q",
                     authDomain: "reseau-social-c1b9a.firebaseapp.com",
                     databaseURL: "https://reseau-social-c1b9a.firebaseio.com",
@@ -446,12 +453,12 @@ var AppModule = /** @class */ (function () {
                     storageBucket: "reseau-social-c1b9a.appspot.com",
                     messagingSenderId: "217716745845"
                 }),
-                angularfire2_storage__WEBPACK_IMPORTED_MODULE_37__["AngularFireStorageModule"]
+                angularfire2_storage__WEBPACK_IMPORTED_MODULE_38__["AngularFireStorageModule"]
             ],
-            providers: [_auth_service__WEBPACK_IMPORTED_MODULE_18__["AuthService"], _admin_guard__WEBPACK_IMPORTED_MODULE_35__["AdminGuard"], _auth_guard__WEBPACK_IMPORTED_MODULE_20__["AuthGuard"], _websocket_service__WEBPACK_IMPORTED_MODULE_25__["WebsocketService"], _comment_service__WEBPACK_IMPORTED_MODULE_22__["CommentService"], _member_action_service__WEBPACK_IMPORTED_MODULE_29__["MemberActionService"],
+            providers: [_auth_service__WEBPACK_IMPORTED_MODULE_19__["AuthService"], _admin_guard__WEBPACK_IMPORTED_MODULE_36__["AdminGuard"], _auth_guard__WEBPACK_IMPORTED_MODULE_21__["AuthGuard"], _websocket_service__WEBPACK_IMPORTED_MODULE_26__["WebsocketService"], _comment_service__WEBPACK_IMPORTED_MODULE_23__["CommentService"], _member_action_service__WEBPACK_IMPORTED_MODULE_30__["MemberActionService"],
                 {
                     provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_8__["HTTP_INTERCEPTORS"],
-                    useClass: _token_service__WEBPACK_IMPORTED_MODULE_17__["TokenService"],
+                    useClass: _token_service__WEBPACK_IMPORTED_MODULE_18__["TokenService"],
                     multi: true
                 }],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]]
@@ -566,6 +573,7 @@ var AuthService = /** @class */ (function () {
         this._home = this.url + '/api/';
         this._admin = this.url + '/api/admin';
         this._updateUser = this.url + '/api/update';
+        this._getAllMembers = this.url + '/api/getAllMembers';
         this.connected = 0;
     }
     AuthService.prototype.checkPseudo = function (user) {
@@ -591,7 +599,6 @@ var AuthService = /** @class */ (function () {
         //this._router.navigate(['/home']);
     };
     AuthService.prototype.loggedIn = function () {
-        this.connected++;
         return !!localStorage.getItem('token');
     };
     AuthService.prototype.lostPassword = function (_email) {
@@ -606,8 +613,8 @@ var AuthService = /** @class */ (function () {
     AuthService.prototype.home = function () {
         return this.http.get(this._home);
     };
-    AuthService.prototype.getConnectedUser = function () {
-        return this.userConnected;
+    AuthService.prototype.getAllMembers = function () {
+        return this.http.get(this._getAllMembers);
     };
     AuthService.prototype.onLeave = function () {
         this.socket.emit('disconnect');
@@ -689,6 +696,19 @@ var CommentService = /** @class */ (function () {
         });
         return observable;
     };
+    CommentService.prototype.isConnected = function () {
+        var _this = this;
+        var observable = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Observable"](function (observer) {
+            _this.socket.on('isconnected', function (data) {
+                observer.next(data);
+            });
+            return function () { _this.socket.disconnect(); };
+        });
+        return observable;
+    };
+    CommentService.prototype.onLogin = function (data) {
+        this.socket.emit('login', data);
+    };
     CommentService.prototype.getMemberComments = function () {
         return this.http.get(this._getCommentPostedUrl);
     };
@@ -701,8 +721,6 @@ var CommentService = /** @class */ (function () {
     };
     CommentService.prototype.getComments = function () {
         return this.http.get(this._getAllUserCommentsUrl);
-    };
-    CommentService.prototype.comments = function () {
     };
     CommentService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
@@ -954,6 +972,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 var HeaderComponent = /** @class */ (function () {
     function HeaderComponent(authService) {
+        var _this = this;
         this.authService = authService;
         this.isAuth = false;
         this.title = 'app';
@@ -965,9 +984,6 @@ var HeaderComponent = /** @class */ (function () {
             admin: false,
             online: false,
         };
-    }
-    HeaderComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.getUserState();
         console.log(this.isAuth);
         if (this.isAuth) {
@@ -977,6 +993,8 @@ var HeaderComponent = /** @class */ (function () {
                 _this.user = res.user;
             });
         }
+    }
+    HeaderComponent.prototype.ngOnInit = function () {
     };
     HeaderComponent.prototype.getUserState = function () {
         this.isAuth = !!this.authService.getToken();
@@ -1154,6 +1172,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _comment_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../comment.service */ "./src/app/comment.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1167,10 +1186,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var LoginComponent = /** @class */ (function () {
-    function LoginComponent(authService, _router) {
+    function LoginComponent(authService, _router, commentService) {
         this.authService = authService;
         this._router = _router;
+        this.commentService = commentService;
         this.userData = {
             email: '',
             password: ''
@@ -1202,7 +1223,12 @@ var LoginComponent = /** @class */ (function () {
                 _this.userData.password = null;
             }
             else {
+                _this.commentService.onLogin(_this.userData.email);
                 localStorage.setItem('token', res.token);
+                _this.authService.getData().subscribe(function (res) {
+                    _this.userData = res.user;
+                    console.log('**/***/***/', _this.userData);
+                });
                 _this._router.navigate(['/userdata']);
             }
         });
@@ -1213,7 +1239,7 @@ var LoginComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./login.component.html */ "./src/app/login/login.component.html"),
             styles: [__webpack_require__(/*! ./login.component.css */ "./src/app/login/login.component.css")]
         }),
-        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
+        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _comment_service__WEBPACK_IMPORTED_MODULE_4__["CommentService"]])
     ], LoginComponent);
     return LoginComponent;
 }());
@@ -1562,7 +1588,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = "<mat-list>\n        <mat-list-item *ngFor=\"let message of messages\">\n          <img matListAvatar src=\"...\" alt=\"...\">\n          <h3 matLine> {{message.from}} </h3>\n          <p matLine>\n            <span> {{message.subject}} </span>\n            <span class=\"demo-2\"> -- {{message.content}} </span>\n          </p>\n        </mat-list-item>\n      </mat-list>"
 
 /***/ }),
 
@@ -1578,6 +1604,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MembersListComponent", function() { return MembersListComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
+/* harmony import */ var _comment_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../comment.service */ "./src/app/comment.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1589,11 +1616,22 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var MembersListComponent = /** @class */ (function () {
-    function MembersListComponent(authService) {
+    function MembersListComponent(authService, commentServie) {
         this.authService = authService;
+        this.commentServie = commentServie;
     }
     MembersListComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.authService.getData().subscribe(function (res) {
+            _this.member = res.user;
+            console.log(_this.member);
+        });
+        this.commentServie.isConnected()
+            .subscribe(function (res) {
+            console.log('les infos membre connecté', res);
+        });
     };
     MembersListComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1601,7 +1639,7 @@ var MembersListComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./members-list.component.html */ "./src/app/members-list/members-list.component.html"),
             styles: [__webpack_require__(/*! ./members-list.component.css */ "./src/app/members-list/members-list.component.css")]
         }),
-        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"]])
+        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"], _comment_service__WEBPACK_IMPORTED_MODULE_2__["CommentService"]])
     ], MembersListComponent);
     return MembersListComponent;
 }());
@@ -1862,8 +1900,12 @@ var RegisterComponent = /** @class */ (function () {
         var _this = this;
         this.authService.checkEmail(this.user)
             .subscribe(function (res) {
-            _this.emailAvailable = res.message;
-            console.log(_this.emailAvailable);
+            if (res.message) {
+                _this.emailAvailable = res.message;
+            }
+            else {
+                _this.emailAvailable = res.error;
+            }
         });
     };
     RegisterComponent.prototype.checkPseudo = function () {
@@ -1917,7 +1959,7 @@ var RegisterComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n.example-spacer {\n    flex: 1 1 auto;\n    width: 100px;\n  }\n\n  .stats{\n      width: 200px;\n      display: flex;\n      flex-flow: row wrap;\n      justify-content: space-around;\n  }"
+module.exports = "\n.example-spacer {\n    flex: 1 1 auto;\n    width: 100px;\n  }\n\n  .stats{\n      width: 200px;\n      display: flex;\n      flex-flow: row wrap;\n      justify-content: space-around;\n      \n  }"
 
 /***/ }),
 
@@ -1928,7 +1970,7 @@ module.exports = "\n.example-spacer {\n    flex: 1 1 auto;\n    width: 100px;\n 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<div class=\"stats\">\n    <div matBadge=\"{{nbComments}}\" matBadgeOverlap=\"false\" matBadgeColor=\"warn\">Posts</div>\n    \n    <div matBadge=\"{{nbConnected}}\" matBadgeOverlap=\"false\" matBadgeColor=\"warn\">Connectés</div>\n\n</div>"
+module.exports = "<div class=\"container\" fxLayout \n                        fxLayout.xs=\"row\"\n                        fxLayoutAlign=\"center\"\n                        fxLayoutGap=\"30px\"\n\n>\n        <div class=\"stats\" fxFlex=\"10%\">\n                <div matBadge=\"{{commentsArray.length}}\" matBadgeOverlap=\"false\" matBadgeColor=\"primary\">Posts</div>   \n            \n        </div>\n        <div class=\"stats\" fxFlex=\"30%\">\n        <div matBadge=\"{{membersArray.length}}\" matBadgeOverlap=\"false\" matBadgeColor=\"primary\">Membres</div>   \n                    \n        </div>\n\n</div>\n\n"
 
 /***/ }),
 
@@ -1959,10 +2001,33 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 var StatsComponent = /** @class */ (function () {
     function StatsComponent(commentService, authService) {
+        var _this = this;
         this.commentService = commentService;
         this.authService = authService;
+        this.commentsArray = [];
+        this.membersArray = [];
+        this.commentService.onBegin()
+            .subscribe(function (res) { return console.log(res); });
+        this.commentService.onPosted()
+            .subscribe(function (data) {
+            _this.commentsArray.splice(0, 0, data);
+            // console.log("Apres ajout",this.commentsArray)
+        });
     }
     StatsComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.authService.getAllMembers().subscribe(function (res) {
+            console.log(res.members);
+            _this.membersArray = res.members;
+        });
+        this.authService.getData().subscribe(function (res) {
+            _this.currentUser = res.user;
+            console.log(_this.currentUser);
+        });
+        this.commentService.getComments().subscribe(function (res) {
+            _this.commentsArray = res.comments;
+            console.log('stats', _this.commentsArray);
+        });
     };
     StatsComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -2214,7 +2279,7 @@ module.exports = ".card {\n    width: 200px;\n  }\n\n  .container-fixe {\n   \n 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fixe\">\n    <div>\n        <mat-card class=\"card\">\n            <mat-card-header>\n              <mat-card-title>\n                {{userData.first_name}}\n                {{userData.last_name}}\n                    </mat-card-title>\n              <mat-card-subtitle>\n                {{userData.pseudo}}\n                <img src=\" {{userData.picture}}\" alt=\"\">\n              </mat-card-subtitle>\n            </mat-card-header>\n            <mat-card-content>\n            </mat-card-content>\n          </mat-card>\n    </div>\n    \n    <mat-card class=\"example-card\">\n        <article >\n          <form class=\"example-form\" #commentF=\"ngForm\" (submit)=\"posted();commentF.reset()\" >\n        <mat-form-field>\n          <input matInput placeholder=\"titre du message\" name=\"title\" id=\"titre\" [(ngModel)]=\"comment.title\" required >\n        </mat-form-field>\n         <br>\n        <mat-form-field class=\"example-full-width\">\n          <textarea matInput placeholder=\"Poster un commentaire......\" name=\"comment\" [(ngModel)]=\"comment.content\"></textarea>\n        </mat-form-field>\n         <br>\n             \n        <button type=\"submit\" mat-fab color=\"accent\" [disabled]=\"!commentF.form.valid\">Poster\n         \n        </button>\n    \n    </form>\n          \n      </article>\n      </mat-card>\n\n      <div class=\"request\">\n        <form class=\"example-form\" #search=\"ngForm\" >\n        <mat-accordion class=\"example-headers-align\">\n          <mat-expansion-panel [expanded]=\"step === 0\" (opened)=\"setStep(0)\" hideToggle>\n            <mat-expansion-panel-header>\n              <mat-panel-title>\n                recherche de membre\n              </mat-panel-title>\n              <mat-panel-description>\n          \n                <mat-icon>account_circle</mat-icon>\n              </mat-panel-description>\n            </mat-expansion-panel-header>\n        \n            <mat-form-field>\n              <input matInput placeholder=\"nom, prenom ou pseudo\" name=\"name\" [(ngModel)]=\"keyword.name\" \n              >\n              \n            </mat-form-field>\n            <button type=\"submit\" mat-button color=\"primary\" (click)=\"searchfriend()\" >OK</button>\n\n            <mat-list *ngFor=\"let member of resultList\">\n              \n                <mat-list-item> \n                 <form class=\"example-form\" >\n                    <mat-form-field>\n                      <input matInput name=\"_id\" [ngModel]=\"member._id\">\n                    </mat-form-field>\n                    <img src=\" {{userData.picture}}\" alt=\"\"> {{member.first_name}} {{member.pseudo}} \n                    \n                    <button type=\"submit\" mat-button (click)=\"sendInvitationrequest(member)\" >value</button>\n                  </form>\n                 </mat-list-item>\n      \n               </mat-list>\n            \n        \n            <mat-action-row>\n              <button mat-button color=\"primary\" (click)=\"nextStep()\">Next</button>\n            </mat-action-row>\n          </mat-expansion-panel>\n        \n          <mat-expansion-panel [expanded]=\"step === 1\" (opened)=\"setStep(1)\" hideToggle>\n            <mat-expansion-panel-header>\n              <mat-panel-title>\n                Demandes d'ajout\n              </mat-panel-title>\n              <mat-panel-description>\n                Liste des demandes d'ajout\n                <mat-icon>map</mat-icon>\n              </mat-panel-description>\n            </mat-expansion-panel-header>\n        \n            <mat-form-field>\n              <input matInput placeholder=\"Country\">\n            </mat-form-field>\n        \n            <mat-action-row>\n              <button mat-button color=\"warn\" (click)=\"prevStep()\">Previous</button>\n            </mat-action-row>\n          </mat-expansion-panel>\n        \n        \n        \n        </mat-accordion>\n      </form>\n      </div>\n      \n     \n\n\n    </div>\n\n\n\n\n<div class=\"container\">\n  \n    <mat-card class=\"example-card\" *ngFor=\"let comment of comments\">\n      <mat-card-header>\n        <div mat-card-avatar class=\"example-header-image\">\n          <img src=\"{{comment.authorPicture}}\" style=\"width: 46px;\" alt=\"\">\n        </div>\n        <mat-card-title>{{comment.author }} </mat-card-title>\n        <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}</mat-card-subtitle>\n      </mat-card-header>\n      <h4> {{comment.title}}</h4>\n     \n      <mat-card-content>\n        <p>\n          {{comment.content}}\n        </p>\n      </mat-card-content>\n     \n    </mat-card>\n  </div>\n\n\n<!-- <app-comments></app-comments> -->\n"
+module.exports = "<div class=\"container-fixe\">\n    <div>\n        <mat-card class=\"card\">\n            <mat-card-header>\n              <mat-card-title>\n                {{userData.first_name}}\n                {{userData.last_name}}\n                    </mat-card-title>\n              <mat-card-subtitle>\n                {{userData.pseudo}}\n                <img src=\" {{userData.picture}}\" alt=\"\">\n              </mat-card-subtitle>\n            </mat-card-header>\n            <mat-card-content>\n            </mat-card-content>\n          </mat-card>\n    </div>\n    \n    <mat-card class=\"example-card\">\n        <article >\n          <form class=\"example-form\" #commentF=\"ngForm\" (submit)=\"posted();commentF.reset()\" >\n        <mat-form-field>\n          <input matInput placeholder=\"titre du message\" name=\"title\" id=\"titre\" [(ngModel)]=\"comment.title\" required >\n        </mat-form-field>\n         <br>\n        <mat-form-field class=\"example-full-width\">\n          <textarea matInput placeholder=\"Poster un commentaire......\" name=\"comment\" [(ngModel)]=\"comment.content\"></textarea>\n        </mat-form-field>\n         <br>\n        <button type=\"submit\" mat-fab color=\"accent\" [disabled]=\"!commentF.form.valid\">Poster\n     \n        </button>\n  \n    </form>\n          \n      </article>\n      </mat-card>\n\n      <div class=\"request\">\n        <form class=\"example-form\" #search=\"ngForm\" >\n        <mat-accordion class=\"example-headers-align\">\n          <mat-expansion-panel [expanded]=\"step === 0\" (opened)=\"setStep(0)\" hideToggle>\n            <mat-expansion-panel-header>\n              <mat-panel-title>\n                recherche de membre\n              </mat-panel-title>\n              <mat-panel-description>\n          \n                <mat-icon>account_circle</mat-icon>\n              </mat-panel-description>\n            </mat-expansion-panel-header>\n        \n            <mat-form-field>\n              <input matInput placeholder=\"nom, prenom ou pseudo\" name=\"name\" [(ngModel)]=\"keyword.name\" \n              >\n              \n            </mat-form-field>\n            <button type=\"submit\" mat-button color=\"primary\" (click)=\"searchfriend()\" >OK</button>\n\n            <mat-list *ngFor=\"let member of resultList\">\n              \n                <mat-list-item> \n                 <form class=\"example-form\" >\n                    <mat-form-field>\n                      <input matInput name=\"_id\" [ngModel]=\"member._id\">\n                    </mat-form-field>\n                    <img src=\" {{userData.picture}}\" alt=\"\"> {{member.first_name}} {{member.pseudo}} \n                    \n                    <button type=\"submit\" mat-button (click)=\"sendInvitationrequest(member)\" >value</button>\n                  </form>\n                 </mat-list-item>\n      \n               </mat-list>\n            \n        \n            <mat-action-row>\n              <button mat-button color=\"primary\" (click)=\"nextStep()\">Next</button>\n            </mat-action-row>\n          </mat-expansion-panel>\n        \n          <mat-expansion-panel [expanded]=\"step === 1\" (opened)=\"setStep(1)\" hideToggle>\n            <mat-expansion-panel-header>\n              <mat-panel-title>\n                Demandes d'ajout\n              </mat-panel-title>\n              <mat-panel-description>\n                Liste des demandes d'ajout\n                <mat-icon>map</mat-icon>\n              </mat-panel-description>\n            </mat-expansion-panel-header>\n        \n            <mat-form-field>\n              <input matInput placeholder=\"Country\">\n            </mat-form-field>\n        \n            <mat-action-row>\n              <button mat-button color=\"warn\" (click)=\"prevStep()\">Previous</button>\n            </mat-action-row>\n          </mat-expansion-panel>\n        \n        \n        \n        </mat-accordion>\n      </form>\n      </div>\n      \n     \n\n\n    </div>\n\n\n\n\n<div class=\"container\">\n  \n    <mat-card class=\"example-card\" *ngFor=\"let comment of comments\">\n      <mat-card-header>\n        <div mat-card-avatar class=\"example-header-image\">\n          <img src=\"{{comment.authorPicture}}\" style=\"width: 46px;\" alt=\"\">\n        </div>\n        <mat-card-title>{{comment.author }} </mat-card-title>\n        <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}</mat-card-subtitle>\n      </mat-card-header>\n      <h4> {{comment.title}}</h4>\n     \n      <mat-card-content>\n        <p>\n          {{comment.content}}\n        </p>\n      </mat-card-content>\n     \n    </mat-card>\n  </div>\n\n\n<!-- <app-comments></app-comments> -->\n"
 
 /***/ }),
 
@@ -2276,8 +2341,6 @@ var UserdataComponent = /** @class */ (function () {
             pseudo: '',
             _id: '',
         };
-        this.commentService.onBegin()
-            .subscribe(function (res) { return console.log(res); });
         this.commentService.onPosted()
             .subscribe(function (data) {
             _this.comments.splice(0, 0, data);
@@ -2288,8 +2351,9 @@ var UserdataComponent = /** @class */ (function () {
         var _this = this;
         this.auth.getData()
             .subscribe(function (data) {
+            data.user.online = true;
             _this.userData = data.user;
-            console.log(_this.userData);
+            console.log('mes infos', _this.userData);
             _this.currentUser_id = data.user._id;
             _this.comment.author = data.user.first_name + ' ' + data.user.last_name;
             _this.comment.authorId = _this.currentUser_id;
@@ -2298,7 +2362,6 @@ var UserdataComponent = /** @class */ (function () {
         this.commentService.getMemberComments()
             .subscribe(function (res) {
             _this.comments = res.comments;
-            console.log(res);
         });
     };
     UserdataComponent.prototype.upload = function (event) {

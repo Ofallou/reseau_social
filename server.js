@@ -51,8 +51,14 @@ app.get('*', (req, res) => {
 io.on('connection' , (socket) =>{
   console.log('User joined', socket.id);
   // socOn recupere tous les messages posté et enr  du serveur
-  
+
     //socket.emit('user join',{message:'Welcome'});
+    socket.on('login', (data)=> {
+
+      console.log('est connecte',data);
+
+      io.emit('isconnected', data);
+    })
       
       socket.on('posted', (data) => {
         

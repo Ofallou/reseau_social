@@ -62,7 +62,7 @@ router.post('/checkPseudo', (req,res) => {
 let myPseudo = req.body.pseudo;
 User.findOne({pseudo:myPseudo}, (err,data)=> {
   if(err)console.log(err);
-  if(data){
+  if(data!==null){
     res.json({error:"pseudo non disponible"})
   }else {
     res.json({message:"Le pseudo est disponible"})
@@ -75,12 +75,17 @@ router.post('/checkEmail', (req,res)=> {
   let myEmail = req.body.email;
   User.findOne({email:myEmail},(err, data)=>{
     if(err)console.log(err);
-    if(data)res.json({message:"Email déjà associé à un compte."});
+    console.log(data)
+    if(data!== null){
+      
+      res.json({error:"Email déjà associé à un compte."})
+    }else {
+      res.json({Message:"Email disponible."})
      
-    })
+    }
   })
 
-
+})
 
 
 // Enregistrement de l'utilisateur
@@ -309,6 +314,14 @@ router.get('/comments', (req,res) => {
 
 })
 
+
+router.get('/getAllMembers', (req,res) => {
+  User.find({}, (err, members)=> {
+    if(err) throw err;
+    res.status('200').send({members})
+
+  })
+})
 //recherche de membre
 router.post('/member',veriFyToken, (req,res)=> {
 

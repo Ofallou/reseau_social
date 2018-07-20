@@ -1,7 +1,17 @@
+<div class="container" fxLayout 
+                        fxLayout.xs="row"
+                        fxLayoutAlign="center"
+                        fxLayoutGap="30px"
 
-<div class="stats">
-    <div matBadge="{{nbComments}}" matBadgeOverlap="false" matBadgeColor="warn">Posts</div>
-    
-    <div matBadge="{{nbConnected}}" matBadgeOverlap="false" matBadgeColor="warn">Connectés</div>
+>
+        <div class="stats" fxFlex="10%">
+                <div matBadge="{{commentsArray.length}}" matBadgeOverlap="false" matBadgeColor="primary">Posts</div>   
+            
+        </div>
+        <div class="stats" fxFlex="30%">
+        <div matBadge="{{membersArray.length}}" matBadgeOverlap="false" matBadgeColor="primary">Membres</div>   
+                    
+        </div>
 
 </div>
+
