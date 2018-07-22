@@ -15,3 +15,8 @@
 
 </div>
 
+
+<mat-nav-list dense *ngFor="let member of membersArray ">
+    <a mat-list-item (click)="onSelect(member)">{{member.first_name}} {{member.pseudo}} <span *ngIf="!member.online" style="background-color: forestgreen">  *-* </span></a>
+</mat-nav-list>
+

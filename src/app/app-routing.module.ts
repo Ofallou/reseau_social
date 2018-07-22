@@ -11,6 +11,8 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AdminGuard } from './admin.guard';
 import { NewPasswordComponent } from './new-password/new-password.component';
+import { MemberSpaceComponent } from './member-space/member-space.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 const routes: Routes = [
@@ -19,12 +21,13 @@ const routes: Routes = [
     redirectTo: '/home',
     pathMatch: 'full'
   },
+  {path:'notFound', component: PageNotFoundComponent},
   {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'lostpwd', component: LostPasswordComponent},
   {path: 'passCode/:id', component: NewPasswordComponent},
-  {path:'sendRequestInvitation/:id', component: UserdataComponent},
+  {path:'member_space/:id', component: MemberSpaceComponent},
   {path: 'userdata', component: UserdataComponent,
   canActivate : [AuthGuard]},
   {path: 'user-settings', component: UserSettingsComponent,

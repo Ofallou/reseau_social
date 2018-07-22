@@ -63,8 +63,8 @@ export class CommentService  {
     this.socket.emit('login', data)
   }
 
-getMemberComments (){
-  return this.http.get<any>(this._getCommentPostedUrl)
+getMemberComments (id){
+  return this.http.get<any>(this._getCommentPostedUrl+'/'+id ,{params:id})
 }
  
 postMessage(data) {

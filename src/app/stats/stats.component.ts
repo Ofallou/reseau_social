@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommentService } from '../comment.service';
 import { AuthService } from '../auth.service';
 import { User } from '../models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-stats',
@@ -12,7 +13,7 @@ export class StatsComponent implements OnInit {
   commentsArray: Array<Comment>= [];
   membersArray:Array<User>= [];
   currentUser;
-  constructor(private commentService: CommentService, private authService: AuthService) { 
+  constructor(private commentService: CommentService, private authService: AuthService, private router:Router) { 
     this.commentService.onBegin()
     .subscribe(
       res => console.log(res)
@@ -54,7 +55,11 @@ export class StatsComponent implements OnInit {
 
   }
 
+onSelect(member){
 
+  this.router.navigate(['/member_space', member._id])
+
+}
   
 
 }

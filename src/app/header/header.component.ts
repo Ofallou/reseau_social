@@ -9,7 +9,7 @@ import { User } from '../models/user';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
+ userid;
   isAuth = false;
   title = 'app';
   user = {
@@ -23,21 +23,23 @@ export class HeaderComponent implements OnInit {
   };
 
   
-  constructor( private authService: AuthService) {
+  constructor( private authService: AuthService) {}
+ 
+  ngOnInit() {
+    this.authService.loginUser(this.user).subscribe(
+      res => console.log(res)
+    )
+
     this.getUserState()
     console.log(this.isAuth)
   if(this.isAuth){
     this.authService.getData()
     .subscribe(
-      res => {console.log(res)
+      res => {console.log('////',res)
       this.user = res.user;
+      this.userid=res.user._id
       })
   }
-
-  }
- 
-  ngOnInit() {
-    
     
   }
 
@@ -51,9 +53,7 @@ export class HeaderComponent implements OnInit {
     this.authService.logoutUser();
     this.isAuth =false;
     
-     
-    
-  }
+    }
 
  
 

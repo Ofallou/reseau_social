@@ -141,7 +141,7 @@ router.post('/login', (req, res)=> {
        if(pass){
          let payload = {subject: data._id};
          let token = jwt.sign(payload, secret);
-         res.json({success: true, token : token})
+         res.json({success: true, token : token, user: data})
 
        }else {
         res.json({err: 'Mot de passe Invalide'})       }
@@ -156,9 +156,9 @@ router.post('/login', (req, res)=> {
 
 
 
-router.get('/get_member_comments', (req,res) => {
-  
-  Comment.find({authorId:currentUserId},null,{sort:{date: -1}}, (err,comments)=>{
+router.get('/get_member_comments/:id', (req,res) => {
+  let userId= req.params.id
+  Comment.find({authorId:userId},null,{sort:{date: -1}}, (err,comments)=>{
     if(err) throw err;
     res.status('200').send({comments});
   })
@@ -169,10 +169,12 @@ router.get('/get_member_comments', (req,res) => {
 
 // Recup des infos utilisateurs (membres)
 router.get('/userdata',veriFyToken ,(req, res) => {
-
+   let name=  req.params.name
   User.findOne({_id:currentUserId}, (err, user)=>{
     if(!err){
       res.status('200').send({user: user})
+    }else {
+      res.status('404').send({error:err})
     }
   })
 
@@ -339,6 +341,21 @@ router.post('/member',veriFyToken, (req,res)=> {
      }
       
    })
+})
+
+router.get('/member_space/:id',(req,res) =>{
+  
+  let memberId=req.params.id
+  User.findOne({_id:memberId}, (err, user)=>{
+    if(err){
+      console.log(err.reason)
+      res.status('200').send({error: err})
+    }else {
+      res.status('200').send({user: user})
+    }
+  })
+   
+
 })
 
 

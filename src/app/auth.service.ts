@@ -14,11 +14,14 @@ export class AuthService {
     _id:'',
     email : '',
     pseudo:'',
-    password : ''
+    password : '',
+    admin:false,
+    online:false,
   };
 
   private socket = io(Config.SOCKET_HOST);
   userConnected: number=0;
+  _id:String
   url = Config.SOCKET_HOST || "http://localhost";
   private _registerURL = this.url + '/api/register';
   private _checkPseudoURL = this.url + '/api/checkPseudo';
@@ -30,8 +33,9 @@ export class AuthService {
   private _admin = this.url + '/api/admin';
   private _updateUser= this.url+'/api/update';
   private _getAllMembers= this.url+'/api/getAllMembers'
+  private _memberUrl = this.url+'/api/member_space'
   connected: number=0;
-
+   
   constructor(private http: HttpClient, private _router: Router) {}
 
   checkPseudo(user){
@@ -67,10 +71,15 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
+
+
   lostPassword(_email) {
     return this.http.post<any>(this._lostPassword, _email);
   }
 
+  isAdmin(){
+    return true;
+  }
  
   getData() {
     return this.http.get<any>(this._userdataURL);
@@ -91,6 +100,9 @@ export class AuthService {
     console.log(this.socket.id)
     }
     
-  
+  memberSpace(id){
+   
+    return this.http.get<any>(this._memberUrl+'/'+id, {params:id})
+  }
 
 }

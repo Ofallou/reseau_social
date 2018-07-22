@@ -3,6 +3,7 @@ import { AuthService} from '../auth.service';
 import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
 import { CommentService } from '../comment.service';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-login',
@@ -11,9 +12,13 @@ import { CommentService } from '../comment.service';
 })
 export class LoginComponent implements OnInit {
   userData = {
-    email: '',
-    password: ''
+    _id:'',
+    email:'',
+    password:'',
+    admin:false
   };
+
+  
 
 
   email = new FormControl('', [Validators.required, Validators.email]);
@@ -22,6 +27,7 @@ export class LoginComponent implements OnInit {
   hide = true;
 
   constructor(private authService: AuthService, private _router: Router,private commentService: CommentService) {
+  
   }
 
   ngOnInit() {
@@ -62,10 +68,18 @@ export class LoginComponent implements OnInit {
             this.authService.getData().subscribe(
               res => {
                 this.userData = res.user;
-                console.log('**/***/***/', this.userData)
+                console.log('**/***/***/', this.userData._id)
+
+                if(this.userData.admin){
+                  this._router.navigate(['/admin']);
+                }else {
+                  this._router.navigate(['/member_space', this.userData._id]);
+                }
               }
+
             )
-            this._router.navigate(['/userdata']);
+           
+            
           }
 
         }

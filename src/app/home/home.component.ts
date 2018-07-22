@@ -61,7 +61,7 @@ commentsArray: Array<Comment>= [];
     this.commentService.getComments().subscribe(
       res => {
         this.commentsArray=res.comments;
-        console.log('Les commentaires en base',this.commentsArray);
+        //console.log('Les commentaires en base',this.commentsArray);
         
       }
       

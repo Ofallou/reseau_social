@@ -57,8 +57,10 @@ io.on('connection' , (socket) =>{
 
       console.log('est connecte',data);
 
-      io.emit('isconnected', data);
+      io.sockets.emit('isconnected', data);
     })
+
+   
       
       socket.on('posted', (data) => {
         

@@ -47,6 +47,8 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { FriendslistComponent } from './friendslist/friendslist.component';
 import { MembersListComponent } from './members-list/members-list.component';
+import { MemberSpaceComponent } from './member-space/member-space.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 
@@ -70,7 +72,9 @@ import { MembersListComponent } from './members-list/members-list.component';
     AdminDashboardComponent,
     NewPasswordComponent,
     FriendslistComponent,
-    MembersListComponent
+    MembersListComponent,
+    MemberSpaceComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

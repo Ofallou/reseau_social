@@ -69,6 +69,8 @@ resultList:any[];
       data => {
         data.user.online = true;
         this.userData =  data.user;
+        console.log('*--**--*',data.user)
+        this.auth.isAdmin=data.user.admin;
         
         console.log('mes infos',this.userData)
         this.currentUser_id= data.user._id;
@@ -77,9 +79,9 @@ resultList:any[];
         this.comment.authorPicture = data.user.picture;
       }
     );
+      
 
-
-    this.commentService.getMemberComments()
+    this.commentService.getMemberComments(this.currentUser_id)
     .subscribe(
       res => {
         this.comments = res.comments;
@@ -88,10 +90,10 @@ resultList:any[];
     
   }
 
-  upload(event) {
+/*   upload(event) {
     this.afStorage.upload('/', event.target.files[0]);
     console.log('fait')
-  }
+  } */
  
   setStep(index: number) {
     this.step = index;
