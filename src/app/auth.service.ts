@@ -50,7 +50,7 @@ export class AuthService {
     return this.http.post<any>(this._registerURL, user);
   }
   updateUser(user) {
-    return this.http.post<any>(this._updateUser, user);
+    return this.http.put<any>(this._updateUser, user);
   }
   loginUser(user) {
     return this.http.post<any>(this._loginURL, user);

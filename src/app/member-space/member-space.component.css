@@ -1,7 +1,19 @@
 .card {
     width: 200px;
   }
+.member {
 
+  position: fixed;
+  display: flex;
+  flex-flow: row;
+  
+}
+
+
+.friends{
+  position: fixed;
+ padding-left:60%;
+}
   .container-fixe {
    
       margin-top: 2%;
@@ -41,5 +53,6 @@ mat-list-item  img {
   flex-flow: column wrap;
   justify-items: center;
   padding-left: 25%;
+  margin-bottom: 2%;
 
 }

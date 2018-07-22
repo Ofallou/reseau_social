@@ -12,7 +12,7 @@ export class User {
     password: String;
     admin: Boolean;
     picture:String;
-    friendList:Array<String>;
+  friendsList:Array<any>;
     online:Boolean
 
   constructor(user: any) {
@@ -26,7 +26,7 @@ export class User {
     this.gender = user.gender;
     this.admin = user.admin= false;
     this.picture =user.picture;
-    this.friendList = user.friendsList;
+    this.friendsList = user.friendsList;
     this.online = user.online;
 
   }

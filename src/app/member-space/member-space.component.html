@@ -1,5 +1,5 @@
 
-   <div>
+   <div class="member">
     <mat-card class="card">
         <mat-card-header>
           <mat-card-title>
@@ -14,14 +14,94 @@
         <mat-card-content>
         </mat-card-content>
       </mat-card>
+      
+
+     
 </div>
 
 
+<div class="friends" >
 
+    <div class="request">
+        <form class="example-form" #search="ngForm" >
+        <mat-accordion class="example-headers-align">
+          <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel-header>
+          
+              <mat-panel-description>
+          
+                <mat-icon matTooltip="Recherche de membre" >person</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+        
+            <mat-form-field>
+              <input matInput placeholder="nom, prenom ou pseudo" name="name" [(ngModel)]="keyword.name" 
+              >
+              
+            </mat-form-field>
+            <button type="submit" mat-button color="primary" (click)="searchfriend()" >OK</button>
+
+            <mat-list *ngFor="let member of resultList">
+              
+                <mat-list-item> 
+                 <form class="example-form" >
+                    <img src=" {{member.picture}}" alt=""> {{member.first_name}} {{member.pseudo}} 
+                    
+                    <button matTooltip="Ajouter" type="submit" mat-button (click)="sendInvitationrequest(member)" ><i class="material-icons">
+                        person_add
+                        </i></button>
+                  </form>
+                 </mat-list-item>
+      
+               </mat-list>
+            
+        
+            <mat-action-row>
+              <button mat-button color="primary" (click)="nextStep()">Next</button>
+            </mat-action-row>
+          </mat-expansion-panel>
+        
+          <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+            <mat-expansion-panel-header>
+              
+              <mat-panel-description>
+                <mat-icon matTooltip="Liste des membres">people</mat-icon>
+                
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-list dense>
+                <mat-list-item *ngFor="let member of allMembers">
+                    <img src="{{member.picture}}" alt=""> {{member.first_name}} {{member.pseudo}}
+                </mat-list-item>
+            </mat-list>
+        
+        
+            <mat-action-row>
+              <button mat-button color="warn" (click)="prevStep()">Previous</button>
+            </mat-action-row>
+          </mat-expansion-panel>
+        
+        
+        
+        </mat-accordion>
+      </form>
+      </div>
+
+
+
+
+    <h4>Mes amis</h4>
+    <mat-list dense>
+        <mat-list-item *ngFor="let friend of user.friendsList">
+       <img  (click)="onSelect(friend)" src="{{friend.picture}}" alt="" >  {{friend.pseudo}} {{friend.last_name}}
+        </mat-list-item>
+    </mat-list>
+
+</div>
 
 
 <div class="container">
-
+   
     <form class="example-form" #commentF="ngForm" (submit)="posted();commentF.reset()" >
         <mat-form-field>
           <input matInput placeholder="titre du message" name="title" id="titre" [(ngModel)]="comment.title" required >

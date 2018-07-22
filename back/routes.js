@@ -189,36 +189,22 @@ res.send({message: 'connecté'})
 
 
 
+// Mise a jour des données )
+router.put('/update',veriFyToken, (req,res)=> {
+ console.log('test update',req.body.friendsList)
+ let userdata=req.body;
+ User.findOneAndUpdate({_id:userdata._id},{$set:{friendsList:userdata.friendsList}},(err,data)=>{
 
+  console.log(data)
 
-// Mise a jour des données membre email et pseudo (nom et prenom ne changes pas)
-router.post('/update',veriFyToken, (req,res)=> {
- User.findById(req.body._id).exec((err,data) => {
-
-  if(JSON.stringify(data)=== JSON.stringify(req.body)){
-     
-
-    res.json('pas de changement');
-    
+  if(err){
+    console.log(err)
   }else {
-
-    User.update({_id: req.body._id}, {$set: {email: req.body.email, pseudo:req.body.pseudo}},
-      (err,data) => {
-        if(!err) {
-          console.log( "Mise a jour effectuée ",data)
-          res.json('Mise a jour ok !');
-        } else {
-          res.json('Mise a jour KO !!!! !');
-          console.log(err)
-        }
-        
-      })
+    res.json({data: data})
   }
-
  })
-
  
-
+ 
 })
 
 
@@ -359,15 +345,32 @@ router.get('/member_space/:id',(req,res) =>{
 })
 
 
+/* router.get('/memberbyId/:id',(req,res)=>{
+
+  let memberId=req.params.id
+  User.findOne({_id:memberId}, (err, user)=>{
+    if(err){
+      console.log(err.reason)
+      res.status('200').send({error: err})
+    }else {
+      res.status('200').send({user: user})
+    }
+  })
+
+}) */
+
 //Ajouter un amis
 router.post('/addfriend', (req,res) => {
   var member= req.body
   SendNotificationFriendRequest(member.email,member.last_name); 
-  res.json({response:"Demande d'ajout d'amis envoyé a "+member.last_name+ " "+member.first_name})
+  console.log(member.email)
+  res.json({response:"Demande d'ajout d'amis envoyé a "+member.last_name+ " "+member.first_name, succes:true})
 
 
 
 })
+
+
 
 
 

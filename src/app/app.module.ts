@@ -49,6 +49,7 @@ import { FriendslistComponent } from './friendslist/friendslist.component';
 import { MembersListComponent } from './members-list/members-list.component';
 import { MemberSpaceComponent } from './member-space/member-space.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { ChatWindowComponent } from './chat-window/chat-window.component';
 
 
 
@@ -74,7 +75,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     FriendslistComponent,
     MembersListComponent,
     MemberSpaceComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    ChatWindowComponent
   ],
   imports: [
     BrowserModule,
