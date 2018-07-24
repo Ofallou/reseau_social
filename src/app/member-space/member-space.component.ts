@@ -117,16 +117,18 @@ membersNotFriends;
               }else {
                 //this.router.navigate(['/userdata'])
                 //console.log(res.user)
+                console.log('il existe des membres ???',res.user.friendsList)
                 this.user=res.user;
+                this.updateListmember();
                 //this.friends=res.user.friendlist
                 //console.log('liste mod de depart',this.friends)
-                this.user.friendsList=res.user.friendsList;
+                
                   
-                console.log(this.friends)
+                console.log('Et aprés ??? ',this.user.friendsList)
               }
             }
           )        
-          this.updateListmember();
+          
       }
      
     )
@@ -136,8 +138,9 @@ membersNotFriends;
 
   updateListmember(){
     var allMembers =[];
-
-    if(this.user.friendsList.length<0){
+  console.log("id du membre visité ",this.member_id)
+  console.log("amis du membre visité ",this.user.friendsList)
+    if(this.user.friendsList.length===0){
    this.authService.getAllMembers().subscribe(
      res => {
        res.forEach(element => {
@@ -153,7 +156,7 @@ membersNotFriends;
     )
 
    
-    }
+    };
     
     this.authService.getAllMembers()
     .subscribe(
