@@ -70,8 +70,11 @@
               </mat-panel-description>
             </mat-expansion-panel-header>
             <mat-list dense>
-                <mat-list-item *ngFor="let member of allMembers">
-                    <img src="{{member.picture}}" alt=""> {{member.first_name}} {{member.pseudo}}
+                <mat-list-item *ngFor="let member of membersNotFriends">
+                    <img src="{{member.picture}}" alt=""> {{member.first_name}} {{member.pseudo}} 
+                    <button matTooltip="Ajouter" type="submit" mat-button (click)="sendInvitationrequest(member)" ><i class="material-icons">
+                      person_add
+                      </i></button>
                 </mat-list-item>
             </mat-list>
         
@@ -93,7 +96,7 @@
     <h4>Mes amis</h4>
     <mat-list dense>
         <mat-list-item *ngFor="let friend of user.friendsList">
-       <img  (click)="onSelect(friend)" src="{{friend.picture}}" alt="" >  {{friend.pseudo}} {{friend.last_name}}
+       <img  (click)="onSelect(friend.friend)" src="{{friend.friend.picture}}" alt="" >  {{friend.friend.pseudo}} {{friend.friend.last_name}}  {{friend.status}}
         </mat-list-item>
     </mat-list>
 

@@ -12,7 +12,7 @@ var userSchema = new Schema({
    admin: Boolean,
   picture:String,
   description:String,
-  friendsList:Array,
+  friendsList:[],
   online:Boolean,
 
 });

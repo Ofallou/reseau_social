@@ -306,7 +306,7 @@ router.get('/comments', (req,res) => {
 router.get('/getAllMembers', (req,res) => {
   User.find({}, (err, members)=> {
     if(err) throw err;
-    res.status('200').send({members})
+    res.json(members)
 
   })
 })
@@ -362,8 +362,10 @@ router.get('/member_space/:id',(req,res) =>{
 //Ajouter un amis
 router.post('/addfriend', (req,res) => {
   var member= req.body
+  console.log(req.body)
   SendNotificationFriendRequest(member.email,member.last_name); 
   console.log(member.email)
+
   res.json({response:"Demande d'ajout d'amis envoyé a "+member.last_name+ " "+member.first_name, succes:true})
 
 

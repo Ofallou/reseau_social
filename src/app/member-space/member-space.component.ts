@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router'
 import { AuthService } from '../auth.service';
 import { CommentService } from '../comment.service';
 import { User } from '../models/user';
 import { Comment } from '../models/comment';
 import { MemberActionService } from '../member-action.service';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { element } from 'protractor';
+
 
 @Component({
   selector: 'app-member-space',
@@ -31,7 +34,8 @@ explicit: false
 
 }
 
-allMembers;
+//allMembers =[];
+membersNotFriends;
 
  user : User = {
    first_name:'',
@@ -48,99 +52,136 @@ allMembers;
 
  };
 
- friends;
+ friends=[];
+ visitor:Boolean;
  userPicture:String;
  userComment;
   constructor( 
     private activatedRouter: ActivatedRoute,
     private commentService:CommentService, 
     private router:Router,private authService: AuthService,
-    private memberActionService: MemberActionService
+    private memberActionService: MemberActionService,
+    public dialog: MatDialog
   ) {
 
     this.commentService.onPosted()
     .subscribe(data => {
       this.userComment.splice(0,0,data)
-      console.log("Apres ajout",this.userComment)
+      //console.log("Apres ajout",this.userComment)
     }
     );
 
-    this.authService.getAllMembers()
-    .subscribe(
-      res => this.allMembers =res.members
-    )
 
    }
 
-  ngOnInit() {
+   
 
-   
-   
+  ngOnInit() {
     this.activatedRouter.paramMap.subscribe(
       params => {
+        //Check who is who !!
           this.member_id =params.get('id')
-          console.log(this.member_id);
+         this.membersNotFriends= []
+         //Comments information.
+         this.authService.getData().subscribe(
+          res=> {
+            console.log(res)
+            if(res.user._id!= this.member_id){
+              this.visitor= true;
+              console.log('visiteur amis')
+            }else{
+              this.visitor= false;
+              console.log('Mon profil a moi !!!')
+            }
+            this.comment.author=res.user.first_name + ' ' +res.user.last_name;
+            this.comment.authorId=res.user_id
+            this.comment.authorPicture = res.user.picture;
+          }
+        )
 
-
+         
           this.commentService.getMemberComments(this.member_id)
     .subscribe(
       res => {
-        console.log(res)
+       // console.log(res)
         this.userComment= res.comments
       }
     )
 
-     
           this.authService.memberSpace(this.member_id)
           .subscribe(
             res => {
-              console.log('membre', res)
+              //console.log('membre', res)
               if(res.user===undefined){
                 this.router.navigate(['/notFound'])
               }else {
                 //this.router.navigate(['/userdata'])
-                console.log(res.user)
+                //console.log(res.user)
                 this.user=res.user;
+                //this.friends=res.user.friendlist
+                //console.log('liste mod de depart',this.friends)
                 this.user.friendsList=res.user.friendsList;
-                console.log(this.user.friendsList)
-
-                this.authService.getData().subscribe(
-                  res=> {
-                    this.comment.author=res.user.first_name + ' ' +res.user.last_name;
-                    this.comment.authorId=res.user_id
-                    this.comment.authorPicture = res.user.picture;
-                  }
-                )
-                
-/*                 this.comment.author=this.user.first_name + ' ' +this.user.last_name;
-                this.comment.authorId=this.member_id
-                this.comment.authorPicture = this.user.picture; */
-      
+                  
+                console.log(this.friends)
               }
             }
-          )
+          )        
+          this.updateListmember();
+      }
+     
+    )
+    
+  }
+
+
+  updateListmember(){
+    var allMembers =[];
+
+    if(this.user.friendsList.length<0){
+   this.authService.getAllMembers().subscribe(
+     res => {
+       res.forEach(element => {
+
+        if(element._id != this.member_id){
+
+          allMembers.push(element)
+        }
+         
+       });
+       this.membersNotFriends= allMembers
+     }
+    )
+
+   
+    }
+    
+    this.authService.getAllMembers()
+    .subscribe(
+      res => {
+        res.forEach(element => {
+          console.log(this.user.friendsList)
+          
+          this.user.friendsList.forEach(element2 => {
+
+            if(element._id != element2.friend._id && element._id != this.member_id){
+
+              allMembers.push(element)
+            }
+          })
+          
+        });
+          this.membersNotFriends= allMembers
+
+   console.log('*/*/*/',allMembers)
+    
+                    
+         
 
       }
+      
     )
-   
-    
-
-   
-    
-    
-
   }
 
-  friendList (){
-    this.user.friendsList.forEach(element => {
-
-      this.authService.memberSpace(element).subscribe(
-        res => console.log('La liste de mùes amissss',res.user)
-      )
-      
-      
-    });
-  }
 
 
   setStep(index: number) {
@@ -156,24 +197,42 @@ allMembers;
   }
 
 
+
+
+ 
+
+
+
   posted() {
     this.comment.date=new Date();
     this.commentService.postMessage(this.comment)
     
   }
 
+  openDialog(): void {
+    const dialogRef = this.dialog.open(InvitationRequest, {
+      width: '100px',
+      height:'200px',
+      data: {}
+    });
+
+  }
+
+
+
+
 
   searchfriend(){
-    console.log(this.keyword)
+    //console.log(this.keyword)
     this.memberActionService.searchResult(this.keyword)
     .subscribe(
       res => {
         //Liste non vide..
         if(res.length>0){
           this.resultList = res;
-          console.log('liste amis trouvé : ',this.resultList);
+          //console.log('liste amis trouvé : ',this.resultList);
         }else {
-          console.log(res.message)
+          //console.log(res.message)
           this.messageErreur=res.message
 
         }        
@@ -190,22 +249,57 @@ allMembers;
   }
 
 
-  sendInvitationrequest() {
-    this.memberActionService.add_friend(this.resultList[0])
+
+  cancelInvitation(member){
+
+
+  }
+
+  sendInvitationrequest(member) {
+    console.log("Le mebre est comment ?",member)
+    this.memberActionService.add_friend(member)
     .subscribe(
       res => {
         if(res.succes){
           
-          this.user.friendsList.splice(0,0,this.resultList[0])
+          //this.user.friendsList.splice(0,0,this.resultList[0])
+          this.user.friendsList.push({status:"invitation en cours",friend:member})
+          console.log(member);
+          //member.friendsList.push({status:"en attente de confirmation", friend:this.user})
+         /*   this.authService.updateUser(member).
+          subscribe(
+            res => console.log("Mise a jour de la liste amis",res)
+          )  */
           //this.user.friendList = this.friends;
-          console.log('Contenu d',this.user.friendsList)
+         // console.log('Contenu d',this.user.friendsList)
 
-          this.authService.updateUser(this.user).subscribe(
-            res=> console.log(res)
+          this.authService.updateUser(this.user).
+          subscribe(
+            res=> console.log("Mise a jour de la liste du demandeur",res)
           )
+
+          
 
         }
       }) 
   }
 
+
+  
+
+
+
+}
+
+
+@Component({
+  selector: 'invitation-request',
+  templateUrl: '../../app/templates/invitation-request.html',
+})
+export class InvitationRequest {
+  constructor(public dialogRef: MatDialogRef<InvitationRequest>,) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

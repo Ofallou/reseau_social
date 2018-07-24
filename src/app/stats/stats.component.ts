@@ -16,7 +16,7 @@ export class StatsComponent implements OnInit {
   constructor(private commentService: CommentService, private authService: AuthService, private router:Router) { 
     this.commentService.onBegin()
     .subscribe(
-      res => console.log(res)
+      res => console.log(res.message)
     );
      this.commentService.onPosted()
     .subscribe(data => {
@@ -31,8 +31,8 @@ export class StatsComponent implements OnInit {
 
     this.authService.getAllMembers().subscribe(
       res => {
-        console.log(res.members)
-        this.membersArray =res.members
+        //console.log(res)
+        this.membersArray =res
       }
     )
 
