@@ -310,6 +310,15 @@ router.get('/getAllMembers', (req,res) => {
 
   })
 })
+
+router.post('/memberbyid', (req,res) => {
+  console.log(req.body)
+  User.find({}, (err, members)=> {
+    if(err) throw err;
+    res.json(members)
+
+  })
+})
 //recherche de membre
 router.post('/member',veriFyToken, (req,res)=> {
 
@@ -363,6 +372,7 @@ router.get('/member_space/:id',(req,res) =>{
 router.post('/addfriend', (req,res) => {
   var member= req.body
   console.log(req.body)
+  
   SendNotificationFriendRequest(member.email,member.last_name); 
   console.log(member.email)
 

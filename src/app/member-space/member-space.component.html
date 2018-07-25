@@ -47,7 +47,7 @@
                  <form class="example-form" >
                     <img src=" {{member.picture}}" alt=""> {{member.first_name}} {{member.pseudo}} 
                     
-                    <button matTooltip="Ajouter" type="submit" mat-button (click)="sendInvitationrequest(member)" ><i class="material-icons">
+                    <button matTooltip="Ajouter" type="submit" mat-button (click)="sendInvitationrequest(member._id)" ><i class="material-icons">
                         person_add
                         </i></button>
                   </form>
@@ -72,9 +72,15 @@
             <mat-list dense>
                 <mat-list-item *ngFor="let member of membersNotFriends">
                     <img src="{{member.picture}}" alt=""> {{member.first_name}} {{member.pseudo}} 
-                    <button matTooltip="Ajouter" type="submit" mat-button (click)="sendInvitationrequest(member)" ><i class="material-icons">
+                    <button matTooltip="Ajouter" type="submit" mat-button (click)="sendInvitationrequest(member._id)" ><i class="material-icons">
                       person_add
                       </i></button>
+                </mat-list-item>
+            </mat-list>
+            <h4>Invitations envoyées</h4>
+            <mat-list dense>
+                <mat-list-item *ngFor="let friend of user.friendsList">
+               <img  (click)="onSelect(friend)" src="{{friend}}" alt="" > {{friend.friendId}}
                 </mat-list-item>
             </mat-list>
         
@@ -93,12 +99,7 @@
 
 
 
-    <h4>Mes amis</h4>
-    <mat-list dense>
-        <mat-list-item *ngFor="let friend of user.friendsList">
-       <img  (click)="onSelect(friend.friend)" src="{{friend.friend.picture}}" alt="" >  {{friend.friend.pseudo}} {{friend.friend.last_name}}  {{friend.status}}
-        </mat-list-item>
-    </mat-list>
+   
 
 </div>
 

@@ -59,6 +59,7 @@ export class CommentService  {
  }
 
 
+
   onLogin(data) {
     this.socket.emit('login', data)
   }
@@ -72,6 +73,16 @@ postMessage(data) {
   this.postComment(data).subscribe();
 }
 
+getAllMember() {
+  let observable= new Observable<any>
+  (observer => {
+    this.socket.on('allmember',(data)=> {
+      observer.next(data);
+    })
+    return () => {this.socket.disconnect();};
+  })
+  return observable;
+}
 
 
 postComment(comment) {

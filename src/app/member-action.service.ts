@@ -14,6 +14,7 @@ export class MemberActionService {
  
   url = Config.SOCKET_HOST || "http://localhost";
   private _findMember = this.url+'/api/member';
+private _getMemberById=this.url+'/api/memberbyid'
   private _addFriendUrl= this.url+'/api/addfriend';
 
   private socket = io(Config.SOCKET_HOST);
@@ -39,10 +40,11 @@ export class MemberActionService {
   }
 
 
-  add_friend (member){
-    
-    console.log('******************',member)
-    
-        return this.http.post<any>(this._addFriendUrl, member)
+  add_friend (id){
+        return this.http.post<any>(this._addFriendUrl, id)
+  }
+
+  getMemberById(id){
+    return this.http.post<any>(this._getMemberById, id)
   }
 }

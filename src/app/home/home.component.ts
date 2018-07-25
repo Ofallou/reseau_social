@@ -32,7 +32,7 @@ commentsArray: Array<Comment>= [];
   constructor(private auth: AuthService, private  commentService: CommentService) {
     this.commentService.onBegin()
     .subscribe(
-      res => console.log(res)
+      res => console.log('???',res)
     );
      this.commentService.onPosted()
     .subscribe(data => {

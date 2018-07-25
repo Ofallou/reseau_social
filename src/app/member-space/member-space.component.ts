@@ -51,7 +51,7 @@ membersNotFriends;
    picture:''
 
  };
-
+ userloginId;
  friends=[];
  visitor:Boolean;
  userPicture:String;
@@ -77,27 +77,36 @@ membersNotFriends;
    
 
   ngOnInit() {
+
+    this.updateListmember()
+    
+    
     this.activatedRouter.paramMap.subscribe(
       params => {
         //Check who is who !!
           this.member_id =params.get('id')
-         this.membersNotFriends= []
+         
          //Comments information.
          this.authService.getData().subscribe(
           res=> {
-            console.log(res)
+               this.user= res;
+               this.userloginId=res.user._id
+               console.log('ID de utilisateur loggé',this.userloginId)
             if(res.user._id!= this.member_id){
               this.visitor= true;
               console.log('visiteur amis')
             }else{
               this.visitor= false;
               console.log('Mon profil a moi !!!')
+              //this.updateFriendMist(res.user.friendsList);
             }
             this.comment.author=res.user.first_name + ' ' +res.user.last_name;
-            this.comment.authorId=res.user_id
+            this.comment.authorId=this.member_id
             this.comment.authorPicture = res.user.picture;
           }
         )
+
+
 
          
           this.commentService.getMemberComments(this.member_id)
@@ -115,76 +124,47 @@ membersNotFriends;
               if(res.user===undefined){
                 this.router.navigate(['/notFound'])
               }else {
-                //this.router.navigate(['/userdata'])
-                //console.log(res.user)
-                console.log('il existe des membres ???',res.user.friendsList)
-                this.user=res.user;
-                this.updateListmember();
-                //this.friends=res.user.friendlist
-                //console.log('liste mod de depart',this.friends)
+               
                 
-                  
-                console.log('Et aprés ??? ',this.user.friendsList)
+                this.user=res.user;
+                console.log('Ma liste membre invités',this.user.friendsList)
+             
               }
+              console.log('------------------',this.user.friendsList)
+              
             }
+            
+
           )        
+
           
       }
-     
+
     )
+
+    console.log("fin de reload",this.user.friendsList) 
     
   }
 
 
   updateListmember(){
-    var allMembers =[];
-  console.log("id du membre visité ",this.member_id)
-  console.log("amis du membre visité ",this.user.friendsList)
-    if(this.user.friendsList.length===0){
-   this.authService.getAllMembers().subscribe(
-     res => {
-       res.forEach(element => {
-
-        if(element._id != this.member_id){
-
-          allMembers.push(element)
-        }
-         
-       });
-       this.membersNotFriends= allMembers
-     }
-    )
-
-   
-    };
-    
     this.authService.getAllMembers()
     .subscribe(
       res => {
-        res.forEach(element => {
-          console.log(this.user.friendsList)
-          
-          this.user.friendsList.forEach(element2 => {
-
-            if(element._id != element2.friend._id && element._id != this.member_id){
-
-              allMembers.push(element)
-            }
-          })
-          
-        });
-          this.membersNotFriends= allMembers
-
-   console.log('*/*/*/',allMembers)
-    
-                    
-         
-
+        this.membersNotFriends = res
       }
-      
     )
   }
 
+  updateFriendMist(){
+      this.memberActionService.getMemberById(this.user.friendsList).subscribe(
+        res=> {
+          this.friends=res
+          console.log("arretete",this.friends) 
+        } 
+      )
+      
+ }
 
 
   setStep(index: number) {
@@ -258,32 +238,34 @@ membersNotFriends;
 
   }
 
-  sendInvitationrequest(member) {
-    console.log("Le mebre est comment ?",member)
-    this.memberActionService.add_friend(member)
+  sendInvitationrequest(id) {
+
+  var test=this.user.friendsList.find((element)=> {
+     element.friendId = id;
+     return true;
+   })
+
+     
+   console.log('Mon test donne quoi ??????',test.friendId)
+   if(test){
+
+    console.log('he ben hé ben ')
+   }
+    console.log("Le membre est comment ?",id)
+    this.memberActionService.add_friend(id)
     .subscribe(
       res => {
         if(res.succes){
-          
-          //this.user.friendsList.splice(0,0,this.resultList[0])
-          this.user.friendsList.push({status:"invitation en cours",friend:member})
-          console.log(member);
-          //member.friendsList.push({status:"en attente de confirmation", friend:this.user})
-         /*   this.authService.updateUser(member).
-          subscribe(
-            res => console.log("Mise a jour de la liste amis",res)
-          )  */
-          //this.user.friendList = this.friends;
-         // console.log('Contenu d',this.user.friendsList)
-
+          this.user.friendsList.push({status:"invitation en cours",friendId:id})
+          console.log(id);
           this.authService.updateUser(this.user).
           subscribe(
             res=> console.log("Mise a jour de la liste du demandeur",res)
           )
-
           
-
         }
+
+        this.updateListmember()
       }) 
   }
 

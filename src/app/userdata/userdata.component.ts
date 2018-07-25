@@ -48,7 +48,7 @@ resultList:any[];
   constructor(private commentService: CommentService,
      private auth: AuthService,
      private afStorage:AngularFireStorage,
-     private memberActionService: MemberActionService,
+     
     
     ) {
     
@@ -114,36 +114,10 @@ resultList:any[];
     
   }
 
-  searchfriend(){
-    console.log(this.keyword)
-    this.memberActionService.searchResult(this.keyword)
-    .subscribe(
-      res => {
-        //Liste non vide..
-        if(res.length>0){
-          this.resultList = res;
-          console.log('liste amis trouvé : ',this.resultList);
-        }else {
-          console.log(res.message)
-          this.messageErreur=res.message
-
-        }
-        
-         
-        
-          
-      })
-    
-  }
 
 
-  sendInvitationrequest() {
-    this.memberActionService.add_friend(this.resultList[0])
-    .subscribe(
-      res => {
-        console.log('ki es ce q',res)
-      }) 
-  }
+
+
 
 
 
