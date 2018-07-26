@@ -312,11 +312,11 @@ router.get('/getAllMembers', (req,res) => {
 })
 
 router.post('/memberbyid', (req,res) => {
-  console.log(req.body.friendId )
+  //console.log(req.body.friendId )
   let friendId=req.body.friendId
   User.find({_id:friendId}, (err, members)=> {
     if(err) throw err;
-    res.json(members[0])
+    res.json({members:members[0],status:req.body.status})
 
   })
 })
@@ -371,19 +371,32 @@ router.get('/member_space/:id',(req,res) =>{
 
 //Ajouter un amis
 router.post('/addfriend', (req,res) => {
-  var member= req.body
-  console.log(req.body)
+  var member= req.body.member
+  console.log('rock the beast   ',member)
   
   SendNotificationFriendRequest(member.email,member.last_name); 
   console.log(member.email)
 
-  res.json({response:"Demande d'ajout d'amis envoyé a "+member.last_name+ " "+member.first_name, succes:true})
+  User.findOneAndUpdate({_id:member._id},
+      {"$push":{"friendsList":{status:"demande d'amis reçu", friendId:currentUserId}}},
+      (err, data) => {
+           if(err) console.log(err);
+           console.log(data)
 
+           res.json({response:"Demande envoyée", success:true})
+      }
+    )
+  
 
 
 })
 
 
+
+router.post ('/cancelRequest', (req,res) => {
+  
+
+})
 
 
 

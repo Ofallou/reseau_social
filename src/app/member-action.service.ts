@@ -16,7 +16,7 @@ export class MemberActionService {
   private _findMember = this.url+'/api/member';
 private _getMemberById=this.url+'/api/memberbyid'
   private _addFriendUrl= this.url+'/api/addfriend';
-
+private _cancelRequestUrl = this.url+'/api/cancelRequest'
   private socket = io(Config.SOCKET_HOST);
   
   constructor(private http:HttpClient) { }
@@ -43,6 +43,12 @@ private _getMemberById=this.url+'/api/memberbyid'
   add_friend (id){
         return this.http.post<any>(this._addFriendUrl, id)
   }
+
+  cancelInvitationrequest(id){
+    return this.http.post<any>(this._cancelRequestUrl, id)
+  }
+
+
 
   getMemberById(id){
     return this.http.post<any>(this._getMemberById, id)

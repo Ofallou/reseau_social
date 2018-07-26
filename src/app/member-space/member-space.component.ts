@@ -128,6 +128,7 @@ explicit: false
                   res=> {
 
                     this.friends.push(res)
+                    console.log("mmmmmmmmmmm",this.friends) 
                     
                   } 
   
@@ -283,9 +284,10 @@ explicit: false
 
   cancelInvitation(member){
 
-
+  console.log(member)
   }
 
+  
   sendInvitationrequest(member) {
     console.log('Id a inviter ',member)
     console.log(' Liste vide ? ??????',this.user.friendsList)
@@ -310,12 +312,12 @@ explicit: false
      // console.log('On continu et on ajoute  la liste')
      
       //console.log("Le membre est comment ?",id)
-      this.memberActionService.add_friend(member._id)
+      this.memberActionService.add_friend(member)
       .subscribe(
         res => {
-          if(res.succes){
+          if(res.success){
             this.updateMemberList(member)
-            this.user.friendsList.push({status:"invitation en cours",friendId:member._id})
+            this.user.friendsList.push({status:"invitation envoyée ",friendId:member._id})
             console.log(member._id);
             this.authService.updateUser(this.user).
             subscribe(

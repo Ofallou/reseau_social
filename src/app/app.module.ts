@@ -18,6 +18,8 @@ import { LayoutModule } from '@angular/cdk/layout';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { ImageUploadModule } from "angular2-image-upload";
+
 
 
 // services
@@ -108,6 +110,8 @@ import { ChatWindowComponent } from './chat-window/chat-window.component';
     MatExpansionModule,
     MatBadgeModule,
     MatTooltipModule,
+    ImageUploadModule.forRoot(),
+
     AngularFireModule.initializeApp({
       apiKey: "AIzaSyAlSqMwKKhmxwcaV2yV0JakW1Z3FC-8d3Q",
     authDomain: "reseau-social-c1b9a.firebaseapp.com",
