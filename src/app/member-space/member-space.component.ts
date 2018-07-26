@@ -84,6 +84,8 @@ explicit: false
 
   ngOnInit() {
     
+  
+    
     
       
     
@@ -93,15 +95,28 @@ explicit: false
           this.member_id =params.get('id')
   this.friends=[]
           //On recupere  tous les membres
+
+          this.authService.getData().subscribe(
+
+            res => {this.user= res.user 
+              console.log(this.user)
+          
+
+          console.log(this.user)
           this.authService.getAllMembers()
           .subscribe(
             res => {
               this.membersNotFriends = res
-              this.membersNotFriends.splice(this.membersNotFriends.indexOf(this.member_id),1)
+              console.log(this.membersNotFriends)
+              
+              var toto = this.membersNotFriends.findIndex(user => user._id=== this.member_id)
+              console.log(toto)
+              this.membersNotFriends.splice(this.membersNotFriends.findIndex(user => user._id=== this.member_id),1)
               console.log('l** Liste de tous les membres *** ',this.membersNotFriends )
             }
           )
-         
+        }
+      );
          //Comments information.
          this.authService.memberSpace(this.member_id).subscribe(
           res=> {
