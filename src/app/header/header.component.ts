@@ -26,11 +26,6 @@ export class HeaderComponent implements OnInit {
   constructor( private authService: AuthService) {}
  
   ngOnInit() {
-    this.authService.loginUser(this.user).subscribe(
-      res => {
-                //console.log(res)
-            }
-    )
 
     this.getUserState()
     //console.log(this.isAuth)
@@ -44,6 +39,8 @@ export class HeaderComponent implements OnInit {
   }
     
   }
+
+
 
   getUserState() {
     this.isAuth = !!this.authService.getToken();

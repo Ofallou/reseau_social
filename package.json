@@ -27,6 +27,7 @@
     "@angular/router": "6.0.7",
     "@types/socket.io-client": "^1.4.32",
     "angularfire2": "^5.0.0-rc.11",
+    "array-compare": "^2.0.0",
     "bcrypt": "^3.0.0",
     "body-parser": "^1.18.2",
     "connect-mongo": "^2.0.1",

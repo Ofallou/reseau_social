@@ -312,10 +312,11 @@ router.get('/getAllMembers', (req,res) => {
 })
 
 router.post('/memberbyid', (req,res) => {
-  console.log(req.body)
-  User.find({}, (err, members)=> {
+  console.log(req.body.friendId )
+  let friendId=req.body.friendId
+  User.find({_id:friendId}, (err, members)=> {
     if(err) throw err;
-    res.json(members)
+    res.json(members[0])
 
   })
 })

@@ -14,6 +14,9 @@ import { element } from 'protractor';
   templateUrl: './member-space.component.html',
   styleUrls: ['./member-space.component.css']
 })
+
+
+
 export class MemberSpaceComponent implements OnInit {
  member_id;
  step=0;
@@ -34,8 +37,8 @@ explicit: false
 
 }
 
+
 //allMembers =[];
-membersNotFriends;
 
  user : User = {
    first_name:'',
@@ -51,7 +54,8 @@ membersNotFriends;
    picture:''
 
  };
- userloginId;
+ currentUser;
+ membersNotFriends;
  friends=[];
  visitor:Boolean;
  userPicture:String;
@@ -72,37 +76,73 @@ membersNotFriends;
     );
 
 
+  
+
    }
 
    
 
   ngOnInit() {
-
-    this.updateListmember()
     
+    
+      
     
     this.activatedRouter.paramMap.subscribe(
       params => {
         //Check who is who !!
           this.member_id =params.get('id')
+  this.friends=[]
+          //On recupere  tous les membres
+          this.authService.getAllMembers()
+          .subscribe(
+            res => {
+              this.membersNotFriends = res
+              this.membersNotFriends.splice(this.membersNotFriends.indexOf(this.member_id),1)
+              console.log('l** Liste de tous les membres *** ',this.membersNotFriends )
+            }
+          )
          
          //Comments information.
-         this.authService.getData().subscribe(
+         this.authService.memberSpace(this.member_id).subscribe(
           res=> {
-               this.user= res;
-               this.userloginId=res.user._id
-               console.log('ID de utilisateur loggé',this.userloginId)
-            if(res.user._id!= this.member_id){
-              this.visitor= true;
-              console.log('visiteur amis')
-            }else{
-              this.visitor= false;
-              console.log('Mon profil a moi !!!')
-              //this.updateFriendMist(res.user.friendsList);
-            }
-            this.comment.author=res.user.first_name + ' ' +res.user.last_name;
-            this.comment.authorId=this.member_id
-            this.comment.authorPicture = res.user.picture;
+               this.user= res.user;
+              console.log(this.user.friendsList)
+            this.user.friendsList.forEach(element => {
+
+              this.memberActionService.getMemberById(element).subscribe(
+                  res=> {
+
+                    this.friends.push(res)
+                    
+                  } 
+  
+                  
+                )
+              }) 
+
+              console.log("arretete",this.friends) 
+
+      
+              
+               this.authService.getData().
+               subscribe(
+
+                 res => {
+                  this.currentUser = res
+                  this.comment.author=res.user.first_name + ' ' +res.user.last_name;
+                  
+                  if(res.user._id != this.member_id){
+                    this.comment.authorId=this.member_id
+                  }else {
+                    this.comment.authorId=res.user._id
+                  }
+                  this.comment.authorPicture = res.user.picture;
+                 
+                 } 
+
+               )
+
+            
           }
         )
 
@@ -126,12 +166,13 @@ membersNotFriends;
               }else {
                
                 
-                this.user=res.user;
+                //this.user=res.user;
                 console.log('Ma liste membre invités',this.user.friendsList)
-             
+               
+
+
               }
-              console.log('------------------',this.user.friendsList)
-              
+
             }
             
 
@@ -142,27 +183,18 @@ membersNotFriends;
 
     )
 
-    console.log("fin de reload",this.user.friendsList) 
     
   }
 
 
-  updateListmember(){
-    this.authService.getAllMembers()
-    .subscribe(
-      res => {
-        this.membersNotFriends = res
-      }
-    )
-  }
+  
 
-  updateFriendMist(){
-      this.memberActionService.getMemberById(this.user.friendsList).subscribe(
-        res=> {
-          this.friends=res
-          console.log("arretete",this.friends) 
-        } 
-      )
+  updateMemberList(member){
+
+
+    this.membersNotFriends=this.membersNotFriends.splice(this.membersNotFriends.indexOf(member),1);
+
+    
       
  }
 
@@ -226,6 +258,7 @@ membersNotFriends;
   }
 
   onSelect(member){
+    console.log('le membre  eeeee',member)
 
     this.router.navigate(['/member_space', member._id])
   
@@ -238,37 +271,55 @@ membersNotFriends;
 
   }
 
-  sendInvitationrequest(id) {
+  sendInvitationrequest(member) {
+    console.log('Id a inviter ',member)
+    console.log(' Liste vide ? ??????',this.user.friendsList)
+    let test;
+   
 
-  var test=this.user.friendsList.find((element)=> {
-     element.friendId = id;
-     return true;
-   })
+    if(this.user.friendsList.length !=0 && this.member_id != member._id){
+      test=this.user.friendsList.find((element)=> {
+          
+        return element.friendId==member._id ;
+  
+        })
+    }
+    
+    
+    console.log(test)
+  
+    if(test=== undefined){
+
+     // console.log('On rajoute a la liste de demande amis',id)
+
+     // console.log('On continu et on ajoute  la liste')
+     
+      //console.log("Le membre est comment ?",id)
+      this.memberActionService.add_friend(member._id)
+      .subscribe(
+        res => {
+          if(res.succes){
+            this.updateMemberList(member)
+            this.user.friendsList.push({status:"invitation en cours",friendId:member._id})
+            console.log(member._id);
+            this.authService.updateUser(this.user).
+            subscribe(
+              res=> console.log("Mise a jour de la liste du demandeur",res)
+            )
+            
+          }
+  
+         // this.updateListmember()
+        }) 
+    }else {
+
+      alert('Invitation deja envoyée ou Membre deja amis')
+    }
+  
+    }
 
      
-   console.log('Mon test donne quoi ??????',test.friendId)
-   if(test){
-
-    console.log('he ben hé ben ')
-   }
-    console.log("Le membre est comment ?",id)
-    this.memberActionService.add_friend(id)
-    .subscribe(
-      res => {
-        if(res.succes){
-          this.user.friendsList.push({status:"invitation en cours",friendId:id})
-          console.log(id);
-          this.authService.updateUser(this.user).
-          subscribe(
-            res=> console.log("Mise a jour de la liste du demandeur",res)
-          )
-          
-        }
-
-        this.updateListmember()
-      }) 
-  }
-
+ 
 
   
 
