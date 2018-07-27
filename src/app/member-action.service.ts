@@ -16,38 +16,30 @@ export class MemberActionService {
   private _findMember = this.url+'/api/member';
 private _getMemberById=this.url+'/api/memberbyid'
   private _addFriendUrl= this.url+'/api/addfriend';
+  private _acceptInvitationUrl=this.url+'/api/acceptInvitation'
 private _cancelRequestUrl = this.url+'/api/cancelRequest'
   private socket = io(Config.SOCKET_HOST);
   
   constructor(private http:HttpClient) { }
-   
-/*   onSearch(){
-    let observable= new Observable<any>
-    (observer => {
-      this.socket.on('find',(data)=> {
-        observer.next(data);
-      });
-      return () => {
-        this.socket.disconnect();
-      }
-     
-    })
-    return observable;
-  } */
+ 
 
   searchResult(keyword) {
     return this.http.post<any>(this._findMember, keyword);
   }
 
 
-  add_friend (id){
-        return this.http.post<any>(this._addFriendUrl, id)
+  add_friend (member){
+        return this.http.post<any>(this._addFriendUrl, member)
   }
 
   cancelInvitationrequest(id){
     return this.http.post<any>(this._cancelRequestUrl, id)
   }
 
+  acceptInvitation(member){
+
+    return this.http.post<any>(this._acceptInvitationUrl, member)
+  }
 
 
   getMemberById(id){

@@ -19,6 +19,7 @@ import {MatBadgeModule} from '@angular/material/badge';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { ImageUploadModule } from "angular2-image-upload";
+import {MatDividerModule} from '@angular/material/divider';
 
 
 
@@ -110,6 +111,7 @@ import { ChatWindowComponent } from './chat-window/chat-window.component';
     MatExpansionModule,
     MatBadgeModule,
     MatTooltipModule,
+    MatDividerModule,
     ImageUploadModule.forRoot(),
 
     AngularFireModule.initializeApp({

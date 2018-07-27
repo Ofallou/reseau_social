@@ -102,7 +102,7 @@ router.post('/register',  (req, res) => {
       user.picture = gravatar.url(req.body.email, {
         s: '150',
         r: 'pg',
-        d: 'robohash'});
+        d: 'identicon'});
        
       user.password= bcrypt.hashSync(user.password, saltRounds);
       user.save((err, dataUser)=>{
@@ -371,14 +371,14 @@ router.get('/member_space/:id',(req,res) =>{
 
 //Ajouter un amis
 router.post('/addfriend', (req,res) => {
-  var member= req.body.member
+  var member= req.body
   console.log('rock the beast   ',member)
   
   SendNotificationFriendRequest(member.email,member.last_name); 
   console.log(member.email)
 
   User.findOneAndUpdate({_id:member._id},
-      {"$push":{"friendsList":{status:"demande d'amis reçu", friendId:currentUserId}}},
+      {"$push":{"friendsList":{status:"en attente de confirmation", friendId:currentUserId}}},
       (err, data) => {
            if(err) console.log(err);
            console.log(data)
@@ -393,7 +393,20 @@ router.post('/addfriend', (req,res) => {
 
 
 
-router.post ('/cancelRequest', (req,res) => {
+ router.post ('/acceptInvitation', (req,res) => {
+   console.log('le body de ma requete ',req.body.members._id)
+
+  User.findOneAndUpdate({_id:currentUserId},{ "$set":{}}, (err, data)=> {
+   if(!err){
+    console.log('data trouve......', data)
+    res.json('liste mise a jour')
+   }else {
+     res.json(err)
+   }
+    
+
+    
+  })
   
 
 })

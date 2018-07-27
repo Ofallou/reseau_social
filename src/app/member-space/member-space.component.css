@@ -1,5 +1,6 @@
 .card {
     width: 200px;
+    border-radius: 30%
   }
 .member {
 
@@ -56,3 +57,4 @@ mat-list-item  img {
   margin-bottom: 2%;
 
 }
+

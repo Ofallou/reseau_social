@@ -89,39 +89,47 @@
           <mat-expansion-panel [hideToggle]="false">
               <mat-expansion-panel-header>
                   <mat-panel-title></mat-panel-title>
-                  <mat-panel-description>Demandes d'amis envoyées</mat-panel-description>
+                  <mat-panel-description>Liste d'amis </mat-panel-description>
               </mat-expansion-panel-header>
 
               <mat-list dense>
                   <mat-list-item *ngFor="let friend of friends">
-                 <img  (click)="onSelect(friend.members)" src="{{friend.members.picture}}" alt="" > {{friend.members.first_name}}  {{friend.members.last_name}} 
-                    {{friend.status}}
-                    <span> -  </span>
-                    <a (click)=cancelInvitation(friend) >
-                   <i  matTooltip="Annuler la demande" class="material-icons" >
-  cancel
-  </i>
-</a>  
-                 
+                    <p>
+                   
+                    
+                        <img (click)="onSelect(friend.members)" src="{{friend.members.picture}}" alt="" > {{friend.members.first_name}}  {{friend.members.last_name}} 
+                        {{friend.status}} 
+                        <span> -  </span>
+                      <a *ngIf="friend.status=='invitation en cours' || 'en attente de confirmation'" (click)=cancelInvitation(friend) >
+                       <i  matTooltip="Annuler la demande" class="material-icons" >cancel</i></a>  
+                      <a (click)=acceptInvitation(friend) *ngIf="friend.status=='en attente de confirmation'">
+                          <i  matTooltip="Accepter la demande d'ami" class="material-icons" >check</i>
+                      </a>
+                    </p>
+
+                    
+
+                  
                 
                   </mat-list-item>
               </mat-list>
 
 
             </mat-expansion-panel>
+
+
+
         
         
         
         </mat-accordion>
       </form>
       </div>
-
-
-
-
-   
-
 </div>
+
+
+
+
 
 
 <div class="container">
@@ -135,7 +143,7 @@
           <textarea matInput placeholder="Poster un commentaire......" name="comment" [(ngModel)]="comment.content"></textarea>
         </mat-form-field>
          <br>
-        <button type="submit" mat-fab color="accent" [disabled]="!commentF.form.valid">Poster
+        <button type="submit" mat-mini-fab color="accent" [disabled]="!commentF.form.valid">Poster
      
         </button>
   

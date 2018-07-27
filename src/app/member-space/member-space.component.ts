@@ -37,6 +37,9 @@ explicit: false
 
 }
 
+displayedColumns: string[] = ['photo','prenom', 'nom', 'pseudo', 'status'];
+
+dataSource;
 
 //allMembers =[];
 
@@ -84,10 +87,8 @@ explicit: false
 
   ngOnInit() {
     
-  
-    
-    
-      
+
+             
     
     this.activatedRouter.paramMap.subscribe(
       params => {
@@ -111,7 +112,12 @@ explicit: false
               
               var toto = this.membersNotFriends.findIndex(user => user._id=== this.member_id)
               console.log(toto)
+              //On se supprime de la liste des membre a l'affichage
               this.membersNotFriends.splice(this.membersNotFriends.findIndex(user => user._id=== this.member_id),1)
+              //On supprime la liste des invitations en cours
+
+
+             
               console.log('l** Liste de tous les membres *** ',this.membersNotFriends )
             }
           )
@@ -129,6 +135,11 @@ explicit: false
 
                     this.friends.push(res)
                     console.log("mmmmmmmmmmm",this.friends) 
+                    this.dataSource = this.friends
+
+                 this.friends.forEach(element => {
+                      this.membersNotFriends.splice(this.membersNotFriends.findIndex(user => user._id === element.members._id))
+                    } ) 
                     
                   } 
   
@@ -208,9 +219,12 @@ explicit: false
   updateMemberList(member){
 
 
-    this.membersNotFriends=this.membersNotFriends.splice(this.membersNotFriends.indexOf(member),1);
-
     
+    this.membersNotFriends.splice(this.membersNotFriends.findIndex(user => user=== member),1)
+
+
+    console.log('update ok ou pas',this.membersNotFriends)
+  localStorage.setItem('myMemberlist',this.membersNotFriends)
       
  }
 
@@ -287,6 +301,25 @@ explicit: false
   console.log(member)
   }
 
+
+  acceptInvitation(friendId){
+    console.log(friendId.members._id)
+    console.log(this.user.friendsList)
+    this.user.friendsList.forEach(element => {
+    
+    if(element.friendId ==friendId.members._id && element.status=="en attente de confirmation" ){
+        
+          element.status="confirmé";
+    }
+   
+    
+  });
+  console.log('aprés modif',this.user.friendsList)
+
+  this.authService.updateUser(this.user).subscribe(
+    res => console.log(res)
+  )
+  }
   
   sendInvitationrequest(member) {
     console.log('Id a inviter ',member)
@@ -294,30 +327,31 @@ explicit: false
     let test;
    
 
-    if(this.user.friendsList.length !=0 && this.member_id != member._id){
+     if(this.user.friendsList.length !=0 && this.member_id != member._id){
       test=this.user.friendsList.find((element)=> {
           
         return element.friendId==member._id ;
   
         })
-    }
+    } 
     
     
     console.log(test)
   
-    if(test=== undefined){
+    if(test=== undefined || this.user.friendsList.length==0){
 
      // console.log('On rajoute a la liste de demande amis',id)
 
      // console.log('On continu et on ajoute  la liste')
      
       //console.log("Le membre est comment ?",id)
+      console.log('//////', member)
       this.memberActionService.add_friend(member)
       .subscribe(
         res => {
           if(res.success){
             this.updateMemberList(member)
-            this.user.friendsList.push({status:"invitation envoyée ",friendId:member._id})
+            this.user.friendsList.push({status:"invitation en cours ",friendId:member._id})
             console.log(member._id);
             this.authService.updateUser(this.user).
             subscribe(
@@ -326,7 +360,7 @@ explicit: false
             
           }
   
-         // this.updateListmember()
+          
         }) 
     }else {
 
