@@ -32,6 +32,24 @@ private _cancelRequestUrl = this.url+'/api/cancelRequest'
         return this.http.post<any>(this._addFriendUrl, member)
   }
 
+  onRequestInvitation(){
+
+    let observable = new Observable<any>
+    (observer => {
+      this.socket.on('invitation:res', (data ) => {
+        observer.next(data);
+      });
+      return () => {this.socket.disconnect();};
+    })
+    return observable;
+   }
+  
+   requestInvitation(data){
+     this.socket.emit('invitation:send', data)
+   }
+
+
+
   cancelInvitationrequest(id){
     return this.http.post<any>(this._cancelRequestUrl, id)
   }

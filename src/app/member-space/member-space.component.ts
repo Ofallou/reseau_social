@@ -6,8 +6,8 @@ import { User } from '../models/user';
 import { Comment } from '../models/comment';
 import { MemberActionService } from '../member-action.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import { element } from 'protractor';
-
+import { Observable } from 'rxjs';
+import * as Rx from 'rxjs';
 
 @Component({
   selector: 'app-member-space',
@@ -53,16 +53,19 @@ dataSource;
    dateNaissance:new Date,
    gender:'',
    password:'',
-   friendsList:[],
+   friendsList:[
+     {status:"", friendId:""}
+   ],
    picture:''
 
  };
  currentUser;
- membersNotFriends;
+ membersNotFriends=[];
  friends=[];
  visitor:Boolean;
  userPicture:String;
  userComment;
+ message;
   constructor( 
     private activatedRouter: ActivatedRoute,
     private commentService:CommentService, 
@@ -78,7 +81,14 @@ dataSource;
     }
     );
 
-
+    this.memberActionService.onRequestInvitation().subscribe(
+      invitation => {
+  
+        this.message= invitation
+        localStorage.setItem('message',this.message)
+  
+      }
+    )
   
 
    }
@@ -86,68 +96,112 @@ dataSource;
    
 
   ngOnInit() {
-    
 
-             
+
+
+
+   
+         //var amisLocal=   localStorage.getItem('myMemberlist')
+
+         //console.log('liste membre en local',amisLocal)
     
     this.activatedRouter.paramMap.subscribe(
       params => {
-        //Check who is who !!
-          this.member_id =params.get('id')
-  this.friends=[]
-          //On recupere  tous les membres
+        this.member_id =params.get('id')
+        this.friends=[]
+        this.membersNotFriends=[];
 
-          this.authService.getData().subscribe(
+        this.authService.getAllMembers()
+        .subscribe(
+          members => {
+            this.membersNotFriends = members
+            console.log('Liste de tous les membres avant traitement',this.membersNotFriends)
+            //On se supprime de la liste des membre a l'affichage
+            this.membersNotFriends.splice(this.membersNotFriends.findIndex(user => user._id=== this.member_id),1)
+            
 
-            res => {this.user= res.user 
-              console.log(this.user)
-          
+            this.authService.getData().subscribe(
 
-          console.log(this.user)
-          this.authService.getAllMembers()
-          .subscribe(
-            res => {
-              this.membersNotFriends = res
-              console.log(this.membersNotFriends)
-              
-              var toto = this.membersNotFriends.findIndex(user => user._id=== this.member_id)
-              console.log(toto)
-              //On se supprime de la liste des membre a l'affichage
-              this.membersNotFriends.splice(this.membersNotFriends.findIndex(user => user._id=== this.member_id),1)
-              //On supprime la liste des invitations en cours
+              res => { 
+                this.user= res.user 
+              });
 
+     //Comments information.
+     console.log('ki es tu ??',this.member_id)
+     this.authService.memberSpace(this.member_id).subscribe(
+      
+      res=> {
+           this.user= res.user;
+           console.log(res.user)
 
-             
-              console.log('l** Liste de tous les membres *** ',this.membersNotFriends )
-            }
-          )
-        }
-      );
-         //Comments information.
-         this.authService.memberSpace(this.member_id).subscribe(
-          res=> {
-               this.user= res.user;
-              console.log(this.user.friendsList)
-            this.user.friendsList.forEach(element => {
+          console.log(this.user.friendsList.length)
+          console.log('liste amis',this.user.friendsList)
+          console.log('Liste de tous les membres ',this.membersNotFriends)
+         this.user.friendsList.forEach(element => {
+           console.log('element bi !!!',element.friendId)
+           this.membersNotFriends.splice(this.membersNotFriends.findIndex(user => user._id=== element.friendId),1)
 
-              this.memberActionService.getMemberById(element).subscribe(
-                  res=> {
+         })
+          console.log('Liste de tous les membres ',this.membersNotFriends)
+          this.user.friendsList.forEach(element => {
+            //console.log(element)
+            this.memberActionService.getMemberById(element).subscribe(
+                res=> {
+                  this.friends.push(res)
+                  //console.log(res)
 
-                    this.friends.push(res)
-                    console.log("mmmmmmmmmmm",this.friends) 
-                    this.dataSource = this.friends
-
-                 this.friends.forEach(element => {
-                      this.membersNotFriends.splice(this.membersNotFriends.findIndex(user => user._id === element.members._id))
-                    } ) 
-                    
-                  } 
-  
                   
-                )
-              }) 
+                  
+                }
+              )
+            }) 
 
-              console.log("arretete",this.friends) 
+
+
+        }
+      )
+
+      console.log('Liste de tous les membres avant traitement bis',this.membersNotFriends)
+      console.log("Mes amis",this.friends) ;
+      console.log("Mes amis",this.user.friendsList) ;
+     
+      
+      console.log('au final',this.membersNotFriends)
+/*       this.membersNotFriends= this.membersNotFriends.filter(function(element){
+        return this.user.friendsList.includes(element._id)
+      }) */
+
+      console.log('apres coup !!',this.membersNotFriends)
+      this.authService.memberSpace(this.member_id)
+      .subscribe(
+        res => {
+          //console.log('membre', res)
+          if(res.user===undefined){
+            this.router.navigate(['/notFound'])
+          }else {
+           
+            
+            //this.user=res.user;
+            console.log('Ma liste membre invités',this.user.friendsList)
+           
+
+
+          }
+
+        }
+        
+
+      )    
+
+
+          }
+        )
+
+          
+  
+
+    
+         
 
       
               
@@ -170,8 +224,7 @@ dataSource;
                )
 
             
-          }
-        )
+        
 
 
 
@@ -184,26 +237,7 @@ dataSource;
       }
     )
 
-          this.authService.memberSpace(this.member_id)
-          .subscribe(
-            res => {
-              //console.log('membre', res)
-              if(res.user===undefined){
-                this.router.navigate(['/notFound'])
-              }else {
-               
-                
-                //this.user=res.user;
-                console.log('Ma liste membre invités',this.user.friendsList)
-               
-
-
-              }
-
-            }
-            
-
-          )        
+       
 
           
       }
@@ -214,17 +248,34 @@ dataSource;
   }
 
 
+  testSocket(){
   
+    this.memberActionService.requestInvitation('hello')
+  }
+
+
+
+   remove(array, element) {
+    const index = array.indexOf(element);
+    array.splice(index, 1);
+}
+
 
   updateMemberList(member){
-
-
     
     this.membersNotFriends.splice(this.membersNotFriends.findIndex(user => user=== member),1)
-
-
     console.log('update ok ou pas',this.membersNotFriends)
-  localStorage.setItem('myMemberlist',this.membersNotFriends)
+    this.user.friendsList.forEach(element => {
+
+      this.memberActionService.getMemberById(element).subscribe(
+          res=> {
+
+            this.friends.push(res)
+          }
+        )
+      }) 
+
+  
       
  }
 

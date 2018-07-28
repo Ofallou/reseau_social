@@ -23,7 +23,19 @@ export class HeaderComponent implements OnInit {
   };
 
   
-  constructor( private authService: AuthService) {}
+  constructor( private authService: AuthService) {
+
+    this.getUserState()
+    //console.log(this.isAuth)
+  if(this.isAuth){
+    this.authService.getData()
+    .subscribe(
+      res => {//console.log('////',res)
+      this.user = res.user;
+      this.userid=res.user._id
+      })
+  }
+  }
  
   ngOnInit() {
 

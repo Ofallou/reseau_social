@@ -60,7 +60,13 @@ io.on('connection' , (socket) =>{
       io.sockets.emit('isconnected', data);
     })
 
-   
+    socket.on('invitation:send' , (data)=> {
+
+      console.log(data);
+
+      io.sockets.emit('invitation:res',data)
+
+    })
       
       socket.on('posted', (data) => {
         
@@ -68,6 +74,7 @@ io.on('connection' , (socket) =>{
         // Ici connecte toi a la base de donnees et sauvegared les messages
         io.sockets.emit('message',data)
       });
+
       socket.on('disconnect',() => {
         
         io.emit('user disconnect', socket.id)

@@ -98,10 +98,10 @@
                    
                     
                         <img (click)="onSelect(friend.members)" src="{{friend.members.picture}}" alt="" > {{friend.members.first_name}}  {{friend.members.last_name}} 
-                        {{friend.status}} 
-                        <span> -  </span>
-                      <a *ngIf="friend.status=='invitation en cours' || 'en attente de confirmation'" (click)=cancelInvitation(friend) >
-                       <i  matTooltip="Annuler la demande" class="material-icons" >cancel</i></a>  
+                        <span> -  {{friend.status}}  </span>
+                      <a *ngIf="friend.status=='invitation en cours' " (click)=cancelInvitation(friend) >
+                        
+                       <i  matTooltip="Annuler la demande" class="material-icons" >cancel</i>{{friend.status}}</a>  
                       <a (click)=acceptInvitation(friend) *ngIf="friend.status=='en attente de confirmation'">
                           <i  matTooltip="Accepter la demande d'ami" class="material-icons" >check</i>
                       </a>
@@ -128,10 +128,6 @@
 </div>
 
 
-
-
-
-
 <div class="container">
    
     <form class="example-form" #commentF="ngForm" (submit)="posted();commentF.reset()" >
@@ -146,12 +142,14 @@
         <button type="submit" mat-mini-fab color="accent" [disabled]="!commentF.form.valid">Poster
      
         </button>
+
+        
   
     </form>
 
+    <button mat-mini-fab color="accent"  (click)="testSocket()">test</button>
 
-
-
+     <p>{{message}}</p>
   
   <mat-card class="example-card" *ngFor="let comment of userComment">
     <mat-card-header>
