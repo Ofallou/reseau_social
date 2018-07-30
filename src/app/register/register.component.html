@@ -73,7 +73,7 @@
       </tr>
     </table>
       
-      <button mat-raised-button color="primary" [disabled]="!register.form.valid ||email.invalid || pseudoNotEnable || emailAvailable"  (click)="registerUser()" routerLink="/userdata">S'enregistrer</button>
+      <button mat-raised-button color="primary" [disabled]="!register.form.valid ||email.invalid || pseudoNotEnable || emailAvailable"  (click)="registerUser()" routerLink="/member_space/{{user.pseudo}}">S'enregistrer</button>
 
     </form>
     

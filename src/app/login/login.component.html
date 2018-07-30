@@ -4,18 +4,22 @@
         <form #loginF="ngForm"  >
         <div class="example-container">
             <mat-form-field>
+                <input matInput placeholder="pseudo" [(ngModel)]="userData.pseudo" required name="pseudo">
+                
+              </mat-form-field>
+ <!--            <mat-form-field>
               <input matInput placeholder="Email" [(ngModel)]="userData.email" name="email"  [formControl]="email" 
               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
               >
               <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
-            </mat-form-field>
+            </mat-form-field> -->
             <br>
             <mat-form-field>
                 <input matInput placeholder="Mot de passe" [(ngModel)]="userData.password" required name="password"  [type]="hide ? 'password' : 'text'">
                 <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
               </mat-form-field>
               <br>
-              <button  mat-button color="primary" [disabled]="!loginF.form.valid || email.invalid" (click)="onLogin();loginF.reset()">Se connecter</button>
+              <button  mat-button color="primary" [disabled]="!loginF.form.valid " (click)="onLogin();loginF.reset()">Se connecter</button>
               <mat-error>{{errorMessage}}</mat-error> 
               <button mat-button color="primary" routerLink="/lostpwd" >Informations de compte oubliées ? </button>
           </div>

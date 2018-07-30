@@ -10,7 +10,7 @@
         <span class="example-spacer"></span>
         <div class="infos">
             <div>
-                <a routerLink="/member_space/{{userid}}" matTooltip="Mon espace "><img src="{{user.picture}}"  alt=""></a>            
+                <a routerLink="/member_space/{{user.pseudo}}" matTooltip="Mon espace "><img src="{{user.picture}}"  alt=""></a>            
             </div>
             <div>
                 {{user.first_name}} {{user.last_name}} 
@@ -27,7 +27,7 @@
             <span class="example-spacer"></span>
             <span class="example-spacer"></span>
 
-      <span><a routerLink="/admin" routerLinkActive="active">  <i class="material-icons" matTooltip="Admin">
+      <span><a *ngIf="user.admin" routerLink="/admin" routerLinkActive="active">  <i class="material-icons" matTooltip="Admin">
             supervised_user_circle
       </i></a></span>
 

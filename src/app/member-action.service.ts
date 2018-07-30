@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, identity } from 'rxjs';
 import { Config } from './config';
 import * as io from 'socket.io-client';
 
@@ -17,6 +17,7 @@ export class MemberActionService {
 private _getMemberById=this.url+'/api/memberbyid'
   private _addFriendUrl= this.url+'/api/addfriend';
   private _acceptInvitationUrl=this.url+'/api/acceptInvitation'
+  private _updateInvitationUrl=this.url+'/api/updateInvitation'
 private _cancelRequestUrl = this.url+'/api/cancelRequest'
   private socket = io(Config.SOCKET_HOST);
   
@@ -28,8 +29,8 @@ private _cancelRequestUrl = this.url+'/api/cancelRequest'
   }
 
 
-  add_friend (member){
-        return this.http.post<any>(this._addFriendUrl, member)
+  add_friend (member, user){
+        return this.http.post<any>(this._addFriendUrl, {member:member, user:user})
   }
 
   onRequestInvitation(){
@@ -54,11 +55,14 @@ private _cancelRequestUrl = this.url+'/api/cancelRequest'
     return this.http.post<any>(this._cancelRequestUrl, id)
   }
 
-  acceptInvitation(member){
+  acceptInvitation(member, user){
 
-    return this.http.post<any>(this._acceptInvitationUrl, member)
+    return this.http.post<any>(this._acceptInvitationUrl, {member:member, user:user})
   }
+  updateInvitation(member, user){
 
+    return this.http.post<any>(this._updateInvitationUrl, {member:member, user:user})
+  }
 
   getMemberById(id){
     return this.http.post<any>(this._getMemberById, id)

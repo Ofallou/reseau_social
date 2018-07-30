@@ -10,7 +10,7 @@ import { User } from './models/user';
 
 @Injectable()
 export class CommentService  {
-  url = Config.SOCKET_HOST || "http://localhost";;
+  url = Config.SOCKET_HOST || "http://localhost";
   private _postCommentUrl = this.url+'/api/post_comment';
   //For each member's space
   private _getCommentPostedUrl =this.url+'/api/get_member_comments';
@@ -60,14 +60,16 @@ export class CommentService  {
 
 
 
-
+openChat(data){
+  this.socket.emit('join', data)
+}
 
   onLogin(data) {
     this.socket.emit('login', data)
   }
 
-getMemberComments (id){
-  return this.http.get<any>(this._getCommentPostedUrl+'/'+id ,{params:id})
+getMemberComments (pseudo){
+  return this.http.get<any>(this._getCommentPostedUrl+'/'+pseudo ,{params:pseudo})
 }
  
 postMessage(data) {

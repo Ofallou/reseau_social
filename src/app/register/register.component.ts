@@ -44,7 +44,7 @@ export class RegisterComponent implements OnInit {
   }
   ngOnInit() {
     if (this.authService.getToken()) {
-      this._router.navigate(['/userdata']);
+      this._router.navigate(['/member_space',this.user.pseudo]);
     }
   }
 
@@ -88,7 +88,7 @@ export class RegisterComponent implements OnInit {
         }else {
 
           localStorage.setItem('token', res.token );
-          this._router.navigate(['/userdata']);
+          this._router.navigate(['/member_space',this.user.pseudo])
         }
         
       }

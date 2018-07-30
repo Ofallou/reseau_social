@@ -52,6 +52,14 @@ io.on('connection' , (socket) =>{
   console.log('User joined', socket.id);
   // socOn recupere tous les messages posté et enr  du serveur
 
+  socket.on('join', function(data){
+  let room=data.user.pseudo
+    socket.join(data.user.pseudo);
+
+    console.log('open the room',room )
+    socket.broadcast.to(room).emit('friend join',{user:data.user.pseudo, message:'est connecté au chat'})
+  })
+
     //socket.emit('user join',{message:'Welcome'});
     socket.on('login', (data)=> {
 

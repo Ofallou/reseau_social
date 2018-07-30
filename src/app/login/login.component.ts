@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   userData = {
     _id:'',
     email:'',
+    pseudo:'',
     password:'',
     admin:false
   };
@@ -31,7 +32,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
- 
+
 
   }
 
@@ -51,7 +52,7 @@ export class LoginComponent implements OnInit {
           if (res.message || res.err) {
             if(res.message === undefined) this.errorMessage = res.err;
             if(res.err=== undefined ) this.errorMessage = res.message;
-            this.userData.email =null;
+            this.userData.pseudo =null;
             this.userData.password = null;
             
            
@@ -59,7 +60,7 @@ export class LoginComponent implements OnInit {
 
             
 
-            this.commentService.onLogin(this.userData.email);
+            this.commentService.onLogin(this.userData.pseudo);
 
             localStorage.setItem('token', res.token);
             this.authService.getData().subscribe(
@@ -70,7 +71,7 @@ export class LoginComponent implements OnInit {
                 if(this.userData.admin){
                   this._router.navigate(['/admin']);
                 }else {
-                  this._router.navigate(['/member_space', this.userData._id]);
+                  this._router.navigate(['/member_space', this.userData.pseudo]);
                 }
               }
 

@@ -1,7 +1,4 @@
-.card {
-    width: 200px;
-    border-radius: 30%
-  }
+
 .member {
 
   position: fixed;
@@ -10,10 +7,13 @@
   
 }
 
-
+.picture img{
+  border-radius: 50%
+}
 .friends{
   position: fixed;
- padding-left:60%;
+ padding-left:80%;
+ max-width: 400px;
 }
   .container-fixe {
    

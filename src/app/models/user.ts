@@ -2,7 +2,7 @@ export class User {
   static _id(arg0: any): any {
     throw new Error("Method not implemented.");
   }
-  
+   _id:String;
    first_name: String;
    last_name: String;
    pseudo: String;
@@ -16,7 +16,7 @@ export class User {
     online:Boolean
 
   constructor(user: any) {
-  
+   this._id= user._id;
     this.first_name = user.first_name;
     this.last_name = user.last_name;
     this.pseudo = user.pseudo;

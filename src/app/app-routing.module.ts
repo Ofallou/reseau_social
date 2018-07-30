@@ -13,6 +13,7 @@ import { AdminGuard } from './admin.guard';
 import { NewPasswordComponent } from './new-password/new-password.component';
 import { MemberSpaceComponent } from './member-space/member-space.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { ChatWindowComponent } from './chat-window/chat-window.component';
 
 
 const routes: Routes = [
@@ -27,7 +28,11 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'lostpwd', component: LostPasswordComponent},
   {path: 'passCode/:id', component: NewPasswordComponent},
-  {path:'member_space/:id', component: MemberSpaceComponent},
+  {path:'member_space/:pseudo', component: MemberSpaceComponent,
+  children:[
+    {path:'chat_window/:pseudo', component:ChatWindowComponent}
+  ]
+},
   {path: 'userdata', component: UserdataComponent,
   canActivate : [AuthGuard]},
   {path: 'user-settings', component: UserSettingsComponent,

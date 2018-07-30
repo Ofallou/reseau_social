@@ -57,7 +57,7 @@ export class StatsComponent implements OnInit {
 
 onSelect(member){
 
-  this.router.navigate(['/member_space', member._id])
+  this.router.navigate(['/member_space', member.pseudo])
 
 }
   

@@ -20,6 +20,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { ImageUploadModule } from "angular2-image-upload";
 import {MatDividerModule} from '@angular/material/divider';
+import { LivechatWidgetModule } from '@livechat/angular-widget';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 
 
@@ -50,9 +52,10 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { FriendslistComponent } from './friendslist/friendslist.component';
 import { MembersListComponent } from './members-list/members-list.component';
-import { MemberSpaceComponent } from './member-space/member-space.component';
+import { MemberSpaceComponent, InvitationRequest } from './member-space/member-space.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ChatWindowComponent } from './chat-window/chat-window.component';
+import { InvitationRequestComponent } from './invitation-request/invitation-request.component';
 
 
 
@@ -79,7 +82,8 @@ import { ChatWindowComponent } from './chat-window/chat-window.component';
     MembersListComponent,
     MemberSpaceComponent,
     PageNotFoundComponent,
-    ChatWindowComponent
+    ChatWindowComponent,
+    InvitationRequestComponent
   ],
   imports: [
     BrowserModule,
@@ -112,7 +116,10 @@ import { ChatWindowComponent } from './chat-window/chat-window.component';
     MatBadgeModule,
     MatTooltipModule,
     MatDividerModule,
+    MatButtonToggleModule,
+    LivechatWidgetModule,
     ImageUploadModule.forRoot(),
+    
 
     AngularFireModule.initializeApp({
       apiKey: "AIzaSyAlSqMwKKhmxwcaV2yV0JakW1Z3FC-8d3Q",
@@ -131,6 +138,9 @@ import { ChatWindowComponent } from './chat-window/chat-window.component';
       useClass: TokenService,
       multi: true
     }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    InvitationRequestComponent,
+],
 })
 export class AppModule { }

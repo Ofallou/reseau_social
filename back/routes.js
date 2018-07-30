@@ -3,6 +3,8 @@ const router = express.Router();
 const nodemailer =  require ('nodemailer');
 const mongoose= require('mongoose');
 const jwt = require('jsonwebtoken');
+const app= require ('../server')
+const server= require ('../server')
 var gravatar = require('gravatar');
 var generator = require ('generate-password');
 var bcrypt = require('bcrypt')
@@ -129,12 +131,12 @@ router.post('/login', (req, res)=> {
   //console.log(userdata)
  // console.log(req.body.password)
   let user = new User(userdata);
-  User.findOne({email:req.body.email}, (err, data)=>{
+  User.findOne({pseudo:req.body.pseudo}, (err, data)=>{
    if(err){
      console.log(err)
    } else {
      if(!data){
-      res.json({message:'Email invalide '});
+      res.json({message:'Le pseudo est invalide '});
      } else {
           var pass=bcrypt.compareSync(req.body.password, data.password)
           console.log(pass)
@@ -156,10 +158,14 @@ router.post('/login', (req, res)=> {
 
 
 
-router.get('/get_member_comments/:id', (req,res) => {
-  let userId= req.params.id
-  Comment.find({authorId:userId},null,{sort:{date: -1}}, (err,comments)=>{
+router.get('/get_member_comments/:pseudo', (req,res) => {
+  let userpseudo= req.params.pseudo
+  
+  Comment.find({authorId:userpseudo},null,{sort:{date: -1}}, (err,comments)=>{
+
     if(err) throw err;
+    
+    console.log(comments)
     res.status('200').send({comments});
   })
 })
@@ -239,7 +245,7 @@ router.post('/lostpwd', (req, res) => {
           console.log('info mises a jours en base', data , new_password)
         })
         
-        SentPassword(email,data.password, data.first_name,new_password);
+        SentPassword(email,data.pseudo, data.first_name,new_password);
       res.send({success:'Un nouveau mot de passe a été envoyé a votre adresse email, Merci de verifier votre boite aux lettres ainsi que le dossier spam !'});
       }else {
         res.send({error:'Adresse email inconnu'})
@@ -339,15 +345,16 @@ router.post('/member',veriFyToken, (req,res)=> {
    })
 })
 
-router.get('/member_space/:id',(req,res) =>{
+router.get('/member_space/:pseudo',(req,res) =>{
   
-  let memberId=req.params.id
-  User.findOne({_id:memberId}, (err, user)=>{
+  let member_pseudo=req.params.pseudo
+  User.findOne({pseudo:member_pseudo}, (err, user)=>{
     if(err){
       console.log(err.reason)
       res.status('200').send({error: err})
     }else {
-      res.status('200').send({user: user})
+      console.log(user)
+      res.json(user)
     }
   })
    
@@ -371,17 +378,19 @@ router.get('/member_space/:id',(req,res) =>{
 
 //Ajouter un amis
 router.post('/addfriend', (req,res) => {
-  var member= req.body
-  console.log('rock the beast   ',member)
-  
+  console.log('Information de la requete User',req.body.user)
+  console.log('Information de la requete Member',req.body.member)
+  var member= req.body.member
+  var user =req.body.user
+  console.log('info du destinataire  invitation  ',member._id, member.first_name, member.email)
+ console.log("id de l'emetteur de l'invitation", user._id)
   SendNotificationFriendRequest(member.email,member.last_name); 
-  console.log(member.email)
 
   User.findOneAndUpdate({_id:member._id},
-      {"$push":{"friendsList":{status:"en attente de confirmation", friendId:currentUserId}}},
+      {"$push":{"friendsList":{status:"en attente de confirmation", friendId:user._id}}},
       (err, data) => {
            if(err) console.log(err);
-           console.log(data)
+           console.log('Mise a jour en base des elements:',data)
 
            res.json({response:"Demande envoyée", success:true})
       }
@@ -394,22 +403,44 @@ router.post('/addfriend', (req,res) => {
 
 
  router.post ('/acceptInvitation', (req,res) => {
-   console.log('le body de ma requete ',req.body.members._id)
+let user=req.body.user
+let member=req.body.member.members
 
-  User.findOneAndUpdate({_id:currentUserId},{ "$set":{}}, (err, data)=> {
+  User.updateOne({_id:member._id, "friendsList.friendId":user._id},{ "$set":{"friendsList.$.status":"confirmer"}}, (err, data)=> {
    if(!err){
     console.log('data trouve......', data)
-    res.json('liste mise a jour')
+    res.json( data.nModified)
    }else {
      res.json(err)
    }
     
 
     
-  })
+  }) 
   
 
 })
+
+
+
+router.post ('/updateInvitation', (req,res) => {
+  let user=req.body.user
+  let member=req.body.member.members
+  
+    User.updateOne({_id:user._id, "friendsList.friendId":member._id},{ "$set":{"friendsList.$.status":"confirmer"}}, (err, data)=> {
+     if(!err){
+      console.log('data trouve......', data)
+      res.json( data.nModified)
+     }else {
+       res.json(err)
+     }
+      
+  
+      
+    }) 
+    
+  
+  })
 
 
 

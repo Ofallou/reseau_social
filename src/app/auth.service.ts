@@ -100,9 +100,9 @@ export class AuthService {
     console.log(this.socket.id)
     }
     
-  memberSpace(id){
+  memberSpace(pseudo){
    
-    return this.http.get<any>(this._memberUrl+'/'+id, {params:id})
+    return this.http.get<any>(this._memberUrl+'/'+pseudo, {params:pseudo})
   }
 
 }

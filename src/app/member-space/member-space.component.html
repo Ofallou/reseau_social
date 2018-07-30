@@ -2,13 +2,14 @@
    <div class="member">
     <mat-card class="card">
         <mat-card-header>
+            <img src=" {{user.picture}}" alt="">
           <mat-card-title>
             {{user.first_name}}
             {{user.last_name}}
                 </mat-card-title>
           <mat-card-subtitle>
             {{user.pseudo}}
-            <img src=" {{user.picture}}" alt="">
+           
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
@@ -16,28 +17,28 @@
       </mat-card>
       
 
-     
 </div>
 
 
-<div class="friends" >
+<router-outlet></router-outlet> 
+
+<div class="friends" *ngIf="!visitor || isAdmin" >
 
     <div class="request">
         <form class="example-form" #search="ngForm" >
         <mat-accordion class="example-headers-align">
-          <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+          <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" >
             <mat-expansion-panel-header>
           
               <mat-panel-description>
-               Recherche
-                <mat-icon matTooltip="Recherche de membre" >person</mat-icon>
+               
+                <mat-icon matTooltip="Recherche de membre" >search</mat-icon>
               </mat-panel-description>
             </mat-expansion-panel-header>
         
             <mat-form-field>
               <input matInput placeholder="nom, prenom ou pseudo" name="name" [(ngModel)]="keyword.name" 
               >
-              
             </mat-form-field>
             <button type="submit" mat-button color="primary" (click)="searchfriend()" >OK</button>
 
@@ -45,10 +46,10 @@
               
                 <mat-list-item> 
                  <form class="example-form" >
-                    <img src=" {{member.picture}}" alt=""> {{member.first_name}} {{member.pseudo}} 
+                    <img src=" {{member.picture}}" alt=""> {{member.pseudo}} 
                     
-                    <button matTooltip="Ajouter" type="submit" mat-button (click)="sendInvitationrequest(member._id)" ><i class="material-icons">
-                        person_add
+                    <button matTooltip="Ajouter" type="submit" mat-button (click)="sendInvitationrequest(member)" ><i class="material-icons">
+                        
                         </i></button>
                   </form>
                  </mat-list-item>
@@ -65,57 +66,78 @@
             <mat-expansion-panel-header>
               
               <mat-panel-description>
-                <h4>Liste des membres</h4>
+              
                 <mat-icon matTooltip="Liste des membres">people</mat-icon>
-                
+            
               </mat-panel-description>
             </mat-expansion-panel-header>
-            <mat-list dense>
+            <mat-list dense >
                 <mat-list-item *ngFor="let member of membersNotFriends">
-                    <img src="{{member.picture}}" alt=""> {{member.first_name}} {{member.pseudo}} 
+                    <img src="{{member.picture}}" alt="">  {{member.pseudo}} 
                     <button matTooltip="Ajouter" type="submit" mat-button (click)="sendInvitationrequest(member)" ><i class="material-icons">
                       person_add
                       </i></button>
                 </mat-list-item>
             </mat-list>
-            
 
-        
-        
-            <mat-action-row>
-              <button mat-button color="warn" (click)="prevStep()">Previous</button>
-            </mat-action-row>
           </mat-expansion-panel>
-          <mat-expansion-panel [hideToggle]="false">
-              <mat-expansion-panel-header>
-                  <mat-panel-title></mat-panel-title>
-                  <mat-panel-description>Liste d'amis </mat-panel-description>
-              </mat-expansion-panel-header>
+          
+             <mat-card>
+                 <mat-card-header>
+                     <mat-card-title><h4>Ami(e)s</h4></mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                     <mat-button-toggle-group name="status" aria-label="Font Style">
+                        <mat-button-toggle  matTooltip="Tous les status" value="demande">
+                            <i (click)="all()" class="material-icons">
+                                clear_all
+                                </i></mat-button-toggle>
 
+                        <mat-button-toggle   matTooltip="Confirmé" value="confirme"><i  (click)="confirm()"   class="material-icons" >done</i></mat-button-toggle>
+                        <mat-button-toggle matTooltip="En attente de confirmation" value="attente"><i (click)="waiting()"  class="material-icons" >arrow_left</i></mat-button-toggle>
+                        <mat-button-toggle  matTooltip="Demande d'ami envoyée" value="demande"><i (click)="send()"   class="material-icons" >arrow_right</i></mat-button-toggle>
+                      </mat-button-toggle-group>
+                
+                 
+
+                  
+                    
               <mat-list dense>
                   <mat-list-item *ngFor="let friend of friends">
-                    <p>
+
+                  
+                    <p >
                    
                     
-                        <img (click)="onSelect(friend.members)" src="{{friend.members.picture}}" alt="" > {{friend.members.first_name}}  {{friend.members.last_name}} 
-                        <span> -  {{friend.status}}  </span>
-                      <a *ngIf="friend.status=='invitation en cours' " (click)=cancelInvitation(friend) >
-                        
-                       <i  matTooltip="Annuler la demande" class="material-icons" >cancel</i>{{friend.status}}</a>  
-                      <a (click)=acceptInvitation(friend) *ngIf="friend.status=='en attente de confirmation'">
-                          <i  matTooltip="Accepter la demande d'ami" class="material-icons" >check</i>
-                      </a>
+                        <img class="picture" (click)="onSelect(friend.members)" src="{{friend.members.picture}}" alt="" style="width: 36px;" alt=""> {{friend.members.pseudo}} 
+                        <span *ngIf="friend.status=='en attente de confirmation'"><i  (click)="acceptRequestInvitation(friend)" class="material-icons"> group_add</i></span>
+                       <a  (click)=openChat(friend) >  <i  matTooltip="chat" class="material-icons" >chat</i></a>
+                    
+                       
                     </p>
 
                     
+                      
 
                   
                 
-                  </mat-list-item>
+                  </mat-list-item> 
               </mat-list>
 
+           
 
-            </mat-expansion-panel>
+
+                 </mat-card-content>
+                
+                
+             </mat-card>
+                
+                  
+               
+
+
+
+            
 
 
 
@@ -129,25 +151,34 @@
 
 
 <div class="container">
-   
-    <form class="example-form" #commentF="ngForm" (submit)="posted();commentF.reset()" >
-        <mat-form-field>
-          <input matInput placeholder="titre du message" name="title" id="titre" [(ngModel)]="comment.title" required >
-        </mat-form-field>
-         <br>
-        <mat-form-field class="example-full-width">
-          <textarea matInput placeholder="Poster un commentaire......" name="comment" [(ngModel)]="comment.content"></textarea>
-        </mat-form-field>
-         <br>
-        <button type="submit" mat-mini-fab color="accent" [disabled]="!commentF.form.valid">Poster
-     
-        </button>
-
-        
+   <mat-card  class="example-card">
+      
+       <mat-card-content>
+          <form class="example-form" #commentF="ngForm" (submit)="posted();commentF.reset()" >
+              <mat-form-field>
+                <input matInput placeholder="titre du message" name="title" id="titre" [(ngModel)]="comment.title" required >
+              </mat-form-field>
+               <br>
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Poster un commentaire......" name="comment" [(ngModel)]="comment.content"></textarea>
+              </mat-form-field>
+               <br>
+              <button type="submit" mat-mini-fab color="accent" [disabled]="!commentF.form.valid">Poster
+           
+              </button>
   
-    </form>
+          </form>
+       </mat-card-content>
+       <mat-card-actions align="start">
+           <button mat-button (click)="partager()"><mat-icon class="mat-18">share</mat-icon></button>
+           
+       </mat-card-actions>
+       <mat-card-footer>
+           Footer
+       </mat-card-footer>
+   </mat-card>
+ 
 
-    <button mat-mini-fab color="accent"  (click)="testSocket()">test</button>
 
      <p>{{message}}</p>
   
@@ -169,3 +200,15 @@
    
   </mat-card>
 </div>
+
+
+<mat-accordion displayMode="default" [multi]="true"
+               [hideToggle]="false">
+    <mat-expansion-panel [hideToggle]="false">
+        <mat-expansion-panel-header>Panel header</mat-expansion-panel-header>
+         Panel body
+        <mat-action-row>
+            <button mat-button (click)="onAction(event)">Action1</button>
+        </mat-action-row>
+    </mat-expansion-panel>
+</mat-accordion>
