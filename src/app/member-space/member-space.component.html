@@ -1,5 +1,15 @@
 
-   <div class="member">
+  
+  
+  
+  
+
+
+ <app-header></app-header>
+
+  
+  <div class="container-main">
+  <div class="member">
     <mat-card class="card">
         <mat-card-header>
             <img src=" {{user.picture}}" alt="">
@@ -18,9 +28,11 @@
       
 
 </div>
+<div class="chat">
+    <router-outlet></router-outlet> 
+</div>
 
 
-<router-outlet></router-outlet> 
 
 <div class="friends" *ngIf="!visitor || isAdmin" >
 
@@ -57,18 +69,16 @@
                </mat-list>
             
         
-            <mat-action-row>
-              <button mat-button color="primary" (click)="nextStep()">Next</button>
-            </mat-action-row>
+          
           </mat-expansion-panel>
         
           <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
             <mat-expansion-panel-header>
               
-              <mat-panel-description>
+              <mat-panel-description   >
               
-                <mat-icon matTooltip="Liste des membres">people</mat-icon>
-            
+                <mat-icon  matTooltip="Liste des membres">people</mat-icon>
+                <span matBadge=" {{membersNotFriends.length}}"  matBadgePosition="before" ></span>
               </mat-panel-description>
             </mat-expansion-panel-header>
             <mat-list dense >
@@ -84,23 +94,27 @@
           
              <mat-card>
                  <mat-card-header>
+                   
                      <mat-card-title><h4>Ami(e)s</h4></mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
                      <mat-button-toggle-group name="status" aria-label="Font Style">
-                        <mat-button-toggle  matTooltip="Tous les status" value="demande">
-                            <i (click)="all()" class="material-icons">
+                        <mat-button-toggle (click)="all()"  matTooltip="Tous les status" value="demande">
+                            <i  class="material-icons">
                                 clear_all
                                 </i></mat-button-toggle>
 
-                        <mat-button-toggle   matTooltip="Confirmé" value="confirme"><i  (click)="confirm()"   class="material-icons" >done</i></mat-button-toggle>
-                        <mat-button-toggle matTooltip="En attente de confirmation" value="attente"><i (click)="waiting()"  class="material-icons" >arrow_left</i></mat-button-toggle>
-                        <mat-button-toggle  matTooltip="Demande d'ami envoyée" value="demande"><i (click)="send()"   class="material-icons" >arrow_right</i></mat-button-toggle>
+                        <mat-button-toggle  (click)="confirm()"     matTooltip="Confirmé" value="confirme"><i    class="material-icons" >done</i></mat-button-toggle>
+                        <mat-button-toggle (click)="waiting()"  matTooltip="En attente de confirmation" value="attente"><i  class="material-icons" >arrow_left</i></mat-button-toggle>
+                        <mat-button-toggle  (click)="send()"  matTooltip="Demande d'ami envoyée" value="demande"><i   class="material-icons" >arrow_right</i></mat-button-toggle>
                       </mat-button-toggle-group>
-                
-                 
+                      <p>
+<span matBadge=" {{friends.length}}"  matBadgePosition="before" ></span>
+                      </p>
+                      
 
-                  
+                
+
                     
               <mat-list dense>
                   <mat-list-item *ngFor="let friend of friends">
@@ -111,44 +125,52 @@
                     
                         <img class="picture" (click)="onSelect(friend.members)" src="{{friend.members.picture}}" alt="" style="width: 36px;" alt=""> {{friend.members.pseudo}} 
                         <span *ngIf="friend.status=='en attente de confirmation'"><i  (click)="acceptRequestInvitation(friend)" class="material-icons"> group_add</i></span>
-                       <a  (click)=openChat(friend) >  <i  matTooltip="chat" class="material-icons" >chat</i></a>
-                    
-                       
+                       <a *ngIf="friend.status=='confirmer'" (click)="chatRequest(friend)" >  <i  matTooltip="chat" class="material-icons" >chat</i></a>
+                      
                     </p>
 
-                    
-                      
-
-                  
-                
                   </mat-list-item> 
+
               </mat-list>
-
-           
-
-
                  </mat-card-content>
-                
-                
+
              </mat-card>
-                
-                  
-               
-
-
-
-            
-
-
-
-        
-        
-        
         </mat-accordion>
       </form>
       </div>
-</div>
 
+<div class="chat">
+  <h6 class="pb-2 mb-0">Group Chat <button class="btn btn-sm btn-primary" >invite others</button></h6>
+  <div class="chats">
+    <div class="chatbox">
+      <div *ngFor="let chat of chats">
+        <div class="message sent" *ngIf="chat.type!=='joined' && chat.isMe">
+          {{chat.message}}
+          <span class="metadata">
+            <span class="time">{{chat.createdAt | date: 'HH:mm aaa'}}</span>
+          </span>
+        </div>
+        <div class="message received"  *ngIf="chat.type!=='joined' && !chat.isMe">
+          <strong>{{chat.displayName}}</strong> <br>
+          {{chat.message}}
+          <span class="metadata">
+            <span class="time">{{chat.createdAt | date: 'HH:mm aaa'}}</span>
+          </span>
+        </div>
+        <p align="center" class="joined"  *ngIf="chat.type==='joined'">
+        <span class="rounded bg-primary text-white">{{chat.displayName}} Joined</span>
+        </p>
+      </div>
+    </div>
+  
+    <div class="d-flex flex-row">
+      <input [(ngModel)]="message" type="text" class="form-control" placeholder="Enter message" style="margin-right: 10px">
+      <button [disabled]="!message || sending" (click)="sendMessage(message)" class="btn btn-primary"> {{sending ? 'Sending' : 'Send'}}</button>
+    </div>
+  </div>
+  
+  </div>
+</div>
 
 <div class="container">
    <mat-card  class="example-card">
@@ -164,31 +186,18 @@
               </mat-form-field>
                <br>
               <button type="submit" mat-mini-fab color="accent" [disabled]="!commentF.form.valid">Poster
-           
               </button>
-  
           </form>
        </mat-card-content>
-       <mat-card-actions align="start">
-           <button mat-button (click)="partager()"><mat-icon class="mat-18">share</mat-icon></button>
-           
-       </mat-card-actions>
-       <mat-card-footer>
-           Footer
-       </mat-card-footer>
    </mat-card>
- 
-
-
      <p>{{message}}</p>
-  
   <mat-card class="example-card" *ngFor="let comment of userComment">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image">
         <img src="{{comment.authorPicture}}" style="width: 46px;" alt="">
       </div>
       <mat-card-title>{{comment.author }} </mat-card-title>
-      <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}</mat-card-subtitle>
+      
     </mat-card-header>
     <h4> {{comment.title}}</h4>
    
@@ -197,18 +206,18 @@
         {{comment.content}}
       </p>
     </mat-card-content>
+    <mat-card-actions align="start">
+      <button mat-button (click)="partager()"><mat-icon class="mat-18">share</mat-icon></button>
+      
+  </mat-card-actions>
+  <mat-card-footer>
+      <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }} </mat-card-subtitle>
+   
+  </mat-card-footer>
    
   </mat-card>
 </div>
 
+</div>
 
-<mat-accordion displayMode="default" [multi]="true"
-               [hideToggle]="false">
-    <mat-expansion-panel [hideToggle]="false">
-        <mat-expansion-panel-header>Panel header</mat-expansion-panel-header>
-         Panel body
-        <mat-action-row>
-            <button mat-button (click)="onAction(event)">Action1</button>
-        </mat-action-row>
-    </mat-expansion-panel>
-</mat-accordion>
+

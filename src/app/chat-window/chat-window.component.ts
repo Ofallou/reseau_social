@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import { FormGroup } from '@angular/forms';
+
 
 @Component({
   selector: 'app-chat-window',
@@ -6,10 +9,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chat-window.component.css']
 })
 export class ChatWindowComponent implements OnInit {
-
-  constructor() { }
+ 
+  constructor( ) { }
 
   ngOnInit() {
+    
   }
+
+
 
 }

@@ -4,6 +4,7 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { AuthService } from '../auth.service';
 import { CommentService } from '../comment.service';
 import { Router } from '@angular/router';
+import { User } from '../models/user';
 
 @Component({
   selector: 'admin-dashboard',
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 })
 export class AdminDashboardComponent {
 
+  user: User;
   constructor(private authService: AuthService, private commentService: CommentService, private  _router: Router) {}
 
   ngOnInit() {
@@ -27,4 +29,14 @@ export class AdminDashboardComponent {
       
   }
   
+
+
+  getUserdata(){
+    this.authService.getData()
+    .subscribe(
+      res => {
+        console.log(res)
+      }
+    )
+  }
 }

@@ -10,6 +10,10 @@ const jwt = require('jsonwebtoken');
 //Models
 const User = require ('./back/models/user');
 const Comment = require ('./back/models/comment');
+const shortId = require('shortid')
+const Pusher = require('pusher')
+const cors = require('cors')
+
 
 const db="mongodb://ofallou:meissa71@ds249079.mlab.com:49079/reseau_social";
 const secret='RffrtejksizikskiksizkskizkskkzikskskksMpp';
@@ -52,34 +56,28 @@ io.on('connection' , (socket) =>{
   console.log('User joined', socket.id);
   // socOn recupere tous les messages posté et enr  du serveur
 
-  socket.on('join', function(data){
-  let room=data.user.pseudo
-    socket.join(data.user.pseudo);
+  socket.on('save-message', function(data){
+  console.log(data)
+    io.emit('new-message', {mesage: data})
 
     console.log('open the room',room )
-    socket.broadcast.to(room).emit('friend join',{user:data.user.pseudo, message:'est connecté au chat'})
   })
 
     //socket.emit('user join',{message:'Welcome'});
     socket.on('login', (data)=> {
-
       console.log('est connecte',data);
-
       io.sockets.emit('isconnected', data);
     })
 
     socket.on('invitation:send' , (data)=> {
-
+      socket.join(data)
       console.log(data);
-
       io.sockets.emit('invitation:res',data)
 
     })
       
       socket.on('posted', (data) => {
-        
         console.log('Message reçu', data, socket.id);
-        // Ici connecte toi a la base de donnees et sauvegared les messages
         io.sockets.emit('message',data)
       });
 

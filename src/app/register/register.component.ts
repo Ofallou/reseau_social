@@ -22,6 +22,8 @@ export class RegisterComponent implements OnInit {
    pseudoNotEnable;
    errormessage;
    emailAvailable;
+   minDate = new Date(1920, 0, 1);
+  maxDate = new Date(2005, 0, 1);
   constructor( private authService: AuthService, private _router: Router) {
     
     this.user = new User ({first_name: '',

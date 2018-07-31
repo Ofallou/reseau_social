@@ -22,6 +22,7 @@ import { ImageUploadModule } from "angular2-image-upload";
 import {MatDividerModule} from '@angular/material/divider';
 import { LivechatWidgetModule } from '@livechat/angular-widget';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatDatepickerModule,MatNativeDateModule} from '@angular/material';
 
 
 
@@ -52,10 +53,12 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { FriendslistComponent } from './friendslist/friendslist.component';
 import { MembersListComponent } from './members-list/members-list.component';
-import { MemberSpaceComponent, InvitationRequest } from './member-space/member-space.component';
+import { MemberSpaceComponent } from './member-space/member-space.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ChatWindowComponent } from './chat-window/chat-window.component';
 import { InvitationRequestComponent } from './invitation-request/invitation-request.component';
+import { ChatService } from '../app/services/chat.service';
+import { PusherService } from './services/pusher.service';
 
 
 
@@ -83,8 +86,10 @@ import { InvitationRequestComponent } from './invitation-request/invitation-requ
     MemberSpaceComponent,
     PageNotFoundComponent,
     ChatWindowComponent,
-    InvitationRequestComponent
+    InvitationRequestComponent,
+   
   ],
+
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -118,6 +123,8 @@ import { InvitationRequestComponent } from './invitation-request/invitation-requ
     MatDividerModule,
     MatButtonToggleModule,
     LivechatWidgetModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     ImageUploadModule.forRoot(),
     
 
@@ -132,15 +139,14 @@ import { InvitationRequestComponent } from './invitation-request/invitation-requ
     AngularFireStorageModule
     
   ],
-  providers: [AuthService,AdminGuard, AuthGuard,WebsocketService, CommentService,MemberActionService,
+  providers: [AuthService,AdminGuard, AuthGuard,WebsocketService,ChatService,PusherService, CommentService,MemberActionService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenService,
       multi: true
     }],
   bootstrap: [AppComponent],
-  entryComponents: [
-    InvitationRequestComponent,
-],
+  entryComponents: [ChatWindowComponent]
+ 
 })
 export class AppModule { }

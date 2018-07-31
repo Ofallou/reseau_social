@@ -9,14 +9,25 @@ var gravatar = require('gravatar');
 var generator = require ('generate-password');
 var bcrypt = require('bcrypt')
 //Models
+
 const User = require ('./models/user.js');
 const Comment = require ('./models/comment.js');
+const Chat = require ('./models/chat.js');
 const SentPassword = require ('./mails/sendPassword.js');
 const SendNotificationFriendRequest = require ('./mails/sendNotifications')
 const Register =  require ('./mails/register.js');
 const FriendRequest =  require('./member/member_request.js')
+const shortId = require('shortid')
+const Pusher = require('pusher')
+const cors = require('cors')
 
-
+var pusher = new Pusher({
+  appId: '569941',
+  key: '521f11269cd19399247e',
+  secret: '3cca11a1fed29875b580',
+  cluster: 'eu',
+  encrypted: true
+});
 
 //Mongodb
 const db="mongodb://ofallou:meissa71@ds249079.mlab.com:49079/reseau_social";
@@ -288,7 +299,7 @@ router.post('/post_comment',veriFyToken ,(req,res) => {
        if(err){
          console.log(err)
        }
-       console.log('Commentaire sauvegardé : ',commentData)
+       //console.log('Commentaire sauvegardé : ',commentData)
        res.status(200).send({commentData})
 
      })
@@ -330,15 +341,15 @@ router.post('/memberbyid', (req,res) => {
 router.post('/member',veriFyToken, (req,res)=> {
 
    //find if email request exist
-   console.log(req.body);
+  // console.log(req.body);
    let key = req.body.name;
    User.find({ $or: [{pseudo:key},{email:key},{last_name:key}, {first_name: key}]} ,(err, data) =>{
      if(err) throw err;
      if(data.length>0){
-       console.log('demande de friend',data)
+       //console.log('demande de friend',data)
        res.json(data)
      }else {
-       console.log(data);
+       //console.log(data);
       res.json({message:'Aucun membre trouvé'})
      }
       
@@ -346,14 +357,14 @@ router.post('/member',veriFyToken, (req,res)=> {
 })
 
 router.get('/member_space/:pseudo',(req,res) =>{
-  
   let member_pseudo=req.params.pseudo
+  
   User.findOne({pseudo:member_pseudo}, (err, user)=>{
     if(err){
       console.log(err.reason)
       res.status('200').send({error: err})
     }else {
-      console.log(user)
+      //console.log(user)
       res.json(user)
     }
   })
@@ -378,19 +389,19 @@ router.get('/member_space/:pseudo',(req,res) =>{
 
 //Ajouter un amis
 router.post('/addfriend', (req,res) => {
-  console.log('Information de la requete User',req.body.user)
-  console.log('Information de la requete Member',req.body.member)
+  //console.log('Information de la requete User',req.body.user)
+  //console.log('Information de la requete Member',req.body.member)
   var member= req.body.member
   var user =req.body.user
-  console.log('info du destinataire  invitation  ',member._id, member.first_name, member.email)
- console.log("id de l'emetteur de l'invitation", user._id)
+  //console.log('info du destinataire  invitation  ',member._id, member.first_name, member.email)
+ //console.log("id de l'emetteur de l'invitation", user._id)
   SendNotificationFriendRequest(member.email,member.last_name); 
 
   User.findOneAndUpdate({_id:member._id},
       {"$push":{"friendsList":{status:"en attente de confirmation", friendId:user._id}}},
       (err, data) => {
            if(err) console.log(err);
-           console.log('Mise a jour en base des elements:',data)
+           //console.log('Mise a jour en base des elements:',data)
 
            res.json({response:"Demande envoyée", success:true})
       }
@@ -408,7 +419,7 @@ let member=req.body.member.members
 
   User.updateOne({_id:member._id, "friendsList.friendId":user._id},{ "$set":{"friendsList.$.status":"confirmer"}}, (err, data)=> {
    if(!err){
-    console.log('data trouve......', data)
+    //console.log('data trouve......', data)
     res.json( data.nModified)
    }else {
      res.json(err)
@@ -441,6 +452,55 @@ router.post ('/updateInvitation', (req,res) => {
     
   
   })
+
+
+  router.post('/join', (req,res)=> {
+  console.log(req.body)
+  const chat= {
+    ...req.body,
+    id:shortId.generate(),
+    type:'joined',
+    createdAt:new Date().toISOString()
+  }
+  pusher.trigger('chat-group', 'chat', chat)
+  res.send(chat)
+
+  })
+
+//save post to mongo
+  router.post('/message', (req,res,next)=> {
+    console.log(req.body)
+    const chat = {
+      ...req.body,
+      id: shortId.generate(),
+      createdAt: new Date().toISOString()
+    } 
+    pusher.trigger('chat-group', 'chat', chat)
+      res.send(chat)
+
+  })
+
+//get all posts by room
+  router.get('chat/:room', (req,res) => {
+    Chat.find({room: req.params.room}, (err,posts) => {
+      if(err) return next(err);
+      res.json(posts)
+    })
+  })
+
+  router.post('/friends', function(req, res, next) {
+    var clonedArray = usersCollection.slice();
+
+    // Getting the userId from the request body as this is just a demo 
+    // Ideally in a production application you would change this to a session value or something else
+    var i = usersCollection.findIndex(x => x.id == req.body.userId);
+  
+    clonedArray.splice(i,1);
+  
+    res.json(clonedArray);
+  });
+
+
 
 
 

@@ -1,4 +1,4 @@
-
+<app-header></app-header>
 <div class="container">
 <mat-tab-group>
     <mat-tab label="Information du compte"> 
@@ -14,12 +14,21 @@
           <input matInput name="email" [(ngModel)]="user.email" placeholder="Email" 
            [formControl]="email" 
            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+           (keyup)="checkEmail()"
            required >
           <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+          <mat-hint *ngIf="!email.invalid"><span style="color: red">{{emailAvailable}}</span></mat-hint>
+
         </mat-form-field>
         <mat-form-field class="example-full-width">
-          <input matInput name="pseudo" [(ngModel)]="user.pseudo" placeholder="Pseudo"
+          <input matInput #pseudo minlength="5" maxlength="10" name="pseudo" [(ngModel)]="user.pseudo" placeholder="Pseudo" (change)="checkPseudo()"
            required>
+           <mat-hint align="end">{{pseudo.value.length}} / 5  -
+                  
+              <span style="color:green"> {{pseudoEnable}}   </span>
+               <span style="color: red">{{pseudoNotEnable}}</span>
+             
+              </mat-hint>
         </mat-form-field>
         <button mat-button color="primary" [disabled]="!info.form.valid || email.invalid" (click)="update()" >Mettre à jour </button>
     

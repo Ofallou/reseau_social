@@ -5,9 +5,15 @@ import { CommentService } from '../comment.service';
 import { User } from '../models/user';
 import { Comment } from '../models/comment';
 import { MemberActionService } from '../member-action.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
 import { Observable } from 'rxjs';
 import * as Rx from 'rxjs';
+import { ChatWindowComponent } from '../chat-window/chat-window.component';
+import { Http } from '@angular/http';
+import { ChatService } from '../services/chat.service';
+import { Ichat } from '../interfaces/ichat';
+
+
 
 @Component({
   selector: 'app-member-space',
@@ -18,6 +24,8 @@ import * as Rx from 'rxjs';
 
 
 export class MemberSpaceComponent implements OnInit {
+
+
   member_pseudo;
   step = 0;
   keyword = {
@@ -38,7 +46,8 @@ export class MemberSpaceComponent implements OnInit {
 
   }
 
-  displayedColumns: string[] = ['photo', 'prenom', 'nom', 'pseudo', 'status'];
+ 
+
 
   dataSource;
 
@@ -68,14 +77,19 @@ export class MemberSpaceComponent implements OnInit {
   userPicture: String;
   userComment;
   message;
+  chats: Ichat[] = [];
+  sending: boolean;
+
+
   constructor(
     private activatedRouter: ActivatedRoute,
     private commentService: CommentService,
     private router: Router, private authService: AuthService,
     private memberActionService: MemberActionService,
-    public dialog: MatDialog
+    private chatService:ChatService
+    
   ) {
-
+    
     this.commentService.onPosted()
       .subscribe(data => {
         this.userComment.splice(0, 0, data)
@@ -85,9 +99,8 @@ export class MemberSpaceComponent implements OnInit {
 
     this.memberActionService.onRequestInvitation().subscribe(
       invitation => {
-
-        this.message = invitation
-        localStorage.setItem('message', this.message)
+        console.log(invitation)    
+            this.message = invitation
 
       }
     )
@@ -95,21 +108,33 @@ export class MemberSpaceComponent implements OnInit {
 
   }
 
+  
 
+
+ 
 
   ngOnInit() {
 
+
+
+
     this.activatedRouter.paramMap.subscribe(
       params => {
+
+        
+       
         this.member_pseudo = params.get('pseudo')
         this.friends=[]
+       
         this.membersNotFriends = [];
+        
         this.authService.getData().subscribe(
-
+         
           res => {
             this.user = res.user;
             this.isAdmin=this.user.admin;
             console.log('Moi user',this.user)
+            this.onSubmit()
             const myFriends=this.user.friendsList.filter(element => element.status=='confirmer');
             console.log(myFriends);
             myFriends.forEach(element => {
@@ -124,6 +149,14 @@ export class MemberSpaceComponent implements OnInit {
               )
             })
 
+            this.chatService.getChannel().bind('chat',data => {
+              console.log(data)
+              if(data.email === this.chatService.user.email){
+                data.isMe= true;
+              }
+              this.chats.push(data)
+            })
+
             this.commentService.getMemberComments(this.member_pseudo)
             .subscribe(
               res => {
@@ -131,7 +164,7 @@ export class MemberSpaceComponent implements OnInit {
                 this.userComment = res.comments
               }
             )
-
+            
 
             console.log("Mes amis", this.friends);
 
@@ -205,11 +238,40 @@ export class MemberSpaceComponent implements OnInit {
   }
 
 
-  openChat(friend) {
-console.log('on chat')
-    
-    this.commentService.openChat({user:this.user, friend:friend.members})
 
+  chatRequest(friend){
+    const pseudo =friend.members.pseudo
+    this.memberActionService.requestInvitation(pseudo);
+  }
+
+ 
+
+
+  onSubmit() {
+    const params= {email:this.user.email, displayName:this.user.pseudo}
+    this.chatService.join(params).subscribe(
+      res => {
+        console.log(res)
+      },
+      error => {
+        console.error(error)
+      }
+    )
+    //this.chatService.openChatRoom({user:this.user, friend:friend.members})
+    
+
+  }
+
+  sendMessage(message: string) {
+    this.sending = true;
+    this.chatService.sendMessage(message)
+      .subscribe(resp => {
+        console.log(resp)
+        this.message = undefined;
+        this.sending = false;
+      }, err => {
+        this.sending = false;
+      } );
   }
 
 
@@ -250,20 +312,29 @@ console.log('on chat')
     this.commentService.postMessage(this.comment)
 
   }
+/* 
+  openDialog(friend) {
+    const dialogConfig = new MatDialogConfig();
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(InvitationRequest, {
-      width: '100px',
-      height: '200px'
-     
-    });
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
 
-  }
+    dialogConfig.data = {
+    me:  this.user,
+    myfriend:friend
+    }
+    
+
+    this.dialog.open(ChatWindowComponent, dialogConfig);
+} */
+
+ 
 
 
   all(){
-    this.friends=[];
-  
+
+    this.friends=[]
+    
     this.user.friendsList.forEach(element => {
       //console.log(element)
       this.memberActionService.getMemberById(element).subscribe(
@@ -277,13 +348,14 @@ console.log('on chat')
     })
 
 
-    console.log('de alll',this.user.friendsList)
+    console.log('de alll',this.friends)
 
   }
 
   confirm(){
     this.friends=[];
     const conf= this.user.friendsList.filter(element => element.status=='confirmer');
+    //console.log('conf est egala a ',conf)
     conf.forEach(element => {
       //console.log(element)
       this.memberActionService.getMemberById(element).subscribe(
@@ -296,13 +368,12 @@ console.log('on chat')
       )
     })
 
-
-    console.log(this.user.friendsList)
+    //console.log('Confirme',this.friends)
+    //console.log(this.user.friendsList)
 
   }
   send(){
-
-    console.log('pour send',this.user.friendsList)
+   
     this.friends=[];
     const send = this.user.friendsList.filter(element => element.status=='invitation en cours ');
     send.forEach(element => {
@@ -316,6 +387,10 @@ console.log('on chat')
         }
       )
     })
+  //  console.log('pour send',send)
+  //  console.log('envoyées',this.friends)
+    
+
   }
 
   waiting(){
@@ -334,6 +409,7 @@ console.log('on chat')
         }
       )
     })
+    //console.log('En attente',this.friends)
   }
 
   searchfriend() {
@@ -345,8 +421,6 @@ console.log('on chat')
   }
 
   onSelect(member) {
-    // console.log('le membre  eeeee',member)
-
     this.router.navigate(['/member_space', member.pseudo])
 
   }
@@ -366,7 +440,6 @@ receiveInvitation(){
 }
 
   cancelInvitation(member) {
-
     console.log(member)
   }
 
@@ -392,7 +465,9 @@ receiveInvitation(){
         )
 
         this.authService.getData().subscribe(
-          res => this.user= res.user
+          res => {
+            this.user= res.user;
+          } 
         );
           console.log('update ok')
         }else {
@@ -404,11 +479,7 @@ receiveInvitation(){
     )
   }
 
-  chat(member){
-    this.openDialog()
-console.log(member.members.pseudo)
-
-  }
+ 
 
 
 
@@ -511,7 +582,7 @@ console.log(member.members.pseudo)
 }
 
 
-@Component({
+/* @Component({
   selector: 'chat',
   templateUrl: '../../app/templates/chat.html',
 })
@@ -521,4 +592,4 @@ export class InvitationRequest {
   onNoClick(): void {
     this.dialogRef.close();
   }
-}
+} */

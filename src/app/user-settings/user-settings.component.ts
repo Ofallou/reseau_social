@@ -17,6 +17,10 @@ retype_password;
 error;
 hide = true;
 messageFromSpace;
+pseudoEnable;
+pseudoNotEnable;
+errormessage;
+emailAvailable;
   constructor(private authService: AuthService,private snackBar: MatSnackBar) {}
 
   ngOnInit() {
@@ -43,6 +47,39 @@ messageFromSpace;
       duration: 3000,
     });
   }
+
+
+
+  checkEmail (){
+    this.authService.checkEmail(this.user)
+    .subscribe(
+      res => {
+          if(res.message){
+            this.emailAvailable = res.message
+          }else {
+            this.emailAvailable =res.error
+          }
+      } 
+    )
+  }
+
+  checkPseudo(){
+    this.authService.checkPseudo(this.user)
+    .subscribe(
+      res => {
+        if(res.message){
+          this.pseudoEnable = res.message
+          this.pseudoNotEnable=null
+        }else {
+          this.pseudoNotEnable =res.error
+          this.pseudoEnable=null
+        }
+      }
+       
+  )
+  }
+
+
 
 
 

@@ -16,6 +16,7 @@ export class CommentService  {
   private _getCommentPostedUrl =this.url+'/api/get_member_comments';
   //Admin & stats
   private _getAllUserCommentsUrl = this.url+'/api/comments';
+  private _chatUrl = this.url+'/api/chat';
   private socket = io(Config.SOCKET_HOST);
   message:any;
   constructor(private http: HttpClient, private _router: Router) {}
@@ -60,9 +61,7 @@ export class CommentService  {
 
 
 
-openChat(data){
-  this.socket.emit('join', data)
-}
+
 
   onLogin(data) {
     this.socket.emit('login', data)

@@ -66,9 +66,19 @@
     
   
      <tr>
-        <td><mat-form-field class="example-full-width">
-          <input type="date" matInput placeholder="Date de Naissance" required>
-        </mat-form-field></td>
+        <td>
+            <mat-form-field class="example-full-width">
+                <input matInput [min]="minDate" [max]="maxDate" name="dateNaissance" [(ngModel)]="user.dateNaissance"  [matDatepicker]="picker" placeholder="Date de Naissance" required>
+                <mat-datepicker-toggle matSuffix   [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field> 
+          
+          
+          
+          
+         <!--  <mat-form-field class="example-full-width">
+          <input type="date" [min]="minDate" [max]="maxDate" matInput placeholder="Date de Naissance" required>
+        </mat-form-field> --></td>
     
       </tr>
     </table>

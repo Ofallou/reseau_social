@@ -29,10 +29,10 @@ const routes: Routes = [
   {path: 'lostpwd', component: LostPasswordComponent},
   {path: 'passCode/:id', component: NewPasswordComponent},
   {path:'member_space/:pseudo', component: MemberSpaceComponent,
-  children:[
-    {path:'chat_window/:pseudo', component:ChatWindowComponent}
-  ]
-},
+ children:[
+  {path:'chat_window', component:ChatWindowComponent}
+
+ ]},
   {path: 'userdata', component: UserdataComponent,
   canActivate : [AuthGuard]},
   {path: 'user-settings', component: UserSettingsComponent,
