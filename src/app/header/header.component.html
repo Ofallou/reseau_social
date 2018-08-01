@@ -17,7 +17,9 @@
             </div>
            </div>
            <span class="example-spacer"></span>
-      
+           <span><a *ngIf="user.admin" routerLink="/admin" routerLinkActive="active">  <i class="material-icons" matTooltip="Admin">
+            supervised_user_circle
+      </i></a></span>
       <span class="example-spacer"></span>
       <span><a *ngIf="!getUserState()"  routerLink="/login" routerLinkActive="active"><i class="user outline icon"></i></a></span>
       <span class="example-spacer"></span>
@@ -27,9 +29,7 @@
             <span class="example-spacer"></span>
             <span class="example-spacer"></span>
 
-      <span><a *ngIf="user.admin" routerLink="/admin" routerLinkActive="active">  <i class="material-icons" matTooltip="Admin">
-            supervised_user_circle
-      </i></a></span>
+     
 
       <span class="example-spacer"></span>
       <!-- <span><a *ngIf="getUserState()"  routerLink="/userdata" routerLinkActive="active"><i class="fas fa-user-circle"></i></a></span> -->

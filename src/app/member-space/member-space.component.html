@@ -1,7 +1,6 @@
 
  <app-header></app-header>
 
- <button routerLink="chat_window">chat</button>
    
   <div class="d-flex justify-content-between flex-row bd-highlight mb-4">
   <div class="member p-2 bd-highlight">
@@ -22,8 +21,8 @@
       </mat-card>
 
 </div>
-<div class="chat p-2 bd-highlight">
-    <router-outlet></router-outlet> 
+<div class="chat">
+   
 </div>
 
 
@@ -48,7 +47,7 @@
       
 
 
-    <div class="card" style="width: 18rem;" *ngFor="let comment of userComment">
+    <div class="card" style="width:400px;" *ngFor="let comment of userComment">
         <div class="card-header">
             <img src="{{comment.authorPicture}}" width="48px" alt="Card image cap">
             {{comment.author }}
@@ -123,7 +122,7 @@
                 <td><img src="{{member.picture}}" alt="" width="48px"></td>
                 <td>{{member.pseudo}} </td>
               </a>
-                <td><button matTooltip="Ajouter" type="submit" mat-button (click)="sendInvitationrequest(member)" ><i class="material-icons">
+                <td><button *ngIf="!visitor || isAdmin" matTooltip="Ajouter" type="submit" mat-button (click)="sendInvitationrequest(member)" ><i class="material-icons">
                     person_add
                     </i></button></td>
               </tr>
@@ -158,12 +157,11 @@
                     <tr  *ngFor="let friend of friends"  >
                       <td><img class="picture" (click)="onSelect(friend.members)" src="{{friend.members.picture}}" alt="" style="width: 36px;" alt=""></td>
                       <td>{{friend.members.pseudo}} </td>
-                      <td *ngIf="friend.members.online">
-                          <i  matTooltip="online" class="material-icons" >chat</i>
-                        </td>
-                      <td *ngIf="friend.status=='confirmer'" (click)="chatRequest(friend)">
+                      
+                      <td *ngIf="friend.status=='confirmer' && isOnline " (click)="invitetoChat(friend)" routerLink="chat_window">
                         <i  matTooltip="chat" class="material-icons" >chat_bubble_outline</i>
                       </td>
+                      <button routerLink="chat_window">chat</button>
 
                       <div  *ngIf="friend.status=='en attente de confirmation'">
                           <td>
@@ -185,7 +183,7 @@
                   </tbody>
 
               </table>
-  
+              
                 
       
       </div>
@@ -233,4 +231,4 @@
 
 
 
-
+<router-outlet></router-outlet> 

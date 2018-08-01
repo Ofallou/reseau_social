@@ -4,6 +4,9 @@ import { FormGroup } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { User } from '../models/user';
 import { Comment } from '../models/comment';
+import { ChatService } from '../chat/chat.service';
+import { Message } from '../models/message';
+
 
 
 @Component({
@@ -13,28 +16,40 @@ import { Comment } from '../models/comment';
 })
 export class ChatWindowComponent implements OnInit {
 
-  @Input() comment: Comment;
-  currentUser: User;
-  incoming: boolean;
- 
-  constructor(public authService:AuthService ) { }
+  user: User;
+message: Message ={
+  id: '',
+   sentAt:new Date,
+   author: '',
+   text: '',
+   authorPicture:''
+} ;
+commentsArray: Array<Comment>= [];
 
-  ngOnInit() {
 
-    this.authService.getData()
-    .subscribe(
-      (user:User)=> {
-        this.currentUser=user;
-        if(this.comment.author && user){
-          this.incoming=this.comment.authorId!== user._id;
-        }
-        
-      }
+constructor(public authService:AuthService , public chatService: ChatService) { 
+  this.authService.getData().subscribe(
+    res=> this.user=res.user
+  )
+
+
+    this.chatService.messageSent().subscribe(
+      res => this.commentsArray.push(res)
     )
-    
-    
   }
 
+  ngOnInit() {
+         
+  }
+
+  sent(){
+    this.message.id=this.user._id
+    this.message.author=this.user.pseudo
+    this.message.authorPicture= this.user.picture;
+    this.chatService.sendMessage(this.message);
+    this.message.text='';
+
+  }
 
 
 }

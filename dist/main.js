@@ -41,7 +41,7 @@ module.exports = ".container {\n  margin-top: 5%;\n}\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<app-header></app-header>\n\n\n<div class=\"container\" fxLayout=\"column\" fxLayout.xs=\"column\" fxLayoutWrap fxLayoutGap=\"1.5%\" fxLayoutAlign=\"center\"\n>\n\n\n<div fxFlex=\"2%\" class=\"grid-container\">\n        <app-stats></app-stats>\n   </div>\n\n<div fxFlex=\"50%\"  class=\"grid-container\">\n    \n   \n   <app-members-list></app-members-list>\n       \n  </div>\n\n  <div fxFlex=\"10%\"  class=\"grid-container\">\n    \n   <h5>Liste des membres connectés</h5>\n        \n   </div>\n\n</div>"
+module.exports = "\n <app-header></app-header>\n        \n   <link href=\"//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css\" rel=\"stylesheet\" id=\"bootstrap-css\">\n<script src=\"//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js\"></script>\n<script src=\"//code.jquery.com/jquery-1.11.1.min.js\"></script>\n<!------ Include the above in your HEAD tag ---------->\n\n<link href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css\" rel=\"stylesheet\">\n<div class=\"container\">\n\t<div class=\"row\">\n      <div class=\"col-lg-3\">\n        <div class=\"panel panel-info\">\n          <div class=\"panel-heading\">\n            <div class=\"row\">\n              <div class=\"col-xs-6\">\n                <i class=\"fa fa-address-card-o fa-5x\"></i>\n              </div>\n              <div class=\"col-xs-6 text-right\">\n                <p class=\"announcement-heading\">Admin</p>\n                <p class=\"announcement-text\">{{user.first_name}} {{user.last_name}}</p>\n              </div>\n            </div>\n          </div>\n         \n        </div>\n      </div>\n  \n      <div class=\"col-lg-3\">\n        <div class=\"panel panel-danger\">\n          <div class=\"panel-heading\">\n            <div class=\"row\">\n              <div class=\"col-xs-6\">\n                <i class=\"fa fa-users fa-5x\"></i>\n              </div>\n              <div class=\"col-xs-6 text-right\">\n                <p class=\"announcement-heading\">{{membersArray.length}}</p>\n                <p class=\"announcement-text\">Membres</p>\n              </div>\n            </div>\n          </div>\n          <a href=\"#\">\n            <div class=\"panel-footer announcement-bottom\">\n              <div class=\"row\">\n                <div class=\"col-xs-6\">\n                  Expand\n                </div>\n                <div class=\"col-xs-6 text-right\">\n                  <i class=\"fa fa-arrow-circle-right\"></i>\n                </div>\n              </div>\n            </div>\n          </a>\n        </div>\n      </div>\n      <div class=\"col-lg-3\">\n        <div class=\"panel panel-success\">\n          <div class=\"panel-heading\">\n            <div class=\"row\">\n              <div class=\"col-xs-6\">\n                <i class=\"fa fa-comments fa-5x\"></i>\n              </div>\n              <div class=\"col-xs-6 text-right\">\n                <p class=\"announcement-heading\">{{commentsArray.length}}</p>\n                <p class=\"announcement-text\"> Nombre de posts</p>\n              </div>\n            </div>\n          </div>\n          <a href=\"#\">\n            <div class=\"panel-footer announcement-bottom\">\n              <div class=\"row\">\n                <div class=\"col-xs-6\">\n                  Expand\n                </div>\n                <div class=\"col-xs-6 text-right\">\n                  <i class=\"fa fa-arrow-circle-right\"></i>\n                </div>\n              </div>\n            </div>\n          </a>\n        </div>\n      </div>\n    </div><!-- /.row -->\n    </div>\n\n    <app-stats></app-stats>"
 
 /***/ }),
 
@@ -74,19 +74,48 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 var AdminDashboardComponent = /** @class */ (function () {
     function AdminDashboardComponent(authService, commentService, _router) {
+        var _this = this;
         this.authService = authService;
         this.commentService = commentService;
         this._router = _router;
+        this.commentsArray = [];
+        this.membersArray = [];
+        this.user = {
+            _id: '',
+            first_name: '',
+            last_name: '',
+            pseudo: '',
+            email: '',
+            admin: false,
+            online: false,
+            dateNaissance: new Date,
+            gender: '',
+            password: '',
+            friendsList: [
+                { status: "", friendId: "" }
+            ],
+            picture: ''
+        };
+        this.authService.getData().subscribe(function (res) { return _this.user = res.user; });
+        this.authService.onOnlineEvent().subscribe(function (online) { return console.log(online.pseudo); });
+        this.commentService.onBegin().subscribe(function (online2) { return console.log('ki est online', online2); });
     }
+    ;
     AdminDashboardComponent.prototype.ngOnInit = function () {
-        this.commentService.isConnected().subscribe(function (res) { return console.log('le rest', res); });
-        this.authService.getData().subscribe(function (res) { return console.log(res); });
-    };
-    AdminDashboardComponent.prototype.getUserdata = function () {
-        this.authService.getData()
-            .subscribe(function (res) {
-            console.log(res);
+        var _this = this;
+        this.authService.getAllMembers().subscribe(function (res) {
+            //console.log(res)
+            _this.membersArray = res;
         });
+        this.authService.getData().subscribe(function (res) {
+            _this.currentUser = res.user;
+            console.log(_this.currentUser);
+        });
+        this.commentService.getComments().subscribe(function (res) {
+            _this.commentsArray = res.comments;
+            console.log('stats', _this.commentsArray);
+        });
+        this.commentService.isConnected().subscribe(function (res) { return console.log('le rest', res); });
     };
     AdminDashboardComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -368,6 +397,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _invitation_request_invitation_request_component__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./invitation-request/invitation-request.component */ "./src/app/invitation-request/invitation-request.component.ts");
 /* harmony import */ var _app_services_chat_service__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ../app/services/chat.service */ "./src/app/services/chat.service.ts");
 /* harmony import */ var _services_pusher_service__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./services/pusher.service */ "./src/app/services/pusher.service.ts");
+/* harmony import */ var _notifications_notifications_component__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./notifications/notifications.component */ "./src/app/notifications/notifications.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -430,6 +460,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -458,6 +489,7 @@ var AppModule = /** @class */ (function () {
                 _page_not_found_page_not_found_component__WEBPACK_IMPORTED_MODULE_49__["PageNotFoundComponent"],
                 _chat_window_chat_window_component__WEBPACK_IMPORTED_MODULE_50__["ChatWindowComponent"],
                 _invitation_request_invitation_request_component__WEBPACK_IMPORTED_MODULE_51__["InvitationRequestComponent"],
+                _notifications_notifications_component__WEBPACK_IMPORTED_MODULE_54__["NotificationsComponent"],
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -586,8 +618,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./config */ "./src/app/config.ts");
-/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
-/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
+/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_5__);
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -597,6 +630,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -614,8 +648,7 @@ var AuthService = /** @class */ (function () {
             admin: false,
             online: false,
         };
-        this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_4__(_config__WEBPACK_IMPORTED_MODULE_3__["Config"].SOCKET_HOST);
-        this.userConnected = 0;
+        this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_5__(_config__WEBPACK_IMPORTED_MODULE_3__["Config"].SOCKET_HOST);
         this.url = _config__WEBPACK_IMPORTED_MODULE_3__["Config"].SOCKET_HOST || "http://localhost";
         this._registerURL = this.url + '/api/register';
         this._checkPseudoURL = this.url + '/api/checkPseudo';
@@ -626,10 +659,31 @@ var AuthService = /** @class */ (function () {
         this._home = this.url + '/api/';
         this._admin = this.url + '/api/admin';
         this._updateUser = this.url + '/api/update';
+        this._updateUserSatus = this.url + '/api/updatestatut';
         this._getAllMembers = this.url + '/api/getAllMembers';
         this._memberUrl = this.url + '/api/member_space';
         this.connected = 0;
     }
+    AuthService.prototype.onOnlineEvent = function () {
+        var _this = this;
+        var observable = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Observable"](function (observer) {
+            _this.socket.on('iamOnline:res', function (data) {
+                observer.next(data);
+            });
+            return function () { _this.socket.disconnect(); };
+        });
+        return observable;
+    };
+    AuthService.prototype.onOfflineEvent = function () {
+        var _this = this;
+        var observable = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Observable"](function (observer) {
+            _this.socket.on('iamOffline:res', function (data) {
+                observer.next(data);
+            });
+            return function () { _this.socket.disconnect(); };
+        });
+        return observable;
+    };
     AuthService.prototype.checkPseudo = function (user) {
         return this.http.post(this._checkPseudoURL, user);
     };
@@ -639,6 +693,9 @@ var AuthService = /** @class */ (function () {
     AuthService.prototype.registerUser = function (user) {
         return this.http.post(this._registerURL, user);
     };
+    AuthService.prototype.updateUserStatus = function (user) {
+        return this.http.put(this._updateUserSatus, user);
+    };
     AuthService.prototype.updateUser = function (user) {
         return this.http.put(this._updateUser, user);
     };
@@ -647,6 +704,17 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.getToken = function () {
         return localStorage.getItem('token');
+    };
+    AuthService.prototype.iamOnline = function (user) {
+        this.socket.emit('iamOnline', user);
+        //this.postComment(data).subscribe();
+    };
+    AuthService.prototype.iamOffline = function (user) {
+        this.socket.emit('iamOffline', user);
+    };
+    AuthService.prototype.onLeave = function (user) {
+        user.online = false;
+        this.updateUser(user);
     };
     AuthService.prototype.logoutUser = function () {
         localStorage.removeItem('token');
@@ -673,10 +741,6 @@ var AuthService = /** @class */ (function () {
     AuthService.prototype.getAllMembers = function () {
         return this.http.get(this._getAllMembers);
     };
-    AuthService.prototype.onLeave = function () {
-        this.socket.emit('disconnect');
-        console.log(this.socket.id);
-    };
     AuthService.prototype.memberSpace = function (pseudo) {
         return this.http.get(this._memberUrl + '/' + pseudo, { params: pseudo });
     };
@@ -698,7 +762,7 @@ var AuthService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n    .chats {\n        height: calc(100% - 12px);\n        position: relative;\n        z-index: 0;\n    }\n\n    .chats .chatbox {\n        height: calc(100% - 68px);\n        overflow-x: hidden;\n        padding: 0 16px;\n        margin-bottom: 5px;\n    }\n\n    .joined {\n      clear: both;\n      line-height: 18px;\n      font-size: 15px;\n      margin: 8px 0;\n      padding: 8px;\n    }\n\n    .joined span {\n      padding: 5px\n    }\n\n    /* Messages*/\n\n    .message {\n      color: #000;\n      clear: both;\n      line-height: 18px;\n      font-size: 15px;\n      padding: 8px;\n      position: relative;\n      margin: 8px 0;\n      max-width: 85%;\n      word-wrap: break-word;\n      z-index: -1;\n    }\n\n    .message:after {\n      position: absolute;\n      content: \"\";\n      width: 0;\n      height: 0;\n      border-style: solid;\n    }\n\n    .metadata {\n      display: inline-block;\n      float: right;\n      padding: 0 0 0 7px;\n      position: relative;\n      bottom: -4px;\n    }\n\n    .metadata .time {\n      color: rgba(0, 0, 0, .45);\n      font-size: 11px;\n      display: inline-block;\n    }\n\n    .message:first-child {\n      margin: 16px 0 8px;\n    }\n\n    .message.received {\n      background: #ccc;\n      border-radius: 0px 5px 5px 5px;\n      float: left;\n    }\n\n    .message.received:after {\n      border-width: 0px 10px 10px 0;\n      border-color: transparent #ccc transparent transparent;\n      top: 0;\n      left: -10px;\n    }\n\n    .message.sent {\n      background: #e1ffc7;\n      border-radius: 5px 0px 5px 5px;\n      float: right;\n    }\n\n    .message.sent:after {\n      border-width: 0px 0 10px 10px;\n      border-color: transparent transparent transparent #e1ffc7;\n      top: 0;\n      right: -10px;\n    }\n\n    .metadata {\n      display: inline-block;\n      float: right;\n      padding: 0 0 0 7px;\n      position: relative;\n      bottom: -4px;\n    }\n\n    .metadata .time {\n      color: rgba(0, 0, 0, .45);\n      font-size: 11px;\n      display: inline-block;\n    }"
+module.exports = "\n\nbody{\n  height:400px;\n  position: fixed;\n  bottom: 0;\n}\n.col-md-2, .col-md-10{\n  padding:0;\n}\n.panel{\n  margin-bottom: 0px;\n}\n.chat-window{\n  bottom:0;\n  position:fixed;\n  float:right;\n  margin-left:10px;\n}\n.chat-window > div > .panel{\n  border-radius: 5px 5px 0 0;\n}\n.icon_minim{\n  padding:2px 10px;\n}\n.msg_container_base{\nbackground: #e5e5e5;\nmargin: 0;\npadding: 0 10px 10px;\nmax-height:300px;\noverflow-x:hidden;\n}\n.top-bar {\nbackground: #666;\ncolor: white;\npadding: 10px;\nposition: relative;\noverflow: hidden;\n}\n.msg_receive{\n  padding-left:0;\n  margin-left:0;\n}\n.msg_sent{\n  padding-bottom:20px !important;\n  margin-right:0;\n}\n.messages {\nbackground: white;\npadding: 10px;\nborder-radius: 2px;\nbox-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\nmax-width:100%;\n}\n.messages > p {\n  font-size: 13px;\n  margin: 0 0 0.2rem 0;\n}\n.messages > time {\n  font-size: 11px;\n  color: #ccc;\n}\n.msg_container {\n  padding: 10px;\n  overflow: hidden;\n  display: flex;\n}\nimg {\n  display: block;\n  \n}\n.avatar {\n  position: relative;\n}\n.base_receive > .avatar:after {\n  content: \"\";\n  position: absolute;\n  top: 0;\n  right: 0;\n  width: 0;\n  height: 0;\n  border: 5px solid #FFF;\n  border-left-color: rgba(0, 0, 0, 0);\n  border-bottom-color: rgba(0, 0, 0, 0);\n}\n.base_sent {\njustify-content: flex-end;\nalign-items: flex-end;\n}\n.base_sent > .avatar:after {\n  content: \"\";\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  width: 0;\n  height: 0;\n  border: 5px solid white;\n  border-right-color: transparent;\n  border-top-color: transparent;\n  box-shadow: 1px 1px 2px rgba(black, 0.2); \n}\n.msg_sent > time{\n  float: right;\n}\n.msg_container_base::-webkit-scrollbar-track\n{\n  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);\n  background-color: #F5F5F5;\n}\n.msg_container_base::-webkit-scrollbar\n{\n  width: 12px;\n  background-color: #F5F5F5;\n}\n.msg_container_base::-webkit-scrollbar-thumb\n{\n  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);\n  background-color: #555;\n}\n.btn-group.dropup{\n  position:fixed;\n  left:0px;\n  bottom:0;\n}"
 
 /***/ }),
 
@@ -709,7 +773,7 @@ module.exports = "\n    .chats {\n        height: calc(100% - 12px);\n        po
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n    <h6 class=\"pb-2 mb-0\">Group Chat <button class=\"btn btn-sm btn-primary\">invite others</button></h6>\n\n    <div class=\"chats\">\n      <div class=\"chatbox\">\n        <div *ngFor=\"let chat of chats\">\n          <div class=\"message sent\" *ngIf=\"chat.type!=='joined' && chat.isMe\">\n            {{chat.message}}\n            <span class=\"metadata\">\n              <span class=\"time\">{{chat.createdAt | date: 'HH:mm aaa'}}</span>\n            </span>\n          </div>\n          <div class=\"message received\"  *ngIf=\"chat.type!=='joined' && !chat.isMe\">\n            <strong>{{chat.displayName}}</strong> <br>\n            {{chat.message}}\n            <span class=\"metadata\">\n              <span class=\"time\">{{chat.createdAt | date: 'HH:mm aaa'}}</span>\n            </span>\n          </div>\n          <p align=\"center\" class=\"joined\"  *ngIf=\"chat.type==='joined'\">\n          <span class=\"rounded bg-primary text-white\">{{chat.displayName}} Joined</span>\n          </p>\n        </div>\n      </div>\n\n      <div class=\"d-flex flex-row\">\n        <input [(ngModel)]=\"message\" type=\"text\" class=\"form-control\" placeholder=\"Enter message\" style=\"margin-right: 10px\">\n        <button [disabled]=\"!message || sending\" (click)=\"sendMessage(message)\" class=\"btn btn-primary\"> {{sending ? 'Sending' : 'Send'}}</button>\n      </div>\n    </div>"
+module.exports = "<link href=\"//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css\" rel=\"stylesheet\" id=\"bootstrap-css\">\n<script src=\"//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js\"></script>\n<script src=\"//code.jquery.com/jquery-1.11.1.min.js\"></script>\n<!------ Include the above in your HEAD tag ---------->\n\n<!-- <div class=\"chatbox\">\n<form #chat=\"ngForm\">\n\n    <div class=\"message\" *ngFor=\"let message of commentsArray \">\n\n   \n   <strong> <img src=\"{{message.authorPicture}}\" class=\"rounded\" width=\"48px\" alt=\"\"> {{message.author}}:</strong>\n    <br>\n    {{message.text}}\n\n\n    </div>\n\n\n\n    <input type=\"text\" name=\"message\" [(ngModel)]=\"message.text\" required >\n    <button class=\"btn btn-primary\" [disabled]=\"!chat.form.valid \"  type=\"submit\" (click)=\"sent()\">Envoyer</button>\n\n</form>\n\n</div> -->\n\n\n\n<div class=\"container\">\n    <div class=\"row chat-window \" id=\"chat_window_1\" style=\"margin-left:10px;\">\n        <div class=\"col-xs-12 col-md-12\">\n        \t<div class=\"panel panel-default\">\n                <div class=\"panel-heading top-bar\">\n                    <div class=\"col-md-12 col-xs-12\">\n                        <h3 class=\"panel-title\"><span class=\"glyphicon glyphicon-comment\"></span> Chat</h3>\n                    </div>\n                    <div class=\"col-md-4 col-xs-4\" style=\"text-align: right;\">\n                        <a href=\"\"><span id=\"minim_chat_window\" class=\"glyphicon glyphicon-minus icon_minim\"></span></a>\n                        <a href=\"\"><span class=\"glyphicon glyphicon-remove icon_close\" data-id=\"chat_window_1\"></span></a>\n                    </div>\n                </div>\n                <form #chat=\"ngForm\">\n\n                    <div class=\"message\" *ngFor=\"let message of commentsArray \">\n                \n                   \n                   <strong> <img src=\"{{message.authorPicture}}\" class=\"rounded\" width=\"48px\" alt=\"\"> {{message.author}}</strong>\n                    <br>\n                    {{message.text}}\n                \n                \n                    </div>\n                \n                \n                \n                    <input type=\"text\" name=\"message\" [(ngModel)]=\"message.text\" required >\n                    <button class=\"btn btn-primary\" [disabled]=\"!chat.form.valid \"  type=\"submit\" (click)=\"sent()\">Envoyer</button>\n                \n                </form>\n                \n                </div>\n                \n    \t\t</div>\n        </div>\n    \n    \n    <div class=\"btn-group dropup\">\n<!--         <button type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\">\n            <span class=\"glyphicon glyphicon-cog\"></span>\n            <span class=\"sr-only\">Toggle Dropdown</span>\n        </button> -->\n<!--         <ul class=\"dropdown-menu\" role=\"menu\">\n            <li><a href=\"#\" id=\"new_chat\"><span class=\"glyphicon glyphicon-plus\"></span> Novo</a></li>\n            <li><a href=\"#\"><span class=\"glyphicon glyphicon-list\"></span> Ver outras</a></li>\n            <li><a href=\"#\"><span class=\"glyphicon glyphicon-remove\"></span> Fechar Tudo</a></li>\n            <li class=\"divider\"></li>\n            <li><a href=\"#\"><span class=\"glyphicon glyphicon-eye-close\"></span> Invisivel</a></li>\n        </ul> -->\n    </div>\n</div>\n\n\n\n\n\n\n\n<script>\n\n    $(document).on('click', '.panel-heading span.icon_minim', function (e) {\n    var $this = $(this);\n    if (!$this.hasClass('panel-collapsed')) {\n        $this.parents('.panel').find('.panel-body').slideUp();\n        $this.addClass('panel-collapsed');\n        $this.removeClass('glyphicon-minus').addClass('glyphicon-plus');\n    } else {\n        $this.parents('.panel').find('.panel-body').slideDown();\n        $this.removeClass('panel-collapsed');\n        $this.removeClass('glyphicon-plus').addClass('glyphicon-minus');\n    }\n});\n$(document).on('focus', '.panel-footer input.chat_input', function (e) {\n    var $this = $(this);\n    if ($('#minim_chat_window').hasClass('panel-collapsed')) {\n        $this.parents('.panel').find('.panel-body').slideDown();\n        $('#minim_chat_window').removeClass('panel-collapsed');\n        $('#minim_chat_window').removeClass('glyphicon-plus').addClass('glyphicon-minus');\n    }\n});\n$(document).on('click', '#new_chat', function (e) {\n    var size = $( \".chat-window:last-child\" ).css(\"margin-left\");\n     size_total = parseInt(size) + 400;\n    alert(size_total);\n    var clone = $( \"#chat_window_1\" ).clone().appendTo( \".container\" );\n    clone.css(\"margin-left\", size_total);\n});\n$(document).on('click', '.icon_close', function (e) {\n    //$(this).parent().parent().parent().parent().remove();\n    $( \"#chat_window_1\" ).remove();\n});\n</script>"
 
 /***/ }),
 
@@ -724,6 +788,8 @@ module.exports = "\n    <h6 class=\"pb-2 mb-0\">Group Chat <button class=\"btn b
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ChatWindowComponent", function() { return ChatWindowComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
+/* harmony import */ var _chat_chat_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../chat/chat.service */ "./src/app/chat/chat.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -734,10 +800,32 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var ChatWindowComponent = /** @class */ (function () {
-    function ChatWindowComponent() {
+    function ChatWindowComponent(authService, chatService) {
+        var _this = this;
+        this.authService = authService;
+        this.chatService = chatService;
+        this.message = {
+            id: '',
+            sentAt: new Date,
+            author: '',
+            text: '',
+            authorPicture: ''
+        };
+        this.commentsArray = [];
+        this.authService.getData().subscribe(function (res) { return _this.user = res.user; });
+        this.chatService.messageSent().subscribe(function (res) { return _this.commentsArray.push(res); });
     }
     ChatWindowComponent.prototype.ngOnInit = function () {
+    };
+    ChatWindowComponent.prototype.sent = function () {
+        this.message.id = this.user._id;
+        this.message.author = this.user.pseudo;
+        this.message.authorPicture = this.user.picture;
+        this.chatService.sendMessage(this.message);
+        this.message.text = '';
     };
     ChatWindowComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -745,9 +833,93 @@ var ChatWindowComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./chat-window.component.html */ "./src/app/chat-window/chat-window.component.html"),
             styles: [__webpack_require__(/*! ./chat-window.component.css */ "./src/app/chat-window/chat-window.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"], _chat_chat_service__WEBPACK_IMPORTED_MODULE_2__["ChatService"]])
     ], ChatWindowComponent);
     return ChatWindowComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/chat/chat.service.ts":
+/*!**************************************!*\
+  !*** ./src/app/chat/chat.service.ts ***!
+  \**************************************/
+/*! exports provided: ChatService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ChatService", function() { return ChatService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
+/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _app_config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../app/config */ "./src/app/config.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ChatService = /** @class */ (function () {
+    function ChatService() {
+        this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_1__(_app_config__WEBPACK_IMPORTED_MODULE_3__["Config"].SOCKET_HOST);
+    }
+    //Chat message sent observable 
+    ChatService.prototype.messageSent = function () {
+        var _this = this;
+        var observable = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"](function (observer) {
+            _this.socket.on('message:sent', function (data) {
+                observer.next(data);
+            });
+            return function () { _this.socket.disconnect(); };
+        });
+        return observable;
+    };
+    ChatService.prototype.messageSentToRoom = function () {
+        var _this = this;
+        var observable = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"](function (observer) {
+            _this.socket.on('message:sent', function (data) {
+                observer.next(data);
+            });
+            return function () { _this.socket.disconnect(); };
+        });
+        return observable;
+    };
+    ChatService.prototype.onInvitationChatRequest = function () {
+        var _this = this;
+        var observable = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"](function (observer) {
+            _this.socket.on('chat:request', function (data) {
+                observer.next(data);
+            });
+            return function () { _this.socket.disconnect(); };
+        });
+        return observable;
+    };
+    ChatService.prototype.sendMessage = function (data) {
+        this.socket.emit('sent', data);
+    };
+    ChatService.prototype.sendChatInvitation = function (data) {
+        this.socket.emit('chat:invitationRequest', data);
+    };
+    ChatService.prototype.sentRoom = function (data, room) {
+    };
+    ChatService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [])
+    ], ChatService);
+    return ChatService;
 }());
 
 
@@ -976,11 +1148,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Config", function() { return Config; });
 var Config = /** @class */ (function () {
     function Config() {
-        this.URL = "http://localhost:5000";
+        this.URL = "https://dry-fortress-71234.herokuapp.com";
+        /*   URL = "https://dry-fortress-71234.herokuapp.com"
+          public static  get SOCKET_HOST(): string {
+            return "http://localhost:5000" || 'https://dry-fortress-71234.herokuapp.com';
+          } */
     }
     Object.defineProperty(Config, "SOCKET_HOST", {
         get: function () {
-            return "http://localhost:5000" || 'https://dry-fortress-71234.herokuapp.com';
+            return "https://dry-fortress-71234.herokuapp.com'";
         },
         enumerable: true,
         configurable: true
@@ -1076,7 +1252,7 @@ module.exports = "\n.example-icon {\n  padding: 0 14px;\n}\n\n.example-spacer {\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<mat-toolbar color=\"primary\">\n   <mat-toolbar-row>\n        <span>Réseau Social</span>\n        <span class=\"example-spacer\"></span>\n        \n             <a routerLink=\"/\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Page d'accueil\">\n            home\n            </i></a> \n        <span class=\"example-spacer\"></span>\n        <div class=\"infos\">\n            <div>\n                <a routerLink=\"/member_space/{{user.pseudo}}\" matTooltip=\"Mon espace \"><img src=\"{{user.picture}}\"  alt=\"\"></a>            \n            </div>\n            <div>\n                {{user.first_name}} {{user.last_name}} \n            </div>\n           </div>\n           <span class=\"example-spacer\"></span>\n      \n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"!getUserState()\"  routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"user outline icon\"></i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\" routerLink=\"/user-settings\" routerLinkActive=\"active\">  <i class=\"material-icons\" matTooltip=\"Paramettres du compte\">\n            settings\n            </i></a></span>\n            <span class=\"example-spacer\"></span>\n            <span class=\"example-spacer\"></span>\n\n      <span><a *ngIf=\"user.admin\" routerLink=\"/admin\" routerLinkActive=\"active\">  <i class=\"material-icons\" matTooltip=\"Admin\">\n            supervised_user_circle\n      </i></a></span>\n\n      <span class=\"example-spacer\"></span>\n      <!-- <span><a *ngIf=\"getUserState()\"  routerLink=\"/userdata\" routerLinkActive=\"active\"><i class=\"fas fa-user-circle\"></i></a></span> -->\n      \n      <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Membre - Se connecter\">\n            account_circle\n            </i></a>\n      <span><a *ngIf=\"getUserState()\"  (click)=\"logoutUser()\" href=\"/home\"><i class=\"material-icons\"  matTooltip=\"Se deconnecter\"\n        >\n            input\n            </i></a></span>\n      \n    </mat-toolbar-row>\n  </mat-toolbar>\n  "
+module.exports = "\n<mat-toolbar color=\"primary\">\n   <mat-toolbar-row>\n        <span>Réseau Social</span>\n        <span class=\"example-spacer\"></span>\n        \n             <a routerLink=\"/\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Page d'accueil\">\n            home\n            </i></a> \n        <span class=\"example-spacer\"></span>\n        <div class=\"infos\">\n            <div>\n                <a routerLink=\"/member_space/{{user.pseudo}}\" matTooltip=\"Mon espace \"><img src=\"{{user.picture}}\"  alt=\"\"></a>            \n            </div>\n            <div>\n                {{user.first_name}} {{user.last_name}} \n            </div>\n           </div>\n           <span class=\"example-spacer\"></span>\n           <span><a *ngIf=\"user.admin\" routerLink=\"/admin\" routerLinkActive=\"active\">  <i class=\"material-icons\" matTooltip=\"Admin\">\n            supervised_user_circle\n      </i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"!getUserState()\"  routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"user outline icon\"></i></a></span>\n      <span class=\"example-spacer\"></span>\n      <span><a *ngIf=\"getUserState()\" routerLink=\"/user-settings\" routerLinkActive=\"active\">  <i class=\"material-icons\" matTooltip=\"Paramettres du compte\">\n            settings\n            </i></a></span>\n            <span class=\"example-spacer\"></span>\n            <span class=\"example-spacer\"></span>\n\n     \n\n      <span class=\"example-spacer\"></span>\n      <!-- <span><a *ngIf=\"getUserState()\"  routerLink=\"/userdata\" routerLinkActive=\"active\"><i class=\"fas fa-user-circle\"></i></a></span> -->\n      \n      <a *ngIf=\"!getUserState()\" class=\"item\" routerLink=\"/login\" routerLinkActive=\"active\"><i class=\"material-icons\" matTooltip=\"Membre - Se connecter\">\n            account_circle\n            </i></a>\n      <span><a *ngIf=\"getUserState()\"  (click)=\"logoutUser()\" href=\"/home\"><i class=\"material-icons\"  matTooltip=\"Se deconnecter\"\n        >\n            input\n            </i></a></span>\n      \n    </mat-toolbar-row>\n  </mat-toolbar>\n  "
 
 /***/ }),
 
@@ -1118,15 +1294,23 @@ var HeaderComponent = /** @class */ (function () {
             admin: false,
             online: false,
         };
+        this.membersOnlines = [];
         this.getUserState();
-        //console.log(this.isAuth)
+        console.log(this.isAuth);
         if (this.isAuth) {
             this.authService.getData()
                 .subscribe(function (res) {
                 _this.user = res.user;
                 _this.userid = res.user._id;
+                _this.user.online = true;
+                _this.authService.iamOnline(_this.user);
+                _this.authService.updateUserStatus(_this.user);
+                _this.authService.onOnlineEvent().subscribe(function (online) {
+                    _this.membersOnlines.push(online);
+                });
             });
         }
+        this.authService.onOfflineEvent().subscribe(function (offline) { return console.log('offline: => ', offline); });
     }
     HeaderComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -1145,9 +1329,11 @@ var HeaderComponent = /** @class */ (function () {
         return this.isAuth;
     };
     HeaderComponent.prototype.logoutUser = function () {
-        this.authService.onLeave();
         this.authService.logoutUser();
+        this.authService.iamOffline(this.user);
         this.isAuth = false;
+        this.user.online = false;
+        this.authService.updateUserStatus(this.user);
     };
     HeaderComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1399,12 +1585,29 @@ var LoginComponent = /** @class */ (function () {
         this.authService = authService;
         this._router = _router;
         this.commentService = commentService;
+        /*   userData = {
+            _id:'',
+            email:'',
+            pseudo:'',
+            password:'',
+            admin:false,
+            online:false,
+          }; */
         this.userData = {
             _id: '',
-            email: '',
+            first_name: '',
+            last_name: '',
             pseudo: '',
+            email: '',
+            admin: false,
+            online: false,
+            dateNaissance: new Date,
+            gender: '',
             password: '',
-            admin: false
+            friendsList: [
+                { status: "", friendId: "" }
+            ],
+            picture: ''
         };
         this.email = new _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormControl"]('', [_angular_forms__WEBPACK_IMPORTED_MODULE_3__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_3__["Validators"].email]);
         this.errorMessage = '';
@@ -1439,6 +1642,8 @@ var LoginComponent = /** @class */ (function () {
                         _this._router.navigate(['/admin']);
                     }
                     else {
+                        _this.userData.online = true;
+                        _this.authService.updateUser(_this.userData);
                         _this._router.navigate(['/member_space', _this.userData.pseudo]);
                     }
                 });
@@ -1824,7 +2029,7 @@ var MemberSearchComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/* \n.member {\n\n  position: absolute;\n  display: flex;\n  flex-flow: row;\n  \n}\n */\n\n.picture img{\n  border-radius: 50%\n}\n\n.mat-panel-description{\n  margin: 10px;\n}\n\n/* .friends{\n  position: absolute;\n padding-left:70%;\n max-width: 400px;\nmargin-right: 50px;\n} */\n\n/*  .container-fixe {\n   \n      margin-top: 2%;\n      display:flex;\n      flex-flow: row wrap;\n      justify-content: space-around;\n  } */\n\n.example-headers-align .mat-expansion-panel-header-title, \n.example-headers-align .mat-expansion-panel-header-description {\n  flex-basis: 0;\n}\n\n.example-headers-align .mat-expansion-panel-header-description {\n  justify-content: space-between;\n  align-items: center;\n}\n\nmat-list-item  img {\n  width: 46px;\n  border-radius: 50%;\n  padding-right: 10px;\n}\n\n.example-card {\n\n  width: 400px;\n  padding-bottom: 100px;\n  margin-bottom: 20px;\n  \n}\n\n.card{\n  padding-bottom: 20px;\n}\n\n/* .container {\n  display: flex;\n  flex-flow: column wrap;\n align-items: center;\n justify-content: space-between;\n\n  margin-bottom: 2%;\n  \n\n} */\n\n/* chat ------*/\n\n.chats {\n  height: calc(100% - 12px);\n  position: relative;\n  z-index: 0;\n}\n\n.chats .chatbox {\n  height: calc(100% - 68px);\n  overflow-x: hidden;\n  padding: 0 16px;\n  margin-bottom: 5px;\n}\n\n.joined {\nclear: both;\nline-height: 18px;\nfont-size: 15px;\nmargin: 8px 0;\npadding: 8px;\n}\n\n.joined span {\npadding: 5px\n}\n\n/* Messages*/\n\n.message {\ncolor: #000;\nclear: both;\nline-height: 18px;\nfont-size: 15px;\npadding: 8px;\nposition: relative;\nmargin: 8px 0;\nmax-width: 85%;\nword-wrap: break-word;\nz-index: -1;\n}\n\n.message:after {\nposition: absolute;\ncontent: \"\";\nwidth: 0;\nheight: 0;\nborder-style: solid;\n}\n\n.metadata {\ndisplay: inline-block;\nfloat: right;\npadding: 0 0 0 7px;\nposition: relative;\nbottom: -4px;\n}\n\n.metadata .time {\ncolor: rgba(0, 0, 0, .45);\nfont-size: 11px;\ndisplay: inline-block;\n}\n\n.message:first-child {\nmargin: 16px 0 8px;\n}\n\n.message.received {\nbackground: #ccc;\nborder-radius: 0px 5px 5px 5px;\nfloat: left;\n}\n\n.message.received:after {\nborder-width: 0px 10px 10px 0;\nborder-color: transparent #ccc transparent transparent;\ntop: 0;\nleft: -10px;\n}\n\n.message.sent {\nbackground: #e1ffc7;\nborder-radius: 5px 0px 5px 5px;\nfloat: right;\n}\n\n.message.sent:after {\nborder-width: 0px 0 10px 10px;\nborder-color: transparent transparent transparent #e1ffc7;\ntop: 0;\nright: -10px;\n}\n\n.metadata {\ndisplay: inline-block;\nfloat: right;\npadding: 0 0 0 7px;\nposition: relative;\nbottom: -4px;\n}\n\n.metadata .time {\ncolor: rgba(0, 0, 0, .45);\nfont-size: 11px;\ndisplay: inline-block;\n}\n\n/* .wrapper{\n  display: flex;\n  flex-direction: column;            \n  height: 100vh;\n  overflow: hidden;\n}\n\n.header{\n  flex: 0 0 auto;  \n  background: #aaa;\n}\n.content{\n  flex: 1 1 auto;     \n  overflow-y: auto;     \n}\n\n*{\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n*:after,\n*:before{\n  box-sizing: border-box;\n} */"
+module.exports = "/* \n.member {\n\n  position: absolute;\n  display: flex;\n  flex-flow: row;\n  \n}\n */\n\n.picture img{\n  border-radius: 50%\n}\n\n.mat-panel-description{\n  margin: 10px;\n}\n\n/* .friends{\n  position: absolute;\n padding-left:70%;\n max-width: 400px;\nmargin-right: 50px;\n} */\n\n/*  .container-fixe {\n   \n      margin-top: 2%;\n      display:flex;\n      flex-flow: row wrap;\n      justify-content: space-around;\n  } */\n\n.example-headers-align .mat-expansion-panel-header-title, \n.example-headers-align .mat-expansion-panel-header-description {\n  flex-basis: 0;\n}\n\n.example-headers-align .mat-expansion-panel-header-description {\n  justify-content: space-between;\n  align-items: center;\n}\n\nmat-list-item  img {\n  width: 46px;\n  border-radius: 50%;\n  padding-right: 10px;\n}\n\n.example-card {\n\n  width: 400px;\n  padding-bottom: 100px;\n  margin-bottom: 20px;\n  \n}\n\n.card{\n  padding-bottom: 20px;\n}\n\n/* .container {\n  display: flex;\n  flex-flow: column wrap;\n align-items: center;\n justify-content: space-between;\n\n  margin-bottom: 2%;\n  \n\n} */\n\n/* chat ------*/\n\n/* .wrapper{\n  display: flex;\n  flex-direction: column;            \n  height: 100vh;\n  overflow: hidden;\n}\n\n.header{\n  flex: 0 0 auto;  \n  background: #aaa;\n}\n.content{\n  flex: 1 1 auto;     \n  overflow-y: auto;     \n}\n\n*{\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n*:after,\n*:before{\n  box-sizing: border-box;\n} */"
 
 /***/ }),
 
@@ -1835,7 +2040,7 @@ module.exports = "/* \n.member {\n\n  position: absolute;\n  display: flex;\n  f
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n <app-header></app-header>\n   \n  <div class=\"d-flex justify-content-between flex-row bd-highlight mb-4\">\n  <div class=\"member p-2 bd-highlight\">\n    <mat-card class=\"card\">\n        <mat-card-header>\n            <img src=\" {{user.picture}}\" class=\"rounded\" alt=\"\">\n          <mat-card-title>\n            {{user.first_name}}\n            {{user.last_name}}\n                </mat-card-title>\n          <mat-card-subtitle>\n            {{user.pseudo}}\n           \n          </mat-card-subtitle>\n        </mat-card-header>\n        <mat-card-content>\n        </mat-card-content>\n      </mat-card>\n\n</div>\n<div class=\"chat p-2 bd-highlight\">\n    <router-outlet></router-outlet> \n</div>\n\n\n<div class=\" member p-2 bd-highlight\" >\n    <mat-card  class=\"example-card border border-primary\">\n       \n        <mat-card-content >\n           <form class=\"example-form\" #commentF=\"ngForm\" (submit)=\"posted();commentF.reset()\" >\n               <mat-form-field>\n                 <input matInput placeholder=\"titre du message\" name=\"title\" id=\"titre\" [(ngModel)]=\"comment.title\" required >\n               </mat-form-field>\n                <br>\n               <mat-form-field class=\"example-full-width\">\n                 <textarea matInput placeholder=\"Poster un commentaire......\" name=\"comment\" [(ngModel)]=\"comment.content\"></textarea>\n               </mat-form-field>\n                <br>\n               <button type=\"submit\" mat-mini-fab color=\"accent\" [disabled]=\"!commentF.form.valid\">Poster\n               </button>\n           </form>\n        </mat-card-content>\n    </mat-card>\n      \n\n\n    <div class=\"card\" style=\"width: 18rem;\" *ngFor=\"let comment of userComment\">\n        <div class=\"card-header\">\n            <img src=\"{{comment.authorPicture}}\" width=\"48px\" alt=\"Card image cap\">\n            {{comment.author }}\n          </div>\n        \n        <div class=\"card-body\">\n          <h5 class=\"card-title\">{{comment.title}}</h5>\n          <p class=\"card-text\">\n             \n              {{comment.content}}\n          <a href=\"#\" class=\"btn btn-primary\">partager</a>\n        </div>\n        <div class=\"card-footer text-muted\">\n            Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}\n          </div>\n        \n      </div>\n\n\n\n\n\n\n<!--    <mat-card class=\"example-card border border-primary\" *ngFor=\"let comment of userComment\">\n     <mat-card-header>\n       <div mat-card-avatar class=\"example-header-image\">\n         <img src=\"{{comment.authorPicture}}\" style=\"width: 46px;\" alt=\"\">\n       </div>\n       <mat-card-title>{{comment.author }} </mat-card-title>\n       \n     </mat-card-header>\n     <h4> {{comment.title}}</h4>\n    \n     <mat-card-content>\n       <p>\n         {{comment.content}}\n       </p>\n     </mat-card-content>\n    \n   <mat-card-footer>\n       <mat-card-subtitle> Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }} </mat-card-subtitle>\n    \n   </mat-card-footer>\n   <button mat-button (click)=\"partager()\"><mat-icon class=\"mat-18\">share</mat-icon></button>\n   </mat-card> -->\n </div>\n \n \n\n\n\n\n<div class=\" p-2 bd-highlight\" *ngIf=\"!visitor || isAdmin\" >\n\n  <div>\n      <button type=\"button\" class=\"btn btn-primary\">\n          Notifications <span class=\"badge badge-light\">4</span>\n          \n        </button>\n        <ul>\n\n          <li *ngFor=\"let notif of notifications\"></li>\n        </ul>\n  </div>\n\n    <div class=\"request\">\n        <form class=\"example-form\" #search=\"ngForm\" >\n        \n            <mat-form-field>\n              <input matInput placeholder=\"nom, prenom ou pseudo\" name=\"name\" [(ngModel)]=\"keyword.name\" >\n            </mat-form-field>\n            <button type=\"submit\" mat-button color=\"primary\" (click)=\"searchfriend()\" >OK</button>\n\n            <mat-list *ngFor=\"let member of resultList\">\n              \n                <mat-list-item> \n                 <form class=\"example-form\" >\n                    <img src=\" {{member.picture}}\" alt=\"\"> {{member.pseudo}} \n                    \n                    <button matTooltip=\"Ajouter\" type=\"submit\" mat-button (click)=\"sendInvitationrequest(member)\" ><i class=\"material-icons\">\n                        \n                        </i></button>\n                  </form>\n                 </mat-list-item>\n      \n               </mat-list>\n        \n              </form>\n          \n        \n\n<!--          <div>              \n            <mat-list dense >\n                <mat-list-item *ngFor=\"let member of membersNotFriends\">\n                    <img src=\"{{member.picture}}\" alt=\"\">  {{member.pseudo}} \n                    <button matTooltip=\"Ajouter\" type=\"submit\" mat-button (click)=\"sendInvitationrequest(member)\" ><i class=\"material-icons\">\n                      person_add\n                      </i></button>\n                </mat-list-item>\n            </mat-list>\n\n         </div> -->\n         \n\n\n\n         <table class=\"table table-striped\">\n            <thead>\n            Membres\n            </thead>\n            <tbody>\n              <tr *ngFor=\"let member of membersNotFriends\">\n                <a (click)=\"sendInvitationrequest(member)\" >\n                <td><img src=\"{{member.picture}}\" alt=\"\" width=\"48px\"></td>\n                <td>{{member.pseudo}} </td>\n              </a>\n                <td><button matTooltip=\"Ajouter\" type=\"submit\" mat-button (click)=\"sendInvitationrequest(member)\" ><i class=\"material-icons\">\n                    person_add\n                    </i></button></td>\n              </tr>\n              \n            </tbody>\n          </table>\n\n          \n          \n            \n                   \n                    <h4>Ami(e)s</h4>\n                   \n                     <mat-button-toggle-group name=\"status\" aria-label=\"Font Style\">\n                        <mat-button-toggle (click)=\"all()\"  matTooltip=\"Tous les status\" value=\"demande\">\n                            <i  class=\"material-icons\">\n                                clear_all\n                                </i></mat-button-toggle>\n\n                        <mat-button-toggle  (click)=\"confirm()\"     matTooltip=\"Confirmé\" value=\"confirme\"><i    class=\"material-icons\" >done</i></mat-button-toggle>\n                        <mat-button-toggle (click)=\"waiting()\"  matTooltip=\"En attente de confirmation\" value=\"attente\"><i  class=\"material-icons\" >arrow_left</i></mat-button-toggle>\n                        <mat-button-toggle  (click)=\"send()\"  matTooltip=\"Demande d'ami envoyée\" value=\"demande\"><i   class=\"material-icons\" >arrow_right</i></mat-button-toggle>\n                      </mat-button-toggle-group>\n                      <p>\n                      </p>\n                      \n              <table>\n                  <thead>\n                      \n                  </thead>\n                  <tbody>\n                    <tr  *ngFor=\"let friend of friends\"  >\n                      <td><img class=\"picture\" (click)=\"onSelect(friend.members)\" src=\"{{friend.members.picture}}\" alt=\"\" style=\"width: 36px;\" alt=\"\"></td>\n                      <td>{{friend.members.pseudo}} </td>\n                      \n                      <td *ngIf=\"friend.status=='confirmer'\" (click)=\"chatRequest(friend)\">\n                        <i  matTooltip=\"chat\" class=\"material-icons\" >chat_bubble_outline</i>\n                      </td>\n                      <div  *ngIf=\"friend.status=='en attente de confirmation'\">\n                          <td>\n                              <i  (click)=\"acceptRequestInvitation(friend)\" class=\"material-icons\"> group_add</i>\n                              \n                          </td>\n                          <td>\n                              <i (click)=\"cancelInvitation(friend)\" matTooltip=\"Annuler la demande\"  class=\"material-icons\">\n                                  cancel\n                                  </i>\n                          </td>\n\n                      </div>\n                     \n\n                    </tr>\n\n\n                  </tbody>\n\n              </table>\n                \n\n                    \n             <!--  <mat-list dense>\n                  <mat-list-item *ngFor=\"let friend of friends\" >\n\n                  \n                    <div>\n                  \n                    <div>\n                      <img class=\"picture\" (click)=\"onSelect(friend.members)\" src=\"{{friend.members.picture}}\" alt=\"\" style=\"width: 36px;\" alt=\"\"> {{friend.members.pseudo}} \n                    </div>\n                    <div>\n                      <span *ngIf=\"friend.status=='en attente de confirmation'\">\n                        <i  (click)=\"acceptRequestInvitation(friend)\" class=\"material-icons\"> group_add</i>\n                        <i  (click)=\"cancelInvitation(friend)\" class=\"material-icons\"> cancel</i>\n\n                      </span>\n                      <a *ngIf=\"friend.status=='confirmer'\" (click)=\"chatRequest(friend)\" >  <i  matTooltip=\"chat\" class=\"material-icons\" >chat</i></a>\n                    </div>\n                  </div>\n                  </mat-list-item> \n\n              </mat-list>-->\n                \n      \n      </div>\n\n<!-- <div class=\"chat\">\n  <h6 class=\"pb-2 mb-0\">Group Chat <button class=\"btn btn-sm btn-primary\" >invite others</button></h6>\n  <div class=\"chats\">\n    <div class=\"chatbox\">\n      <div *ngFor=\"let chat of chats\">\n        <div class=\"message sent\" *ngIf=\"chat.type!=='joined' && chat.isMe\">\n          {{chat.message}}\n          <span class=\"metadata\">\n            <span class=\"time\">{{chat.createdAt | date: 'HH:mm aaa'}}</span>\n          </span>\n        </div>\n        <div class=\"message received\"  *ngIf=\"chat.type!=='joined' && !chat.isMe\">\n          <strong>{{chat.displayName}}</strong> <br>\n          {{chat.message}}\n          <span class=\"metadata\">\n            <span class=\"time\">{{chat.createdAt | date: 'HH:mm aaa'}}</span>\n          </span>\n        </div>\n        <p align=\"center\" class=\"joined\"  *ngIf=\"chat.type==='joined'\">\n        <span class=\"rounded bg-primary text-white\">{{chat.displayName}} Joined</span>\n        </p>\n      </div>\n    </div>\n  \n    <div class=\"d-flex flex-row\">\n      <input [(ngModel)]=\"message\" type=\"text\" class=\"form-control\" placeholder=\"Enter message\" style=\"margin-right: 10px\">\n      <button [disabled]=\"!message || sending\" (click)=\"sendMessage(message)\" class=\"btn btn-primary\"> {{sending ? 'Sending' : 'Send'}}</button>\n    </div>\n  </div>\n  \n  </div>\n</div> -->\n\n</div>\n\n</div>\n"
+module.exports = "\n <app-header></app-header>\n\n   \n  <div class=\"d-flex justify-content-between flex-row bd-highlight mb-4\">\n  <div class=\"member p-2 bd-highlight\">\n    <mat-card class=\"card\">\n        <mat-card-header>\n            <img src=\" {{user.picture}}\" class=\"rounded\" alt=\"\">\n          <mat-card-title>\n            {{user.first_name}}\n            {{user.last_name}}\n                </mat-card-title>\n          <mat-card-subtitle>\n            {{user.pseudo}}\n           \n          </mat-card-subtitle>\n        </mat-card-header>\n        <mat-card-content>\n        </mat-card-content>\n      </mat-card>\n\n</div>\n<div class=\"chat\">\n   \n</div>\n\n\n<div class=\" member p-2 bd-highlight\" >\n    <mat-card  class=\"example-card border border-primary\">\n       \n        <mat-card-content >\n           <form class=\"example-form\" #commentF=\"ngForm\" (submit)=\"posted();commentF.reset()\" >\n               <mat-form-field>\n                 <input matInput placeholder=\"titre du message\" name=\"title\" id=\"titre\" [(ngModel)]=\"comment.title\" required >\n               </mat-form-field>\n                <br>\n               <mat-form-field class=\"example-full-width\">\n                 <textarea matInput placeholder=\"Poster un commentaire......\" name=\"comment\" [(ngModel)]=\"comment.content\"></textarea>\n               </mat-form-field>\n                <br>\n               <button type=\"submit\" mat-mini-fab color=\"accent\" [disabled]=\"!commentF.form.valid\">Poster\n               </button>\n           </form>\n        </mat-card-content>\n    </mat-card>\n      \n\n\n    <div class=\"card\" style=\"width:400px;\" *ngFor=\"let comment of userComment\">\n        <div class=\"card-header\">\n            <img src=\"{{comment.authorPicture}}\" width=\"48px\" alt=\"Card image cap\">\n            {{comment.author }}\n          </div>\n        \n        <div class=\"card-body\">\n          <h5 class=\"card-title\">{{comment.title}}</h5>\n          <p class=\"card-text\">\n             \n              {{comment.content}}\n          <a href=\"#\" class=\"btn btn-primary\">partager</a>\n        </div>\n        <div class=\"card-footer text-muted\">\n            Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}\n          </div>\n        \n      </div>\n\n\n </div>\n \n\n\n\n<div class=\" p-2 bd-highlight\" *ngIf=\"!visitor || isAdmin\" >\n\n  <div>\n      <button type=\"button\" class=\"btn btn-primary\">\n          Notifications <span class=\"badge badge-light\">4</span>\n          \n        </button>\n        <ul>\n\n          <li *ngFor=\"let notif of notifications\"></li>\n        </ul>\n  </div>\n\n    <div class=\"request\">\n        <form class=\"example-form\" #search=\"ngForm\" >\n        \n            <mat-form-field>\n              <input matInput placeholder=\"nom, prenom ou pseudo\" name=\"name\" [(ngModel)]=\"keyword.name\" >\n            </mat-form-field>\n            <button type=\"submit\" mat-button color=\"primary\" (click)=\"searchfriend()\" >OK</button>\n\n            <mat-list *ngFor=\"let member of resultList\">\n              \n                <mat-list-item> \n                 <form class=\"example-form\" >\n                    <img src=\" {{member.picture}}\" alt=\"\"> {{member.pseudo}} \n                    \n                    <button matTooltip=\"Ajouter\" type=\"submit\" mat-button (click)=\"sendInvitationrequest(member)\" ><i class=\"material-icons\">\n                        \n                        </i></button>\n                  </form>\n                 </mat-list-item>\n      \n               </mat-list>\n        \n              </form>\n          \n \n\n\n         <table class=\"table table-striped\">\n            <thead>\n            Membres\n            </thead>\n            <tbody>\n              <tr *ngFor=\"let member of membersNotFriends\">\n                <a (click)=\"sendInvitationrequest(member)\" >\n                <td><img src=\"{{member.picture}}\" alt=\"\" width=\"48px\"></td>\n                <td>{{member.pseudo}} </td>\n              </a>\n                <td><button *ngIf=\"!visitor || isAdmin\" matTooltip=\"Ajouter\" type=\"submit\" mat-button (click)=\"sendInvitationrequest(member)\" ><i class=\"material-icons\">\n                    person_add\n                    </i></button></td>\n              </tr>\n              \n            </tbody>\n          </table>\n\n          \n          \n            \n                   \n                    <h4>Ami(e)s</h4>\n                   \n                     <mat-button-toggle-group name=\"status\" aria-label=\"Font Style\">\n                        <mat-button-toggle (click)=\"all()\"  matTooltip=\"Tous les status\" value=\"demande\">\n                            <i  class=\"material-icons\">\n                                clear_all\n                                </i></mat-button-toggle>\n\n                        <mat-button-toggle  (click)=\"confirm()\"     matTooltip=\"Confirmé\" value=\"confirme\"><i    class=\"material-icons\" >done</i></mat-button-toggle>\n                        <mat-button-toggle (click)=\"waiting()\"  matTooltip=\"En attente de confirmation\" value=\"attente\"><i  class=\"material-icons\" >arrow_left</i></mat-button-toggle>\n                        <mat-button-toggle  (click)=\"send()\"  matTooltip=\"Demande d'ami envoyée\" value=\"demande\"><i   class=\"material-icons\" >arrow_right</i></mat-button-toggle>\n                      </mat-button-toggle-group>\n                      <p>\n                      </p>\n                      \n              <table>\n                  <thead>\n                      \n                  </thead>\n                  <tbody>\n                    <tr  *ngFor=\"let friend of friends\"  >\n                      <td><img class=\"picture\" (click)=\"onSelect(friend.members)\" src=\"{{friend.members.picture}}\" alt=\"\" style=\"width: 36px;\" alt=\"\"></td>\n                      <td>{{friend.members.pseudo}} </td>\n                      \n                      <td *ngIf=\"friend.status=='confirmer' && isOnline \" (click)=\"invitetoChat(friend)\" routerLink=\"chat_window\">\n                        <i  matTooltip=\"chat\" class=\"material-icons\" >chat_bubble_outline</i>\n                      </td>\n                      <button routerLink=\"chat_window\">chat</button>\n\n                      <div  *ngIf=\"friend.status=='en attente de confirmation'\">\n                          <td>\n                              <i  (click)=\"acceptRequestInvitation(friend)\" class=\"material-icons\"> group_add</i>\n                              \n                          </td>\n                          <td>\n                              <i (click)=\"cancelInvitation(friend)\" matTooltip=\"Annuler la demande\"  class=\"material-icons\">\n                                  cancel\n                                  </i>\n                          </td>\n\n                      </div>\n                     \n\n                    </tr>\n\n\n                  </tbody>\n\n              </table>\n              \n                \n      \n      </div>\n\n<!-- <div class=\"chat\">\n  <h6 class=\"pb-2 mb-0\">Group Chat <button class=\"btn btn-sm btn-primary\" >invite others</button></h6>\n  <div class=\"chats\">\n    <div class=\"chatbox\">\n      <div *ngFor=\"let chat of chats\">\n        <div class=\"message sent\" *ngIf=\"chat.type!=='joined' && chat.isMe\">\n          {{chat.message}}\n          <span class=\"metadata\">\n            <span class=\"time\">{{chat.createdAt | date: 'HH:mm aaa'}}</span>\n          </span>\n        </div>\n        <div class=\"message received\"  *ngIf=\"chat.type!=='joined' && !chat.isMe\">\n          <strong>{{chat.displayName}}</strong> <br>\n          {{chat.message}}\n          <span class=\"metadata\">\n            <span class=\"time\">{{chat.createdAt | date: 'HH:mm aaa'}}</span>\n          </span>\n        </div>\n        <p align=\"center\" class=\"joined\"  *ngIf=\"chat.type==='joined'\">\n        <span class=\"rounded bg-primary text-white\">{{chat.displayName}} Joined</span>\n        </p>\n      </div>\n    </div>\n  \n    <div class=\"d-flex flex-row\">\n      <input [(ngModel)]=\"message\" type=\"text\" class=\"form-control\" placeholder=\"Enter message\" style=\"margin-right: 10px\">\n      <button [disabled]=\"!message || sending\" (click)=\"sendMessage(message)\" class=\"btn btn-primary\"> {{sending ? 'Sending' : 'Send'}}</button>\n    </div>\n  </div>\n  \n  </div>\n</div> -->\n\n</div>\n\n</div>\n\n<div>\n\n</div>\n\n\n\n<router-outlet></router-outlet> \n"
 
 /***/ }),
 
@@ -1854,7 +2059,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
 /* harmony import */ var _comment_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../comment.service */ "./src/app/comment.service.ts");
 /* harmony import */ var _member_action_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../member-action.service */ "./src/app/member-action.service.ts");
-/* harmony import */ var _services_chat_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../services/chat.service */ "./src/app/services/chat.service.ts");
+/* harmony import */ var _chat_chat_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../chat/chat.service */ "./src/app/chat/chat.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1912,6 +2117,22 @@ var MemberSpaceComponent = /** @class */ (function () {
         this.membersNotFriends = [];
         this.friends = [];
         this.chats = [];
+        this.authService.getData().subscribe(function (res) {
+            _this.user = res.user;
+            //this.authService.onConnected(this.user);
+        });
+        this.chatService.onInvitationChatRequest().subscribe(function (res) {
+            if (res.myFriend === _this.user.pseudo) {
+                _this.router.navigate(['/member_space/' + _this.user.pseudo + '/chat_window']);
+                alert('invitation au chat de' + res.me);
+            }
+        });
+        /*     this.authService.updateUserStatus(this.user).subscribe(
+              res => {
+                console.log(res)
+              }
+            ) */
+        //this.authService.onConnected(this.user);
         this.commentService.onPosted()
             .subscribe(function (data) {
             _this.userComment.splice(0, 0, data);
@@ -1945,7 +2166,7 @@ var MemberSpaceComponent = /** @class */ (function () {
                 _this.user = res.user;
                 _this.isAdmin = _this.user.admin;
                 //console.log('Moi user',this.user)
-                _this.onSubmit();
+                // this.onSubmit()
                 var myFriends = _this.user.friendsList.filter(function (element) { return element.status == 'confirmer'; });
                 // console.log(myFriends);
                 myFriends.forEach(function (element) {
@@ -1955,13 +2176,14 @@ var MemberSpaceComponent = /** @class */ (function () {
                         //console.log(res
                     });
                 });
-                _this.chatService.getChannel().bind('chat', function (data) {
-                    //console.log(data)
-                    if (data.email === _this.chatService.user.email) {
-                        data.isMe = true;
-                    }
-                    _this.chats.push(data);
-                });
+                /*             this.chatService.getChannel().bind('chat',data => {
+                              //console.log(data)
+                              if(data.email === this.chatService.user.email){
+                                data.isMe= true;
+                              }
+                              this.chats.push(data)
+                            })
+                 */
                 _this.commentService.getMemberComments(_this.member_pseudo)
                     .subscribe(function (res) {
                     // console.log('Les commentaires de ki ???',res)
@@ -2020,27 +2242,33 @@ var MemberSpaceComponent = /** @class */ (function () {
         var pseudo = friend.members.pseudo;
         this.memberActionService.requestInvitation(pseudo);
     };
-    MemberSpaceComponent.prototype.onSubmit = function () {
-        var params = { email: this.user.email, displayName: this.user.pseudo };
-        this.chatService.join(params).subscribe(function (res) {
-            console.log(res);
-        }, function (error) {
-            console.error(error);
-        });
+    /*
+      onSubmit() {
+        const params= {email:this.user.email, displayName:this.user.pseudo}
+        this.chatService.join(params).subscribe(
+          res => {
+            console.log(res)
+          },
+          error => {
+            console.error(error)
+          }
+        )
         //this.chatService.openChatRoom({user:this.user, friend:friend.members})
-    };
-    MemberSpaceComponent.prototype.sendMessage = function (message) {
-        var _this = this;
+        
+    
+      } */
+    /*
+      sendMessage(message: string) {
         this.sending = true;
         this.chatService.sendMessage(message)
-            .subscribe(function (resp) {
-            console.log(resp);
-            _this.message = undefined;
-            _this.sending = false;
-        }, function (err) {
-            _this.sending = false;
-        });
-    };
+          .subscribe(resp => {
+            console.log(resp)
+            this.message = undefined;
+            this.sending = false;
+          }, err => {
+            this.sending = false;
+          } );
+      } */
     MemberSpaceComponent.prototype.remove = function (array, element) {
         var index = array.indexOf(element);
         array.splice(index, 1);
@@ -2225,6 +2453,9 @@ var MemberSpaceComponent = /** @class */ (function () {
             alert('Invitation deja envoyée ou Membre deja amis');
         }
     };
+    MemberSpaceComponent.prototype.invitetoChat = function (member) {
+        this.chatService.sendChatInvitation({ me: this.user.pseudo, myFriend: member.members.pseudo });
+    };
     MemberSpaceComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-member-space',
@@ -2235,7 +2466,7 @@ var MemberSpaceComponent = /** @class */ (function () {
             _comment_service__WEBPACK_IMPORTED_MODULE_3__["CommentService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"],
             _member_action_service__WEBPACK_IMPORTED_MODULE_4__["MemberActionService"],
-            _services_chat_service__WEBPACK_IMPORTED_MODULE_5__["ChatService"]])
+            _chat_chat_service__WEBPACK_IMPORTED_MODULE_5__["ChatService"]])
     ], MemberSpaceComponent);
     return MemberSpaceComponent;
 }());
@@ -2507,6 +2738,69 @@ var NewPasswordComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialogRef"]])
     ], NewPasswordComponent);
     return NewPasswordComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/notifications/notifications.component.css":
+/*!***********************************************************!*\
+  !*** ./src/app/notifications/notifications.component.css ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/notifications/notifications.component.html":
+/*!************************************************************!*\
+  !*** ./src/app/notifications/notifications.component.html ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/notifications/notifications.component.ts":
+/*!**********************************************************!*\
+  !*** ./src/app/notifications/notifications.component.ts ***!
+  \**********************************************************/
+/*! exports provided: NotificationsComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NotificationsComponent", function() { return NotificationsComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var NotificationsComponent = /** @class */ (function () {
+    function NotificationsComponent() {
+    }
+    NotificationsComponent.prototype.ngOnInit = function () {
+    };
+    NotificationsComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-notifications',
+            template: __webpack_require__(/*! ./notifications.component.html */ "./src/app/notifications/notifications.component.html"),
+            styles: [__webpack_require__(/*! ./notifications.component.css */ "./src/app/notifications/notifications.component.css")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], NotificationsComponent);
+    return NotificationsComponent;
 }());
 
 
@@ -2837,7 +3131,7 @@ module.exports = "\n.example-spacer {\n    flex: 1 1 auto;\n    width: 100px;\n 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\" fxLayout \n                        fxLayout.xs=\"row\"\n                        fxLayoutAlign=\"center\"\n                        fxLayoutGap=\"30px\"\n\n>\n        <div class=\"stats\" fxFlex=\"10%\">\n                <div matBadge=\"{{commentsArray.length}}\" matBadgeOverlap=\"false\" matBadgeColor=\"primary\">Posts</div>   \n            \n        </div>\n        <div class=\"stats\" fxFlex=\"30%\">\n        <div matBadge=\"{{membersArray.length}}\" matBadgeOverlap=\"false\" matBadgeColor=\"primary\">Membres</div>   \n                    \n        </div>\n\n</div>\n\n\n<mat-nav-list dense *ngFor=\"let member of membersArray \">\n    <a mat-list-item (click)=\"onSelect(member)\">{{member.first_name}} {{member.pseudo}} <span *ngIf=\"!member.online\" style=\"background-color: forestgreen\">  *-* </span></a>\n</mat-nav-list>\n\n"
+module.exports = "<table class=\"table\">\n                <thead>\n                  <tr>\n                     <th scope=\"col\">*</th>\n                    <th scope=\"col\">Pseudo</th>\n                    <th scope=\"col\">Prenom</th>\n                    <th scope=\"col\">Nom</th>\n                    <th scope=\"col\">Status</th>\n                  </tr>\n                </thead>\n                <tbody>\n                  <tr *ngFor=\"let member of membersArray\">\n                    \n                    <td><img src=\"{{member.picture}}\" width=\"64px\" alt=\"\"></td>\n                    <td>{{member.pseudo}}</td>\n                    <td>@{{member.first_name}}</td>\n                    <td>{{member.last_name}}</td>\n                    <td>{{member.online}}</td>\n                  </tr>\n               \n                </tbody>\n  </table>\n               "
 
 /***/ }),
 

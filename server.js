@@ -67,6 +67,7 @@ io.on('connection' , (socket) =>{
     console.log('open the room',room )
   })
 
+
     //socket.emit('user join',{message:'Welcome'});
     
 
@@ -98,6 +99,26 @@ io.on('connection' , (socket) =>{
         console.log('Message reçu', data, socket.id);
         io.sockets.emit('message',data)
       });
+
+      //Chat messages
+
+      socket.on('chat:invitationRequest',(data)=> {
+         console.log(data.me)
+        io.sockets.emit('chat:request',data)
+
+        socket.join(data.me);
+
+        io.to(data.me).emit('yes ')
+
+        
+      })
+
+      socket.on('sent', (data)=> {
+        io.sockets.emit('message:sent',data)
+      })
+
+
+
 
       socket.on('disconnect',() => {
         

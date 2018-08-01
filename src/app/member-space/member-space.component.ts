@@ -10,7 +10,8 @@ import { Observable } from 'rxjs';
 import * as Rx from 'rxjs';
 import { ChatWindowComponent } from '../chat-window/chat-window.component';
 import { Http } from '@angular/http';
-import { ChatService } from '../services/chat.service';
+import { ChatService } from '../chat/chat.service';
+//import { ChatService } from '../services/chat.service';
 import { Ichat } from '../interfaces/ichat';
 
 
@@ -34,6 +35,8 @@ export class MemberSpaceComponent implements OnInit {
   resultList: any[];
   messageErreur;
   isAdmin:Boolean;
+  isOnline:false;
+  isConfirm:false;
 
   comment: Comment = {
     title: '',
@@ -100,6 +103,21 @@ export class MemberSpaceComponent implements OnInit {
       
       }
     )
+
+    this.chatService.onInvitationChatRequest().subscribe(
+      res => {
+
+        if(res.myFriend=== this.user.pseudo){
+
+          this.router.navigate(['/member_space/'+this.user.pseudo+'/chat_window'])
+
+          alert('invitation au chat de'+res.me)
+
+        }
+
+      }
+    )
+
 
    
 
@@ -176,7 +194,7 @@ export class MemberSpaceComponent implements OnInit {
             this.user = res.user;
             this.isAdmin=this.user.admin;
             //console.log('Moi user',this.user)
-            this.onSubmit()
+           // this.onSubmit()
             const myFriends=this.user.friendsList.filter(element => element.status=='confirmer');
            // console.log(myFriends);
             myFriends.forEach(element => {
@@ -191,14 +209,14 @@ export class MemberSpaceComponent implements OnInit {
               )
             })
 
-            this.chatService.getChannel().bind('chat',data => {
+/*             this.chatService.getChannel().bind('chat',data => {
               //console.log(data)
               if(data.email === this.chatService.user.email){
                 data.isMe= true;
               }
               this.chats.push(data)
             })
-
+ */
             this.commentService.getMemberComments(this.member_pseudo)
             .subscribe(
               res => {
@@ -288,7 +306,7 @@ export class MemberSpaceComponent implements OnInit {
 
  
 
-
+/* 
   onSubmit() {
     const params= {email:this.user.email, displayName:this.user.pseudo}
     this.chatService.join(params).subscribe(
@@ -302,8 +320,8 @@ export class MemberSpaceComponent implements OnInit {
     //this.chatService.openChatRoom({user:this.user, friend:friend.members})
     
 
-  }
-
+  } */
+/* 
   sendMessage(message: string) {
     this.sending = true;
     this.chatService.sendMessage(message)
@@ -314,7 +332,7 @@ export class MemberSpaceComponent implements OnInit {
       }, err => {
         this.sending = false;
       } );
-  }
+  } */
 
 
 
@@ -618,7 +636,11 @@ export class MemberSpaceComponent implements OnInit {
   }
 
 
+invitetoChat(member){
 
+  this.chatService.sendChatInvitation({me:this.user.pseudo,myFriend:member.members.pseudo})
+  
+}
 
 
 

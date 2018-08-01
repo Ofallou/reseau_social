@@ -59,6 +59,7 @@ import { ChatWindowComponent } from './chat-window/chat-window.component';
 import { InvitationRequestComponent } from './invitation-request/invitation-request.component';
 import { ChatService } from '../app/services/chat.service';
 import { PusherService } from './services/pusher.service';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 
 
@@ -87,6 +88,7 @@ import { PusherService } from './services/pusher.service';
     PageNotFoundComponent,
     ChatWindowComponent,
     InvitationRequestComponent,
+    NotificationsComponent,
    
   ],
 

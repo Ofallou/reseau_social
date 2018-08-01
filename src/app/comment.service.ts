@@ -96,6 +96,7 @@ getComments() {
   return this.http.get<any>(this._getAllUserCommentsUrl);
 }
 
+//Chat service
 
 
 }
