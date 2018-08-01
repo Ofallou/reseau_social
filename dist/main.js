@@ -1148,7 +1148,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Config", function() { return Config; });
 var Config = /** @class */ (function () {
     function Config() {
-        this.URL = "http://localhost:3000";
+        this.URL = "http://localhost:5000";
         /*   URL = "localhost"
           public static  get SOCKET_HOST(): string {
             return "http://localhost:5000" || 'https://dry-fortress-71234.herokuapp.com';
@@ -1156,7 +1156,7 @@ var Config = /** @class */ (function () {
     }
     Object.defineProperty(Config, "SOCKET_HOST", {
         get: function () {
-            return "http://localhost:3000 || https://dry-fortress-71234.herokuapp.com";
+            return "http://localhost:5000 || https://dry-fortress-71234.herokuapp.com";
         },
         enumerable: true,
         configurable: true

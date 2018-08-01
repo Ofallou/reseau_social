@@ -14,6 +14,10 @@ const shortId = require('shortid')
 const Pusher = require('pusher')
 const cors = require('cors')
 
+io.configure(function () {  
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
 
 const db="mongodb://ofallou:meissa71@ds249079.mlab.com:49079/reseau_social";
 const secret='RffrtejksizikskiksizkskizkskkzikskskksMpp';
