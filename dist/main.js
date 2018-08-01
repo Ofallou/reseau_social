@@ -1156,7 +1156,7 @@ var Config = /** @class */ (function () {
     }
     Object.defineProperty(Config, "SOCKET_HOST", {
         get: function () {
-            return "http://localhost:5000 || https://dry-fortress-71234.herokuapp.com";
+            return "https://dry-fortress-71234.herokuapp.com";
         },
         enumerable: true,
         configurable: true
