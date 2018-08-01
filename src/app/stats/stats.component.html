@@ -1,22 +1,23 @@
-<div class="container" fxLayout 
-                        fxLayout.xs="row"
-                        fxLayoutAlign="center"
-                        fxLayoutGap="30px"
-
->
-        <div class="stats" fxFlex="10%">
-                <div matBadge="{{commentsArray.length}}" matBadgeOverlap="false" matBadgeColor="primary">Posts</div>   
-            
-        </div>
-        <div class="stats" fxFlex="30%">
-        <div matBadge="{{membersArray.length}}" matBadgeOverlap="false" matBadgeColor="primary">Membres</div>   
+<table class="table">
+                <thead>
+                  <tr>
+                     <th scope="col">*</th>
+                    <th scope="col">Pseudo</th>
+                    <th scope="col">Prenom</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let member of membersArray">
                     
-        </div>
-
-</div>
-
-
-<mat-nav-list dense *ngFor="let member of membersArray ">
-    <a mat-list-item (click)="onSelect(member)">{{member.first_name}} {{member.pseudo}} <span *ngIf="!member.online" style="background-color: forestgreen">  *-* </span></a>
-</mat-nav-list>
-
+                    <td><img src="{{member.picture}}" width="64px" alt=""></td>
+                    <td>{{member.pseudo}}</td>
+                    <td>@{{member.first_name}}</td>
+                    <td>{{member.last_name}}</td>
+                    <td>{{member.online}}</td>
+                  </tr>
+               
+                </tbody>
+  </table>
+               

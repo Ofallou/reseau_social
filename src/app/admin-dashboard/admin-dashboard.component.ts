@@ -12,31 +12,78 @@ import { User } from '../models/user';
   styleUrls: ['./admin-dashboard.component.css']
 })
 export class AdminDashboardComponent {
+  commentsArray: Array<Comment>= [];
+  membersArray:Array<User>= [];
+  currentUser;
+  user: User= {
+    _id: '',
+    first_name: '',
+    last_name: '',
+    pseudo: '',
+    email: '',
+    admin: false,
+    online: false,
+    dateNaissance: new Date,
+    gender: '',
+    password: '',
+    friendsList: [
+      { status: "", friendId: "" }
+    ],
+    picture: ''
 
-  user: User;
-  constructor(private authService: AuthService, private commentService: CommentService, private  _router: Router) {}
+  };;
+  constructor(private authService: AuthService, private commentService: CommentService, private  _router: Router) {
+    this.authService.getData().subscribe
+    (res => this.user=res.user)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+    this.authService.onOnlineEvent().subscribe(
+      online=> console.log(online.pseudo)                                    
+    )
+  this.commentService.onBegin().subscribe(
+    online2=> console.log('ki est online', online2)
+  )
+    
+  }
 
   ngOnInit() {
   
-
   
+
+
+    this.authService.getAllMembers().subscribe(
+      res => {
+        //console.log(res)
+        this.membersArray =res
+      }
+    
+    )
+
+  this.authService.getData().subscribe(
+    res => {
+      this.currentUser = res.user
+      console.log(this.currentUser)
+
+    }
+  )
+
+    this.commentService.getComments().subscribe(
+      res => {
+        this.commentsArray=res.comments;
+        console.log('stats',this.commentsArray);
+        
+      }
+      
+    )
 
     this.commentService.isConnected().subscribe(
       res => console.log('le rest', res)
     )
-    this.authService.getData().subscribe
-    (res => console.log(res))
+
+    
       
   }
   
 
 
-  getUserdata(){
-    this.authService.getData()
-    .subscribe(
-      res => {
-        console.log(res)
-      }
-    )
-  }
+ 
 }

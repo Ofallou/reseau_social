@@ -89,6 +89,29 @@ export class MemberSpaceComponent implements OnInit {
     private chatService:ChatService
     
   ) {
+
+    this.authService.getData().subscribe(
+      res => {
+        this.user=res.user
+        
+        
+        //this.authService.onConnected(this.user);
+       
+      
+      }
+    )
+
+   
+
+
+
+/*     this.authService.updateUserStatus(this.user).subscribe(
+      res => {
+        console.log(res)
+      }
+    ) */
+   //this.authService.onConnected(this.user);
+    
     
     this.commentService.onPosted()
       .subscribe(data => {
@@ -104,6 +127,25 @@ export class MemberSpaceComponent implements OnInit {
 
       }
     )
+
+    this.memberActionService.onRequestInvitationCancel()
+    .subscribe(data => {
+      console.log("Annulation",data)
+      if(data.member.members._id == this.user._id){
+        alert(data.user.pseudo+ " n'a pas donné suite a votre demande d'amis")
+        console.log('Ma liste amis',this.user.friendsList)
+
+       const finder = this.user.friendsList.findIndex(user =>  user.friendId === data.user._id)
+       console.log(finder)
+       this.user.friendsList.splice(this.user.friendsList.findIndex(user =>  user.friendId === data.user._id),1)
+        console.log(this.user.friendsList)
+        this.authService.updateUser(this.user)
+
+      }
+    })
+
+
+  
 
 
   }
@@ -133,10 +175,10 @@ export class MemberSpaceComponent implements OnInit {
           res => {
             this.user = res.user;
             this.isAdmin=this.user.admin;
-            console.log('Moi user',this.user)
+            //console.log('Moi user',this.user)
             this.onSubmit()
             const myFriends=this.user.friendsList.filter(element => element.status=='confirmer');
-            console.log(myFriends);
+           // console.log(myFriends);
             myFriends.forEach(element => {
               //console.log(element)
               this.memberActionService.getMemberById(element).subscribe(
@@ -150,7 +192,7 @@ export class MemberSpaceComponent implements OnInit {
             })
 
             this.chatService.getChannel().bind('chat',data => {
-              console.log(data)
+              //console.log(data)
               if(data.email === this.chatService.user.email){
                 data.isMe= true;
               }
@@ -160,7 +202,7 @@ export class MemberSpaceComponent implements OnInit {
             this.commentService.getMemberComments(this.member_pseudo)
             .subscribe(
               res => {
-               console.log('Les commentaires de ki ???',res)
+              // console.log('Les commentaires de ki ???',res)
                 this.userComment = res.comments
               }
             )
@@ -188,7 +230,7 @@ export class MemberSpaceComponent implements OnInit {
 
               this.authService.memberSpace(this.member_pseudo).subscribe(
                 res => {
-                  console.log("le res est comment ??",res)
+                  //console.log("le res est comment ??",res)
                   if(res ===  null ||res === undefined){
                     this.router.navigate(['/notFound'])
                   }else {
@@ -198,9 +240,9 @@ export class MemberSpaceComponent implements OnInit {
                
                  // console.log('liste amis', this.user.friendsList)
                  // On enleve de la lsite les 
-                  console.log('Liste de tous les membres ', this.membersNotFriends)
+                  //console.log('Liste de tous les membres ', this.membersNotFriends)
                   this.user.friendsList.forEach(element => {
-                    console.log('element bi !!!',element.status)
+                   // console.log('element bi !!!',element.status)
                     this.membersNotFriends.splice(this.membersNotFriends.findIndex(user => user._id === element.friendId), 1)
                   })
 
@@ -217,7 +259,7 @@ export class MemberSpaceComponent implements OnInit {
             res => {
               this.currentUser = res
               this.comment.author = res.user.first_name + ' ' + res.user.last_name;
-   console.log('ki est tu pseudo ??',this.member_pseudo)
+   //console.log('ki est tu pseudo ??',this.member_pseudo)
               if (res.user.pseudo != this.member_pseudo) {
                 this.comment.authorId = this.member_pseudo
               } else {
@@ -348,7 +390,7 @@ export class MemberSpaceComponent implements OnInit {
     })
 
 
-    console.log('de alll',this.friends)
+    //console.log('de alll',this.friends)
 
   }
 
@@ -415,7 +457,7 @@ export class MemberSpaceComponent implements OnInit {
   searchfriend() {
  console.log(this.authService.getAllMembers().subscribe(
    res =>{
-      console.log('Tous les members',res);
+      //console.log('Tous les members',res);
    } )
   )
   }
@@ -431,16 +473,19 @@ export class MemberSpaceComponent implements OnInit {
   }
 
 
-receiveInvitation(){
-  this.memberActionService.onRequestInvitation().subscribe(
-    res => console.log('Invitation envoyé de :', res)
-  )
 
-  
-}
 
   cancelInvitation(member) {
     console.log(member)
+    this.membersNotFriends.push(member.members);
+    const finder=this.user.friendsList.findIndex(user =>  user.friendId === member.members._id)
+    this.user.friendsList.splice(this.user.friendsList.findIndex(user =>  user.friendId === member.members._id),1)
+    console.log(finder)
+    console.log(this.user.friendsList.length)
+    this.memberActionService.cancelInvitationrequest(member,this.user)
+    this.authService.updateUser(this.user).subscribe(
+      resp => console.log('Mise a jour ok ???',resp)
+    )
   }
 
   acceptRequestInvitation(member){

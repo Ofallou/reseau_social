@@ -20,7 +20,6 @@ export class AuthService {
   };
 
   private socket = io(Config.SOCKET_HOST);
-  userConnected: number=0;
   _id:String
   url = Config.SOCKET_HOST || "http://localhost";
   private _registerURL = this.url + '/api/register';
@@ -32,22 +31,48 @@ export class AuthService {
   private _home = this.url + '/api/';
   private _admin = this.url + '/api/admin';
   private _updateUser= this.url+'/api/update';
+  private _updateUserSatus= this.url+'/api/updatestatut';
   private _getAllMembers= this.url+'/api/getAllMembers'
   private _memberUrl = this.url+'/api/member_space'
   connected: number=0;
    
   constructor(private http: HttpClient, private _router: Router) {}
 
+  onOnlineEvent() {
+    let observable = new Observable<any>
+    (observer => {
+      this.socket.on('iamOnline:res', (data) => {
+        observer.next(data);
+      });
+      return () => {this.socket.disconnect();};
+    });
+    return observable;
+  }
+
+  onOfflineEvent() {
+    let observable = new Observable<any>
+    (observer => {
+      this.socket.on('iamOffline:res', (data) => {
+        observer.next(data);
+      });
+      return () => {this.socket.disconnect();};
+    });
+    return observable;
+  }
+
   checkPseudo(user){
     return this.http.post<any>(this._checkPseudoURL, user);
   }
-
+                                                                                                                                                        
   checkEmail(user){
     return this.http.post<any>(this._checkEmailURL, user);
 
   }
   registerUser(user) {
     return this.http.post<any>(this._registerURL, user);
+  }
+  updateUserStatus(user) {
+    return this.http.put<any>(this._updateUserSatus, user);
   }
   updateUser(user) {
     return this.http.put<any>(this._updateUser, user);
@@ -59,6 +84,20 @@ export class AuthService {
   getToken() {
     return localStorage.getItem('token');
   }
+
+  iamOnline(user){
+    this.socket.emit('iamOnline', user)
+    //this.postComment(data).subscribe();
+  }
+
+  iamOffline(user){
+    this.socket.emit('iamOffline', user)
+  }
+
+  onLeave(user) {
+    user.online=false;
+    this.updateUser(user);
+    }
 
   logoutUser() {
     
@@ -95,10 +134,7 @@ export class AuthService {
     return this.http.get<any>(this._getAllMembers);
   }
   
-  onLeave() {
-    this.socket.emit('disconnect')
-    console.log(this.socket.id)
-    }
+ 
     
   memberSpace(pseudo){
    

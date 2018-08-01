@@ -23,19 +23,36 @@ export class HeaderComponent implements OnInit {
 
   };
 
-  
+  membersOnlines=[];
   constructor( private authService: AuthService) {
 
     this.getUserState()
-    //console.log(this.isAuth)
+    
+    console.log(this.isAuth)
   if(this.isAuth){
+    
     this.authService.getData()
     .subscribe(
       res => {//console.log('////',res)
       this.user = res.user;
       this.userid=res.user._id
+      this.user.online=true
+      this.authService.iamOnline(this.user)
+      this.authService.updateUserStatus(this.user)
+
+      this.authService.onOnlineEvent().subscribe
+      (online  => {
+        this.membersOnlines.push(online)
+      }
+    )
+    
       })
   }
+  
+  this.authService.onOfflineEvent().subscribe(
+    offline=> console.log('offline: => ',offline)
+  )
+  
   }
  
   ngOnInit() {
@@ -61,9 +78,12 @@ export class HeaderComponent implements OnInit {
   }
 
   logoutUser() {
-    this.authService.onLeave()
     this.authService.logoutUser();
+    this.authService.iamOffline(this.user)
     this.isAuth =false;
+    this.user.online=false
+    this.authService.updateUserStatus(this.user)
+    
     
     }
 

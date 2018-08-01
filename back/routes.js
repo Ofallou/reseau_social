@@ -224,6 +224,22 @@ router.put('/update',veriFyToken, (req,res)=> {
  
 })
 
+router.put('/updatestatut',veriFyToken, (req,res)=> {
+  console.log('test update',req.body)
+  let userdata=req.body;
+  User.findOneAndUpdate({_id:userdata._id},{$set:{online:true}},(err,data)=>{
+ 
+   console.log(data)
+ 
+   if(err){
+     console.log(err)
+   }else {
+     res.json({data: data})
+   }
+  })
+  
+  
+ })
 
 router.get('/admin', veriFyToken, (req,res) => {
 
@@ -451,6 +467,12 @@ router.post ('/updateInvitation', (req,res) => {
     }) 
     
   
+  })
+
+
+  router.post('/cancelRequest', (req,res)=> {
+    console.log('le user qui refuse ',req.body.user)
+    console.log('le membre a annuler',req.body.member)
   })
 
 

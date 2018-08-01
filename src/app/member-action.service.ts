@@ -44,20 +44,43 @@ private _cancelRequestUrl = this.url+'/api/cancelRequest'
     })
     return observable;
    }
+
+
+   onRequestInvitationCancel(){
+
+    let observable = new Observable<any>
+    (observer => {
+      this.socket.on('invitation:ko', (data ) => {
+        observer.next(data);
+      });
+      return () => {this.socket.disconnect();};
+    })
+    return observable;
+   }
+
+
   
    requestInvitation(data){
      this.socket.emit('invitation:send', data)
    }
 
+   acceptInv(data){
+    this.socket.emit('invitation:ok', data)
+   }
+
+   cancelInvitation(data){
+    this.socket.emit('invitation:cancel', data)
+   }
   
 
 
-  cancelInvitationrequest(id){
-    return this.http.post<any>(this._cancelRequestUrl, id)
+  cancelInvitationrequest(member, user){
+    this.cancelInvitation({member:member, user:user});
+    return this.http.post<any>(this._cancelRequestUrl, {member:member, user:user})
   }
 
   acceptInvitation(member, user){
-
+ this.acceptInv(member)
     return this.http.post<any>(this._acceptInvitationUrl, {member:member, user:user})
   }
   updateInvitation(member, user){

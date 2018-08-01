@@ -11,14 +11,33 @@ import { User } from '../models/user';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  userData = {
+/*   userData = {
     _id:'',
     email:'',
     pseudo:'',
     password:'',
-    admin:false
-  };
+    admin:false,
+    online:false,
+  }; */
 
+
+  userData: User = {
+    _id: '',
+    first_name: '',
+    last_name: '',
+    pseudo: '',
+    email: '',
+    admin: false,
+    online: false,
+    dateNaissance: new Date,
+    gender: '',
+    password: '',
+    friendsList: [
+      { status: "", friendId: "" }
+    ],
+    picture: ''
+
+  };
   
 
 
@@ -28,6 +47,8 @@ export class LoginComponent implements OnInit {
   hide = true;
 
   constructor(private authService: AuthService, private _router: Router,private commentService: CommentService) {
+
+
   
   }
 
@@ -71,7 +92,10 @@ export class LoginComponent implements OnInit {
                 if(this.userData.admin){
                   this._router.navigate(['/admin']);
                 }else {
+                  this.userData.online= true;
+                  this.authService.updateUser(this.userData)
                   this._router.navigate(['/member_space', this.userData.pseudo]);
+
                 }
               }
 

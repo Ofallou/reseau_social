@@ -54,7 +54,11 @@ app.get('*', (req, res) => {
 
 io.on('connection' , (socket) =>{
   console.log('User joined', socket.id);
-  // socOn recupere tous les messages posté et enr  du serveur
+
+  socket.on('login', (data)=> {
+    console.log('est connecte',data);
+    io.sockets.emit('isconnected', data);
+  })
 
   socket.on('save-message', function(data){
   console.log(data)
@@ -64,16 +68,30 @@ io.on('connection' , (socket) =>{
   })
 
     //socket.emit('user join',{message:'Welcome'});
-    socket.on('login', (data)=> {
-      console.log('est connecte',data);
-      io.sockets.emit('isconnected', data);
-    })
+    
 
     socket.on('invitation:send' , (data)=> {
       socket.join(data)
       console.log(data);
       io.sockets.emit('invitation:res',data)
 
+    })
+    socket.on('iamOnline', (data)=> {
+      io.sockets.emit('iamOnline:res',data)
+    })
+
+    socket.on('iamOffline',(data)=> {
+      io.sockets.emit('iamOffline:res',data)
+    })
+
+    socket.on('invitation:cancel',(data) => {
+      console.log(data);
+      io.sockets.emit('invitation:ko', data)
+    })
+
+    socket.on('invitation:accept',(data) => {
+      console.log(data);
+      io.sockets.emit('invitation:ok', data)
     })
       
       socket.on('posted', (data) => {
