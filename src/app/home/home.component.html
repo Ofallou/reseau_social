@@ -3,43 +3,59 @@
 
 
 <div class="container">
-             
-   <div class="card">
-     <p style="width: 40px;height: 5px;">
-        <span class="test" matBadgePosition="above after" matBadge="{{commentsArray.length}}">Posts</span>
-     </p>
-    
-   </div>           
-
+                    
 
 
  <div class="col s6" *ngIf=!isMember>
    <p>Visiteurs : <a routerLink="/login">Creer un compte</a>  pour poster des messages et discuter avec vos amis</p>
  </div>
-     
-    <mat-card class="example-card" *ngIf=isMember>
-      <article >
-        <form class="example-form" #commentF="ngForm" (submit)="posted();commentF.reset()" >
-      <mat-form-field>
-        <input matInput placeholder="titre " name="title" id="titre" [(ngModel)]="comment.title" required >
-      </mat-form-field>
-       <br>
-      <mat-form-field class="example-full-width">
-        <textarea matInput placeholder="Poster un commentaire......" name="comment" [(ngModel)]="comment.content"></textarea>
-      </mat-form-field>
-       <br>
-           
-      <button type="submit" mat-fab color="accent" [disabled]="!commentF.form.valid">Poster
-       
-      </button>
-
-  </form>
-        
-    </article>
-    </mat-card>
 </div>
 
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
+	<div class="row">
+
+      <div class="col-lg-3">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-xs-6">
+                <i class="fa fa-users fa-5x"></i>
+              </div>
+              <div class="col-xs-6 text-right">
+                <p class="announcement-heading">{{membersArray.length}}</p>
+                <p class="announcement-text">Membres</p>
+              </div>
+            </div>
+          </div>
+      
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="panel panel-success">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-xs-6">
+                <i class="fa fa-comments fa-5x"></i>
+              </div>
+              <div class="col-xs-6 text-right">
+                <p class="announcement-heading">{{commentsArray.length}}</p>
+                <p class="announcement-text"> Nombre de posts</p>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div><!-- /.row -->
+    </div>
+
+<!-- <div class="container">
   
 
   <mat-card class="example-card" *ngFor="let comment of commentsArray">
@@ -59,5 +75,5 @@
     </mat-card-content>
    
   </mat-card>
-</div>
+</div> -->
 

@@ -97,8 +97,7 @@ export class MemberSpaceComponent implements OnInit {
       res => {
         this.user=res.user
         
-        
-        //this.authService.onConnected(this.user);
+        this.authService.iamOnline(this.user);
        
       
       }
@@ -475,7 +474,8 @@ export class MemberSpaceComponent implements OnInit {
   searchfriend() {
  console.log(this.authService.getAllMembers().subscribe(
    res =>{
-      //console.log('Tous les members',res);
+
+    console.log(res)
    } )
   )
   }

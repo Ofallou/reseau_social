@@ -6,7 +6,7 @@
   <div class="member p-2 bd-highlight">
     <mat-card class="card">
         <mat-card-header>
-            <img src=" {{user.picture}}" class="rounded" alt="">
+            <img src=" {{user.picture}}"  class="rounded" alt="">
           <mat-card-title>
             {{user.first_name}}
             {{user.last_name}}
@@ -27,7 +27,7 @@
 
 
 <div class=" member p-2 bd-highlight" >
-    <mat-card  class="example-card border border-primary">
+    <mat-card  class="example-card ">
        
         <mat-card-content >
            <form class="example-form" #commentF="ngForm" (submit)="posted();commentF.reset()" >
@@ -43,6 +43,7 @@
                </button>
            </form>
         </mat-card-content>
+ 
     </mat-card>
       
 
@@ -56,13 +57,21 @@
         <div class="card-body">
           <h5 class="card-title">{{comment.title}}</h5>
           <p class="card-text">
-             
               {{comment.content}}
-          <a href="#" class="btn btn-primary">partager</a>
         </div>
         <div class="card-footer text-muted">
             Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}
           </div>
+         <!--  <div>
+            <form #comment="ngForm">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="repondre....." name="comment" [(ngModel)]="comment.content" ></textarea>
+              </mat-form-field>
+               <br>
+              <button type="submit" mat-mini-fab color="accent" [disabled]="!comment.form.valid">reply
+              </button>
+            </form>
+          </div> -->
         
       </div>
 
@@ -74,16 +83,6 @@
 
 <div class=" p-2 bd-highlight" *ngIf="!visitor || isAdmin" >
 
-  <div>
-      <button type="button" class="btn btn-primary">
-          Notifications <span class="badge badge-light">4</span>
-          
-        </button>
-        <ul>
-
-          <li *ngFor="let notif of notifications"></li>
-        </ul>
-  </div>
 
     <div class="request">
         <form class="example-form" #search="ngForm" >
@@ -158,10 +157,9 @@
                       <td><img class="picture" (click)="onSelect(friend.members)" src="{{friend.members.picture}}" alt="" style="width: 36px;" alt=""></td>
                       <td>{{friend.members.pseudo}} </td>
                       
-                      <td *ngIf="friend.status=='confirmer' && isOnline " (click)="invitetoChat(friend)" routerLink="chat_window">
+                      <td *ngIf="friend.status=='confirmer'; isOnline " (click)="invitetoChat(friend)" routerLink="chat_window">
                         <i  matTooltip="chat" class="material-icons" >chat_bubble_outline</i>
                       </td>
-                      <button routerLink="chat_window">chat</button>
 
                       <div  *ngIf="friend.status=='en attente de confirmation'">
                           <td>

@@ -35,20 +35,18 @@
                     <div class="col-md-12 col-xs-12">
                         <h3 class="panel-title"><span class="glyphicon glyphicon-comment"></span> Chat</h3>
                     </div>
-                    <div class="col-md-4 col-xs-4" style="text-align: right;">
-                        <a href=""><span id="minim_chat_window" class="glyphicon glyphicon-minus icon_minim"></span></a>
-                        <a href=""><span class="glyphicon glyphicon-remove icon_close" data-id="chat_window_1"></span></a>
+                    <div class="col-md-4 col-xs-4" style="text-align: right;" >
+                        <a (click)="closeChat()" ><span class="glyphicon glyphicon-remove icon_close" data-id="chat_window_1"></span></a>
                     </div>
                 </div>
                 <form #chat="ngForm">
 
-                    <div class="message" *ngFor="let message of commentsArray ">
+                    <div class="message" *ngFor="let message of commentsArray " >
                 
                    
-                   <strong> <img src="{{message.authorPicture}}" class="rounded" width="48px" alt=""> {{message.author}}</strong>
-                    <br>
+                    <img src="{{message.authorPicture}}" class="rounded" width="48px" alt=""> {{message.author}}:
+                    
                     {{message.text}}
-                
                 
                     </div>
                 

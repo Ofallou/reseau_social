@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { CommentService } from '../comment.service';
 import { Comment } from '../models/comment';
+import { User } from '../models/user';
 
 
 
@@ -26,10 +27,11 @@ export class HomeComponent implements OnInit {
 
   }
   userPicture:String;
-
 commentsArray: Array<Comment>= [];
+  membersArray:Array<User>= [];
 
-  constructor(private auth: AuthService, private  commentService: CommentService) {
+
+  constructor(private authService: AuthService, private  commentService: CommentService) {
     this.commentService.onBegin()
     .subscribe(
       res => console.log('???',res)
@@ -43,12 +45,18 @@ commentsArray: Array<Comment>= [];
   }
 
   ngOnInit() {
-        
-   if (this.auth.loggedIn()) {
+
+    this.authService.getAllMembers().subscribe(
+      res => {
+        //console.log(res)
+        this.membersArray =res
+      }
+    )
+   if (this.authService.loggedIn()) {
 
       this.isMember = true;
       //this.userdata()
-      this.auth.getData().subscribe(
+      this.authService.getData().subscribe(
         res =>{
           this.comment.authorId= res.user._id;
           this.comment.author = res.user.first_name + ' ' +res.user.last_name;

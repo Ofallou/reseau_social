@@ -6,6 +6,7 @@ import { User } from '../models/user';
 import { Comment } from '../models/comment';
 import { ChatService } from '../chat/chat.service';
 import { Message } from '../models/message';
+import { Router } from '@angular/router';
 
 
 
@@ -27,9 +28,12 @@ message: Message ={
 commentsArray: Array<Comment>= [];
 
 
-constructor(public authService:AuthService , public chatService: ChatService) { 
+constructor(public authService:AuthService , public chatService: ChatService , private router: Router) { 
   this.authService.getData().subscribe(
-    res=> this.user=res.user
+    res=> {
+      this.user=res.user;
+      
+    }
   )
 
 
@@ -51,5 +55,8 @@ constructor(public authService:AuthService , public chatService: ChatService) {
 
   }
 
+  closeChat(){
+    this.router.navigate(['/member_space', this.user.pseudo])
+  }
 
 }
