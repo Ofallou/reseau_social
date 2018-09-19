@@ -8,7 +8,7 @@ module.exports  = sendFriendRequestNotification =  (email2,last_name2)=>{
         secure: true,
         auth: {
           user: 'ofallou@gmail.com',
-          pass:'meissa1971'
+          pass:'oumar1971'
         }
       });
       let mailOptions = {

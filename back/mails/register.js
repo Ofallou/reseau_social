@@ -8,7 +8,7 @@ module.exports  = register =  (first_name, email)=>{
         secure: true,
         auth: {
           user: 'ofallou@gmail.com',
-          pass:'meissa1971'
+          pass:'oumar1971'
         }
       });
       let mailOptions = {

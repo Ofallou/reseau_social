@@ -31,10 +31,10 @@ var pusher = new Pusher({
 
 //Mongodb
 const db="mongodb://ofallou:meissa71@ds249079.mlab.com:49079/reseau_social";
+//const db="mongodb://127.0.0.1:27017/reseau_social_db";
 
 const secret='RffrtejksizikskiksizkskizkskkzikskskksMpp';
 
-const myPassword= 'meissa71'
 const saltRounds = 10;
 
 /*
@@ -285,9 +285,6 @@ router.post('/lostpwd', (req, res) => {
   })
 
 })
-
-
-
 
 
 // comment recording (register user only)

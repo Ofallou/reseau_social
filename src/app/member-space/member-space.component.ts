@@ -92,7 +92,7 @@ export class MemberSpaceComponent implements OnInit {
     private chatService:ChatService
     
   ) {
-
+this.visitor=false;
     this.authService.getData().subscribe(
       res => {
         this.user=res.user
@@ -474,7 +474,7 @@ export class MemberSpaceComponent implements OnInit {
   searchfriend() {
  console.log(this.authService.getAllMembers().subscribe(
    res =>{
-
+     
     console.log(res)
    } )
   )

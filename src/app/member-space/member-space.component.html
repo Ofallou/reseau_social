@@ -81,11 +81,11 @@
 
 
 
-<div class=" p-2 bd-highlight" *ngIf="!visitor || isAdmin" >
+<div class=" p-2 bd-highlight"  >
 
 
-    <div class="request">
-        <form class="example-form" #search="ngForm" >
+    <div  class="request">
+        <form *ngIf="!visitor || isAdmin" class="example-form" #search="ngForm" >
         
             <mat-form-field>
               <input matInput placeholder="nom, prenom ou pseudo" name="name" [(ngModel)]="keyword.name" >
@@ -111,7 +111,7 @@
  
 
 
-         <table class="table table-striped">
+         <table *ngIf="!visitor || isAdmin" class="table table-striped">
             <thead>
             Membres
             </thead>
@@ -121,7 +121,7 @@
                 <td><img src="{{member.picture}}" alt="" width="48px"></td>
                 <td>{{member.pseudo}} </td>
               </a>
-                <td><button *ngIf="!visitor || isAdmin" matTooltip="Ajouter" type="submit" mat-button (click)="sendInvitationrequest(member)" ><i class="material-icons">
+                <td><button  matTooltip="Ajouter" type="submit" mat-button (click)="sendInvitationrequest(member)" ><i *ngIf="!visitor || isAdmin" class="material-icons">
                     person_add
                     </i></button></td>
               </tr>
@@ -157,17 +157,17 @@
                       <td><img class="picture" (click)="onSelect(friend.members)" src="{{friend.members.picture}}" alt="" style="width: 36px;" alt=""></td>
                       <td>{{friend.members.pseudo}} </td>
                       
-                      <td *ngIf="friend.status=='confirmer'; isOnline " (click)="invitetoChat(friend)" routerLink="chat_window">
+                      <td *ngIf="friend.status=='confirmer'" (click)="invitetoChat(friend)" routerLink="chat_window">
                         <i  matTooltip="chat" class="material-icons" >chat_bubble_outline</i>
                       </td>
 
                       <div  *ngIf="friend.status=='en attente de confirmation'">
                           <td>
-                              <i  (click)="acceptRequestInvitation(friend)" class="material-icons"> group_add</i>
+                              <i *ngIf="!visitor || isAdmin" (click)="acceptRequestInvitation(friend)" class="material-icons"> group_add</i>
                               
                           </td>
                           <td>
-                              <i (click)="cancelInvitation(friend)" matTooltip="Annuler la demande"  class="material-icons">
+                              <i *ngIf="!visitor || isAdmin" (click)="cancelInvitation(friend)" matTooltip="Annuler la demande"  class="material-icons">
                                   cancel
                                   </i>
                           </td>

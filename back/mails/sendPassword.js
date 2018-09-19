@@ -8,7 +8,7 @@ module.exports  = sentPassword =  (email, password, first_name, new_password)=>{
         secure: true,
         auth: {
           user: 'ofallou@gmail.com',
-          pass:'meissa1971'
+          pass:'oumar1971'
         }
       });
       let mailOptions = {
