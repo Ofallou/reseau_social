@@ -25,8 +25,6 @@
 
 </div> -->
 
-
-
 <div class="container">
     <div class="row chat-window " id="chat_window_1" style="margin-left:10px;">
         <div class="col-xs-12 col-md-12">
@@ -40,17 +38,14 @@
                     </div>
                 </div>
                 <form #chat="ngForm">
-
                     <div class="message" *ngFor="let message of commentsArray " >
-                
-                   
                     <img src="{{message.authorPicture}}" class="rounded" width="48px" alt=""> {{message.author}}:
                     
                     {{message.text}}
                 
                     </div>
                 
-                
+            
                 
                     <input type="text" name="message" [(ngModel)]="message.text" required >
                     <button class="btn btn-primary" [disabled]="!chat.form.valid "  type="submit" (click)="sent()">Envoyer</button>

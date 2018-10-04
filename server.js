@@ -7,7 +7,8 @@ const mongoose= require('mongoose');
 const server = http.createServer(app);
 const io = require('socket.io').listen(server);
 const jwt = require('jsonwebtoken');
-//Models
+//Models//
+
 const User = require ('./back/models/user');
 const Comment = require ('./back/models/comment');
 const shortId = require('shortid')
@@ -17,6 +18,8 @@ const cors = require('cors')
 
 
 const db="mongodb://ofallou:meissa71@ds249079.mlab.com:49079/reseau_social";
+//const db="mongodb://127.0.0.1:27017/reseau_social_db";
+
 const secret='RffrtejksizikskiksizkskizkskkzikskskksMpp';
 
 app.use((req, res, next) => {
