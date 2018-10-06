@@ -1,13 +1,30 @@
 
 .mat-tab-group {
-  margin-left: 33%;
-  margin-top: 5%;
+  
+  margin-top: 15%;
   padding-bottom: 20px;
   color: black;
   height: 100%;
-}
+} 
 
 form{
+
   padding-bottom: 20px;
   align-items: center;
+}
+
+
+.container {
+ 
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+
+}
+
+.login{
+  width: 100%;
+  display: flex;
+  flex-flow: column wrap;
+
 }

@@ -7,7 +7,8 @@ const app= require ('../server')
 const server= require ('../server')
 var gravatar = require('gravatar');
 var generator = require ('generate-password');
-var bcrypt = require('bcrypt')
+var bcrypt = require('bcrypt');
+var regex = /^\s*$/;
 //Models
 
 const User = require ('./models/user.js');
@@ -60,27 +61,34 @@ function veriFyToken(req,res, next){
   } else {
     req.userId = payload.subject;
     currentUserId= req.userId;
-    //console.log(payload.subject);
-
     next();
   }
 }
 
 
 
-
-
 //check if the pseudo is available
 router.post('/checkPseudo', (req,res) => {
 let myPseudo = req.body.pseudo;
-User.findOne({pseudo:myPseudo}, (err,data)=> {
-  if(err)console.log(err);
-  if(data!==null){
-    res.json({error:"pseudo non disponible"})
-  }else {
-    res.json({message:"Le pseudo est disponible"})
-  }
-})
+console.log(myPseudo)
+if(myPseudo.length <5){
+
+  res.json({toto:'pseudo incorrect'})
+}else {
+
+  User.findOne({pseudo:myPseudo}, (err,data)=> {
+    if(err)console.log(err);
+    if(data!==null){
+  
+      res.json({error:"pseudo non disponible"})
+    }else {
+      res.json({message:"Le pseudo est disponible"})
+    }
+  })
+
+}
+
+
 
 })
 //like the pseudo check if email is already registered

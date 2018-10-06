@@ -78,8 +78,7 @@ export class LoginComponent implements OnInit {
             
            
           } else {
-
-            
+        
 
             this.commentService.onLogin(this.userData.pseudo);
 

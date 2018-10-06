@@ -67,6 +67,7 @@ export class RegisterComponent implements OnInit {
     this.authService.checkPseudo(this.user)
     .subscribe(
       res => {
+        console.log(res)
         if(res.message){
           this.pseudoEnable = res.message
           this.pseudoNotEnable=null
@@ -80,11 +81,13 @@ export class RegisterComponent implements OnInit {
   }
 
   registerUser() {
+    
      this.authService.registerUser(this.user)
     .subscribe(
       res => {
         if(res.message){
           this.errormessage = res.message;
+          
           //alert(this.errormessage);
           this.user.email="";
         }else {
