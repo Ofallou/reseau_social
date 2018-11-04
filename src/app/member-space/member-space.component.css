@@ -45,6 +45,11 @@ mat-list-item  img {
   padding-right: 10px;
 }
 
+mat-list-item{
+
+  display: inline;
+}
+
 
 .example-card {
 
@@ -55,10 +60,23 @@ mat-list-item  img {
 }
 
 .card{
+  width: 80%;
   padding-bottom: 20px;
 }
 
+.menuside{
 
+  width: 20%;
+
+}
+
+.myspace{
+
+display: flex;
+flex-flow: row wrap;
+
+
+}
 /* .container {
   display: flex;
   flex-flow: column wrap;

@@ -28,7 +28,7 @@ export class AuthService {
   private _loginURL = this.url + '/api/login';
   private _userdataURL = this.url + '/api/userdata';
   private _lostPassword = this.url + '/api/lostpwd';
-  private _home = this.url + '/api/';
+  private _home = 'http://localhost/api/';
   private _admin = this.url + '/api/admin';
   private _updateUser= this.url+'/api/update';
   private _updateUserSatus= this.url+'/api/updatestatut';

@@ -243,6 +243,7 @@ this.visitor=false;
               this.membersNotFriends = members
               //console.log('Liste de tous les membres avant traitement',this.membersNotFriends)
               //On se supprime de la liste des membre a l'affichage le mebre loggé
+              console.log(this.membersNotFriends[1])
               this.membersNotFriends.splice(this.membersNotFriends.findIndex(user => user.pseudo === this.member_pseudo), 1)
 
               this.authService.memberSpace(this.member_pseudo).subscribe(
@@ -260,7 +261,7 @@ this.visitor=false;
                   //console.log('Liste de tous les membres ', this.membersNotFriends)
                   this.user.friendsList.forEach(element => {
                    // console.log('element bi !!!',element.status)
-                    this.membersNotFriends.splice(this.membersNotFriends.findIndex(user => user._id === element.friendId), 1)
+                    this.membersNotFriends.splice(this.membersNotFriends.findIndex(user => user._id === element.friendId), 0)
                   })
 
 

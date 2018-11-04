@@ -1,8 +1,21 @@
 
  <app-header></app-header>
+
+
    
-  <div class="d-flex justify-content-between flex-row bd-highlight mb-4">
-  <div class="member p-2 bd-highlight">
+  <div class="myspace">
+
+      <div class="menuside">
+
+          <a href="/home"><i class="material-icons"  matTooltip="Se deconnecter"
+            >
+                input
+                </i></a>
+      
+       </div>
+
+
+  <div>
     <mat-card class="card">
         <mat-card-header>
             <img src=" {{user.picture}}"  class="rounded" alt="">
@@ -25,7 +38,7 @@
 
 
 <div class=" member p-2 bd-highlight" >
-    <mat-card  class="example-card ">
+<!--     <mat-card  class="example-card ">
        
         <mat-card-content >
            <form class="example-form" #commentF="ngForm" (submit)="posted();commentF.reset()" >
@@ -42,11 +55,11 @@
            </form>
         </mat-card-content>
  
-    </mat-card>
+    </mat-card> -->
       
 
 
-    <div class="card" style="width:400px;" *ngFor="let comment of userComment">
+<!--     <div class="card" style="width:400px;" *ngFor="let comment of userComment">
         <div class="card-header">
             <img src="{{comment.authorPicture}}" width="48px" alt="Card image cap">
             {{comment.author }}
@@ -60,18 +73,9 @@
         <div class="card-footer text-muted">
             Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}
           </div>
-         <!--  <div>
-            <form #comment="ngForm">
-              <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="repondre....." name="comment" [(ngModel)]="comment.content" ></textarea>
-              </mat-form-field>
-               <br>
-              <button type="submit" mat-mini-fab color="accent" [disabled]="!comment.form.valid">reply
-              </button>
-            </form>
-          </div> -->
+   
         
-      </div>
+      </div> -->
 
 
  </div>
@@ -83,33 +87,31 @@
 
 
     <div  class="request">
-        <form *ngIf="!visitor || isAdmin" class="example-form" #search="ngForm" >
+<!--         <form *ngIf="!visitor || isAdmin" class="example-form" #search="ngForm" >
         
             <mat-form-field>
               <input matInput placeholder="nom, prenom ou pseudo" name="name" [(ngModel)]="keyword.name" >
             </mat-form-field>
             <button type="submit" mat-button color="primary" (click)="searchfriend()" >OK</button>
-
-            <mat-list *ngFor="let member of resultList">
-              
-                <mat-list-item> 
+mat-list-item> 
                  <form class="example-form" >
                     <img src=" {{member.picture}}" alt=""> {{member.pseudo}} 
                     
-                    <button matTooltip="Ajouter" type="submit" mat-button (click)="sendInvitationrequest(member)" ><i class="material-icons">
-                        
-                        </i></button>
+                  
                   </form>
                  </mat-list-item>
       
                </mat-list>
         
               </form>
+            <mat-list *ngFor="let member of resultList">
+               -->
+                
           
  
 
 
-         <table *ngIf="!visitor || isAdmin" class="table table-striped">
+<!--          <table *ngIf="!visitor || isAdmin" class="table table-striped">
             <thead>
             Membres
             </thead>
@@ -125,15 +127,15 @@
               </tr>
               
             </tbody>
-          </table>
+          </table> -->
 
           
           
             
                    
-                    <h4>Ami(e)s</h4>
                    
-                     <mat-button-toggle-group name="status" aria-label="Font Style">
+                   
+                    <!--  <mat-button-toggle-group name="status" aria-label="Font Style">
                         <mat-button-toggle (click)="all()"  matTooltip="Tous les status" value="demande">
                             <i  class="material-icons">
                                 clear_all
@@ -142,43 +144,32 @@
                         <mat-button-toggle  (click)="confirm()"     matTooltip="Confirmé" value="confirme"><i    class="material-icons" >done</i></mat-button-toggle>
                         <mat-button-toggle (click)="waiting()"  matTooltip="En attente de confirmation" value="attente"><i  class="material-icons" >arrow_left</i></mat-button-toggle>
                         <mat-button-toggle  (click)="send()"  matTooltip="Demande d'ami envoyée" value="demande"><i   class="material-icons" >arrow_right</i></mat-button-toggle>
-                      </mat-button-toggle-group>
-                      <p>
-                      </p>
+                      </mat-button-toggle-group> -->
                       
-              <table>
-                  <thead>
                       
-                  </thead>
-                  <tbody>
-                    <tr  *ngFor="let friend of friends"  >
-                      <td><img class="picture" (click)="onSelect(friend.members)" src="{{friend.members.picture}}" alt="" style="width: 36px;" alt=""></td>
-                      <td>{{friend.members.pseudo}} </td>
-                      
-                      <td *ngIf="friend.status=='confirmer'" (click)="invitetoChat(friend)" routerLink="chat_window">
-                        <i  matTooltip="chat" class="material-icons" >chat_bubble_outline</i>
-                      </td>
+                <div class="members" *ngFor="let friend of friends">
+                  <img class="picture" (click)="onSelect(friend.members)" src="{{friend.members.picture}}" alt="" style="width: 36px;" alt="">
 
+
+                </div>
+                   
+
+
+                    
+<!-- 
                       <div  *ngIf="friend.status=='en attente de confirmation'">
-                          <td>
+                         
                               <i *ngIf="!visitor || isAdmin" (click)="acceptRequestInvitation(friend)" class="material-icons"> group_add</i>
                               
-                          </td>
-                          <td>
+                          
                               <i *ngIf="!visitor || isAdmin" (click)="cancelInvitation(friend)" matTooltip="Annuler la demande"  class="material-icons">
                                   cancel
                                   </i>
-                          </td>
+                         
 
-                      </div>
+                      </div> -->
                      
 
-                    </tr>
-
-
-                  </tbody>
-
-              </table>
               
                 
       

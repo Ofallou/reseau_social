@@ -23,8 +23,8 @@ form{
 }
 
 .login{
-  width: 100%;
+  width: 40%;
   display: flex;
-  flex-flow: column wrap;
+  flex-flow: column nowrap;
 
 }
