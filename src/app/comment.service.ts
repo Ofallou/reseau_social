@@ -12,22 +12,21 @@ import { User } from './models/user';
 export class CommentService  {
   url = Config.SOCKET_HOST || "http://localhost";
   private _postCommentUrl = this.url+'/api/post_comment';
-  //For each member's space
+  // For each member's space
   private _getCommentPostedUrl =this.url+'/api/get_member_comments';
-  //Admin & stats
+  // Admin & stats
   private _getAllUserCommentsUrl = this.url+'/api/comments';
   private _chatUrl = this.url+'/api/chat';
   private socket = io(Config.SOCKET_HOST);
   message:any;
   constructor(private http: HttpClient, private _router: Router) {}
-  
+
   onBegin() {
     let observable = new Observable<{message:String}>
     (observer => {
       this.socket.on('user join', (data) => {
         observer.next(data);
       }
-        
     );
 
       return () => {this.socket.disconnect();};
@@ -70,7 +69,7 @@ export class CommentService  {
 getMemberComments (pseudo){
   return this.http.get<any>(this._getCommentPostedUrl+'/'+pseudo ,{params:pseudo})
 }
- 
+
 postMessage(data) {
   this.socket.emit('posted', data)
   this.postComment(data).subscribe();
@@ -90,7 +89,7 @@ getAllMember() {
 
 postComment(comment) {
   return this.http.post<any>(this._postCommentUrl, comment);
-} 
+}
 
 getComments() {
   return this.http.get<any>(this._getAllUserCommentsUrl);

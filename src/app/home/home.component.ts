@@ -12,7 +12,7 @@ import { User } from '../models/user';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
- 
+
   isMember = false;
   message :String;
   currentDate= new Date();
@@ -41,56 +41,56 @@ commentsArray: Array<Comment>= [];
       this.commentsArray.splice(0,0,data)
       console.log("Apres ajout",this.commentsArray)
     }
-    ); 
+    );
   }
 
   ngOnInit() {
 
     this.authService.getAllMembers().subscribe(
       res => {
-        //console.log(res)
-        this.membersArray =res
+        console.log(res)
+        this.membersArray =res;
       }
     )
    if (this.authService.loggedIn()) {
 
       this.isMember = true;
-      //this.userdata()
+      // this.userdata()
       this.authService.getData().subscribe(
         res =>{
           this.comment.authorId= res.user._id;
           this.comment.author = res.user.first_name + ' ' +res.user.last_name;
           this.comment.authorPicture = res.user.picture;
-          //console.log(this.comment )
+          // console.log(this.comment )
         }
       )
     }
-    
+
     this.commentService.getComments().subscribe(
       res => {
         this.commentsArray=res.comments;
-        //console.log('Les commentaires en base',this.commentsArray);
-        
+        // console.log('Les commentaires en base',this.commentsArray);
+
       }
-      
+
     )
-  
+
 }
 
 posted() {
   this.comment.date=new Date();
   this.commentService.postMessage(this.comment)
-  
+
 }
 
 getMessages(){
   this.commentService.onBegin()
     .subscribe(data => {
       this.message;
-      console.log(data)
+      console.log(data);
     }
     );
-} 
+}
 
 
 

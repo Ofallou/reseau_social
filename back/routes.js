@@ -31,8 +31,8 @@ var pusher = new Pusher({
 });
 
 //Mongodb
-const db="mongodb://ofallou:meissa71@ds249079.mlab.com:49079/reseau_social";
-//const db="mongodb://127.0.0.1:27017/reseau_social_db";
+//const db="mongodb://ofallou:meissa71@ds249079.mlab.com:49079/reseau_social";
+const db="mongodb://127.0.0.1:27017/reseau_social_db";
 
 const secret='RffrtejksizikskiksizkskizkskkzikskskksMpp';
 
@@ -79,7 +79,7 @@ if(myPseudo.length <5){
   User.findOne({pseudo:myPseudo}, (err,data)=> {
     if(err)console.log(err);
     if(data!==null){
-  
+
       res.json({error:"pseudo non disponible"})
     }else {
       res.json({message:"Le pseudo est disponible"})
@@ -98,11 +98,11 @@ router.post('/checkEmail', (req,res)=> {
     if(err)console.log(err);
     console.log(data)
     if(data!== null){
-      
+
       res.json({error:"Email déjà associé à un compte."})
     }else {
       res.json({Message:"Email disponible."})
-     
+
     }
   })
 
@@ -113,7 +113,7 @@ router.post('/checkEmail', (req,res)=> {
 router.post('/register',  (req, res) => {
   let userdata= req.body;
   let user = new User(userdata);
-  
+
    User.findOne({email:req.body.email},(err,data) => {
     if(data){
 
@@ -124,7 +124,7 @@ router.post('/register',  (req, res) => {
         s: '150',
         r: 'pg',
         d: 'identicon'});
-       
+
       user.password= bcrypt.hashSync(user.password, saltRounds);
       user.save((err, dataUser)=>{
         if(err){
@@ -147,8 +147,8 @@ router.post('/register',  (req, res) => {
 // gestion du login utilisateur
 router.post('/login', (req, res)=> {
   let userdata= req.body
-  //console.log(userdata)
- // console.log(req.body.password)
+  console.log(userdata)
+  console.log(req.body.password)
   let user = new User(userdata);
   User.findOne({pseudo:req.body.pseudo}, (err, data)=>{
    if(err){
@@ -179,11 +179,11 @@ router.post('/login', (req, res)=> {
 
 router.get('/get_member_comments/:pseudo', (req,res) => {
   let userpseudo= req.params.pseudo
-  
+
   Comment.find({authorId:userpseudo},null,{sort:{date: -1}}, (err,comments)=>{
 
     if(err) throw err;
-    
+
     console.log(comments)
     res.status('200').send({comments});
   })
@@ -228,25 +228,25 @@ router.put('/update',veriFyToken, (req,res)=> {
     res.json({data: data})
   }
  })
- 
- 
+
+
 })
 
 router.put('/updatestatut',veriFyToken, (req,res)=> {
   console.log('test update',req.body)
   let userdata=req.body;
   User.findOneAndUpdate({_id:userdata._id},{$set:{online:true}},(err,data)=>{
- 
+
    console.log(data)
- 
+
    if(err){
      console.log(err)
    }else {
      res.json({data: data})
    }
   })
-  
-  
+
+
  })
 
 router.get('/admin', veriFyToken, (req,res) => {
@@ -279,7 +279,7 @@ router.post('/lostpwd', (req, res) => {
           if(err) console.log(err);
           console.log('info mises a jours en base', data , new_password)
         })
-        
+
         SentPassword(email,data.pseudo, data.first_name,new_password);
       res.send({success:'Un nouveau mot de passe a été envoyé a votre adresse email, Merci de verifier votre boite aux lettres ainsi que le dossier spam !'});
       }else {
@@ -334,7 +334,7 @@ router.post('/post_comment',veriFyToken ,(req,res) => {
 router.get('/comments', (req,res) => {
   Comment.find({},null,{sort:{date: -1}},(err, comments)=>{
     if(err) throw err;
-    //console.log(comments);
+    console.log(comments);
     res.status(200).send({comments})
   })
 
@@ -373,13 +373,13 @@ router.post('/member',veriFyToken, (req,res)=> {
        //console.log(data);
       res.json({message:'Aucun membre trouvé'})
      }
-      
+
    })
 })
 
 router.get('/member_space/:pseudo',(req,res) =>{
   let member_pseudo=req.params.pseudo
-  
+
   User.findOne({pseudo:member_pseudo}, (err, user)=>{
     if(err){
       console.log(err.reason)
@@ -389,7 +389,7 @@ router.get('/member_space/:pseudo',(req,res) =>{
       res.json(user)
     }
   })
-   
+
 
 })
 
@@ -416,7 +416,7 @@ router.post('/addfriend', (req,res) => {
   var user =req.body.user
   //console.log('info du destinataire  invitation  ',member._id, member.first_name, member.email)
  //console.log("id de l'emetteur de l'invitation", user._id)
-  SendNotificationFriendRequest(member.email,member.last_name); 
+  SendNotificationFriendRequest(member.email,member.last_name);
 
   User.findOneAndUpdate({_id:member._id},
       {"$push":{"friendsList":{status:"en attente de confirmation", friendId:user._id}}},
@@ -427,7 +427,7 @@ router.post('/addfriend', (req,res) => {
            res.json({response:"Demande envoyée", success:true})
       }
     )
-  
+
 
 
 })
@@ -445,11 +445,11 @@ let member=req.body.member.members
    }else {
      res.json(err)
    }
-    
 
-    
-  }) 
-  
+
+
+  })
+
 
 })
 
@@ -458,7 +458,7 @@ let member=req.body.member.members
 router.post ('/updateInvitation', (req,res) => {
   let user=req.body.user
   let member=req.body.member.members
-  
+
     User.updateOne({_id:user._id, "friendsList.friendId":member._id},{ "$set":{"friendsList.$.status":"confirmer"}}, (err, data)=> {
      if(!err){
       console.log('data trouve......', data)
@@ -466,12 +466,12 @@ router.post ('/updateInvitation', (req,res) => {
      }else {
        res.json(err)
      }
-      
-  
-      
-    }) 
-    
-  
+
+
+
+    })
+
+
   })
 
 
@@ -501,7 +501,7 @@ router.post ('/updateInvitation', (req,res) => {
       ...req.body,
       id: shortId.generate(),
       createdAt: new Date().toISOString()
-    } 
+    }
     pusher.trigger('chat-group', 'chat', chat)
       res.send(chat)
 
@@ -518,12 +518,12 @@ router.post ('/updateInvitation', (req,res) => {
   router.post('/friends', function(req, res, next) {
     var clonedArray = usersCollection.slice();
 
-    // Getting the userId from the request body as this is just a demo 
+    // Getting the userId from the request body as this is just a demo
     // Ideally in a production application you would change this to a session value or something else
     var i = usersCollection.findIndex(x => x.id == req.body.userId);
-  
+
     clonedArray.splice(i,1);
-  
+
     res.json(clonedArray);
   });
 

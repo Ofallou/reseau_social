@@ -6,10 +6,10 @@ import {Observable } from 'rxjs';
 import * as Rx from 'rxjs';
 import {AuthService} from "./auth.service";
 import {User} from "./models/user";
-import { webSocket } from 'rxjs/observable/dom/webSocket';
+
 
 @Injectable()
 export class WebsocketService {
   constructor() {}
-  
+
 }

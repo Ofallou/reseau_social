@@ -11,6 +11,7 @@ import {UserdataComponent} from './userdata/userdata.component';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragulaModule } from 'ng2-dragula';
+// tslint:disable-next-line:max-line-length
 import { MatTableModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatRadioModule, MatListModule, MatGridListModule, MatCardModule, MatMenuModule,MatFormFieldModule,MatInputModule, MatCheckboxModule } from '@angular/material';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatSelectModule} from '@angular/material/select';
@@ -89,7 +90,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
     ChatWindowComponent,
     InvitationRequestComponent,
     NotificationsComponent,
-   
+
   ],
 
   imports: [
@@ -128,7 +129,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
     MatDatepickerModule,
     MatNativeDateModule,
     ImageUploadModule.forRoot(),
-    
+
 
     AngularFireModule.initializeApp({
       apiKey: "AIzaSyAlSqMwKKhmxwcaV2yV0JakW1Z3FC-8d3Q",
@@ -139,9 +140,9 @@ import { NotificationsComponent } from './notifications/notifications.component'
     messagingSenderId: "217716745845"
     }),
     AngularFireStorageModule
-    
+
   ],
-  providers: [AuthService,AdminGuard, AuthGuard,WebsocketService,ChatService,PusherService, CommentService,MemberActionService,
+  providers: [AuthService,AdminGuard, AuthGuard,WebsocketService,ChatService,PusherService, CommentService,MemberActionService,TokenService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenService,
@@ -149,6 +150,6 @@ import { NotificationsComponent } from './notifications/notifications.component'
     }],
   bootstrap: [AppComponent],
   entryComponents: [ChatWindowComponent]
- 
+
 })
 export class AppModule { }

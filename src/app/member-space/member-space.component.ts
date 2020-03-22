@@ -1,81 +1,72 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router'
-import { AuthService } from '../auth.service';
-import { CommentService } from '../comment.service';
-import { User } from '../models/user';
-import { Comment } from '../models/comment';
-import { MemberActionService } from '../member-action.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material';
-import { Observable } from 'rxjs';
-import * as Rx from 'rxjs';
-import { ChatWindowComponent } from '../chat-window/chat-window.component';
-import { Http } from '@angular/http';
-import { ChatService } from '../chat/chat.service';
+import { Component, OnInit, Inject } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { AuthService } from "../auth.service";
+import { CommentService } from "../comment.service";
+import { User } from "../models/user";
+import { Comment } from "../models/comment";
+import { MemberActionService } from "../member-action.service";
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogConfig
+} from "@angular/material";
+import { Observable } from "rxjs";
+import * as Rx from "rxjs";
+import { ChatWindowComponent } from "../chat-window/chat-window.component";
+import { Http } from "@angular/http";
+import { ChatService } from "../chat/chat.service";
 //import { ChatService } from '../services/chat.service';
-import { Ichat } from '../interfaces/ichat';
-
-
+import { Ichat } from "../interfaces/ichat";
 
 @Component({
-  selector: 'app-member-space',
-  templateUrl: './member-space.component.html',
-  styleUrls: ['./member-space.component.css']
+  selector: "app-member-space",
+  templateUrl: "./member-space.component.html",
+  styleUrls: ["./member-space.component.css"]
 })
-
-
-
 export class MemberSpaceComponent implements OnInit {
-
-
   member_pseudo;
   step = 0;
   keyword = {
-    name: ''
+    name: ""
   };
   resultList: any[];
   messageErreur;
-  isAdmin:Boolean;
-  isOnline:false;
-  isConfirm:false;
+  isAdmin: Boolean;
+  isOnline: false;
+  isConfirm: false;
 
   comment: Comment = {
-    title: '',
-    author: '',
-    content: '',
+    title: "",
+    author: "",
+    content: "",
     date: null,
-    authorId: '',
-    authorPicture: '',
+    authorId: "",
+    authorPicture: "",
     explicit: false
-
-  }
-
- 
-
+  };
 
   dataSource;
 
   //allMembers =[];
 
   user: User = {
-    _id: '',
-    first_name: '',
-    last_name: '',
-    pseudo: '',
-    email: '',
+    _id: "",
+    first_name: "",
+    last_name: "",
+    pseudo: "",
+    email: "",
     admin: false,
     online: false,
-    dateNaissance: new Date,
-    gender: '',
-    password: '',
-    friendsList: [
-      { status: "", friendId: "" }
-    ],
-    picture: ''
-
+    dateNaissance: new Date(),
+    gender: "",
+    password: "",
+    friendsList: [{ status: "", friendId: "" }],
+    picture: ""
   };
   currentUser;
   membersNotFriends = [];
-  friends=[];
+  friends = [];
   visitor: Boolean;
   userPicture: String;
   userComment;
@@ -83,258 +74,207 @@ export class MemberSpaceComponent implements OnInit {
   chats: Ichat[] = [];
   sending: boolean;
 
-
   constructor(
     private activatedRouter: ActivatedRoute,
     private commentService: CommentService,
-    private router: Router, private authService: AuthService,
+    private router: Router,
+    private authService: AuthService,
     private memberActionService: MemberActionService,
-    private chatService:ChatService
-    
+    private chatService: ChatService
   ) {
-this.visitor=false;
-    this.authService.getData().subscribe(
-      res => {
-        this.user=res.user
-        
-        this.authService.iamOnline(this.user);
-       
-      
+    this.visitor = false;
+    this.authService.getData().subscribe(res => {
+      this.user = res.user;
+
+      this.authService.iamOnline(this.user);
+    });
+
+    this.chatService.onInvitationChatRequest().subscribe(res => {
+      if (res.myFriend === this.user.pseudo) {
+        this.router.navigate([
+          "/member_space/" + this.user.pseudo + "/chat_window"
+        ]);
+
+        alert("invitation au chat de" + res.me);
       }
-    )
+    });
 
-    this.chatService.onInvitationChatRequest().subscribe(
-      res => {
+    /*     this.authService.updateUserStatus(this.user).subscribe(
+          res => {
+            console.log(res)
+          }
+        ) */
+    // this.authService.onConnected(this.user);
 
-        if(res.myFriend=== this.user.pseudo){
+    this.commentService.onPosted().subscribe(data => {
+      this.userComment.splice(0, 0, data);
+      // console.log("Apres ajout",this.userComment)
+    });
 
-          this.router.navigate(['/member_space/'+this.user.pseudo+'/chat_window'])
+    this.memberActionService.onRequestInvitation().subscribe(invitation => {
+      console.log(invitation);
+      this.message = invitation;
+    });
 
-          alert('invitation au chat de'+res.me)
+    this.memberActionService.onRequestInvitationCancel().subscribe(data => {
+      console.log("Annulation", data);
+      if (data.member.members._id == this.user._id) {
+        alert(data.user.pseudo + " n'a pas donné suite a votre demande d'amis");
+        console.log("Ma liste amis", this.user.friendsList);
 
-        }
-
+        const finder = this.user.friendsList.findIndex(
+          user => user.friendId === data.user._id
+        );
+        console.log(finder);
+        this.user.friendsList.splice(
+          this.user.friendsList.findIndex(
+            user => user.friendId === data.user._id
+          ),
+          1
+        );
+        console.log(this.user.friendsList);
+        this.authService.updateUser(this.user);
       }
-    )
-
-
-   
-
-
-
-/*     this.authService.updateUserStatus(this.user).subscribe(
-      res => {
-        console.log(res)
-      }
-    ) */
-   //this.authService.onConnected(this.user);
-    
-    
-    this.commentService.onPosted()
-      .subscribe(data => {
-        this.userComment.splice(0, 0, data)
-        //console.log("Apres ajout",this.userComment)
-      }
-      );
-
-    this.memberActionService.onRequestInvitation().subscribe(
-      invitation => {
-        console.log(invitation)    
-            this.message = invitation
-
-      }
-    )
-
-    this.memberActionService.onRequestInvitationCancel()
-    .subscribe(data => {
-      console.log("Annulation",data)
-      if(data.member.members._id == this.user._id){
-        alert(data.user.pseudo+ " n'a pas donné suite a votre demande d'amis")
-        console.log('Ma liste amis',this.user.friendsList)
-
-       const finder = this.user.friendsList.findIndex(user =>  user.friendId === data.user._id)
-       console.log(finder)
-       this.user.friendsList.splice(this.user.friendsList.findIndex(user =>  user.friendId === data.user._id),1)
-        console.log(this.user.friendsList)
-        this.authService.updateUser(this.user)
-
-      }
-    })
-
-
-  
-
-
+    });
   }
-
-  
-
-
- 
 
   ngOnInit() {
+    this.activatedRouter.paramMap.subscribe(params => {
+      this.member_pseudo = params.get("pseudo");
+      this.friends = [];
 
+      this.membersNotFriends = [];
 
+      this.authService.getData().subscribe(res => {
+        this.user = res.user;
+        this.isAdmin = this.user.admin;
+        //console.log('Moi user',this.user)
+        // this.onSubmit()
+        const myFriends = this.user.friendsList.filter(
+          element => element.status == "confirmer"
+        );
+        // console.log(myFriends);
+        myFriends.forEach(element => {
+          //console.log(element)
+          this.memberActionService.getMemberById(element).subscribe(res => {
+            this.friends.push(res);
+            //console.log(res
+          });
+        });
 
-
-    this.activatedRouter.paramMap.subscribe(
-      params => {
-
-        
-       
-        this.member_pseudo = params.get('pseudo')
-        this.friends=[]
-       
-        this.membersNotFriends = [];
-        
-        this.authService.getData().subscribe(
-         
-          res => {
-            this.user = res.user;
-            this.isAdmin=this.user.admin;
-            //console.log('Moi user',this.user)
-           // this.onSubmit()
-            const myFriends=this.user.friendsList.filter(element => element.status=='confirmer');
-           // console.log(myFriends);
-            myFriends.forEach(element => {
-              //console.log(element)
-              this.memberActionService.getMemberById(element).subscribe(
-                res => {
-                  this.friends.push(res)
-                  //console.log(res
-                 
-
-                }
-              )
-            })
-
-/*             this.chatService.getChannel().bind('chat',data => {
-              //console.log(data)
-              if(data.email === this.chatService.user.email){
-                data.isMe= true;
-              }
-              this.chats.push(data)
-            })
- */
-            this.commentService.getMemberComments(this.member_pseudo)
-            .subscribe(
-              res => {
-              // console.log('Les commentaires de ki ???',res)
-                this.userComment = res.comments
-              }
-            )
-            
-
-            console.log("Mes amis", this.friends);
-
-            //console.log('le user est  connecté :',res.user._id, res.user.last_name)
-
-            if (this.member_pseudo === this.user.pseudo) {
-              this.visitor = false;
-            } else {
-              this.visitor = true;
-              //console.log('Amis ou membre qui visite ma page',false)
-            }
+        /*             this.chatService.getChannel().bind('chat',data => {
+                          //console.log(data)
+                          if(data.email === this.chatService.user.email){
+                            data.isMe= true;
+                          }
+                          this.chats.push(data)
+                        })
+             */
+        this.commentService
+          .getMemberComments(this.member_pseudo)
+          .subscribe(res => {
+            // console.log('Les commentaires de ki ???',res)
+            this.userComment = res.comments;
           });
 
-        this.authService.getAllMembers()
-          .subscribe(
-            members => {
-              this.membersNotFriends = members
-              //console.log('Liste de tous les membres avant traitement',this.membersNotFriends)
-              //On se supprime de la liste des membre a l'affichage le mebre loggé
-              console.log(this.membersNotFriends[1])
-              this.membersNotFriends.splice(this.membersNotFriends.findIndex(user => user.pseudo === this.member_pseudo), 1)
+        console.log("Mes amis", this.friends);
 
-              this.authService.memberSpace(this.member_pseudo).subscribe(
-                res => {
-                  //console.log("le res est comment ??",res)
-                  if(res ===  null ||res === undefined){
-                    this.router.navigate(['/notFound'])
-                  }else {
-                    this.user = res;
-                  }
-              
-               
-                 // console.log('liste amis', this.user.friendsList)
-                 // On enleve de la lsite les 
-                  //console.log('Liste de tous les membres ', this.membersNotFriends)
-                  this.user.friendsList.forEach(element => {
-                   // console.log('element bi !!!',element.status)
-                    this.membersNotFriends.splice(this.membersNotFriends.findIndex(user => user._id === element.friendId), 0)
-                  })
+        //console.log('le user est  connecté :',res.user._id, res.user.last_name)
 
+        if (this.member_pseudo === this.user.pseudo) {
+          this.visitor = false;
+        } else {
+          this.visitor = true;
+          //console.log('Amis ou membre qui visite ma page',false)
+        }
+      });
 
-                }
-              )
+      this.authService.getAllMembers().subscribe(members => {
+        this.membersNotFriends = members;
+        //console.log('Liste de tous les membres avant traitement',this.membersNotFriends)
+        //On se supprime de la liste des membre a l'affichage le mebre loggé
+        console.log(this.membersNotFriends[1]);
+        this.membersNotFriends.splice(
+          this.membersNotFriends.findIndex(
+            user => user.pseudo === this.member_pseudo
+          ),
+          1
+        );
 
-            }
-          )
-          //On recupere les info du user connecté
-        this.authService.getData().
-          subscribe(
+        this.authService.memberSpace(this.member_pseudo).subscribe(res => {
+          //console.log("le res est comment ??",res)
+          if (res === null || res === undefined) {
+            this.router.navigate(["/notFound"]);
+          } else {
+            this.user = res;
+          }
 
-            res => {
-              this.currentUser = res
-              this.comment.author = res.user.first_name + ' ' + res.user.last_name;
-   //console.log('ki est tu pseudo ??',this.member_pseudo)
-              if (res.user.pseudo != this.member_pseudo) {
-                this.comment.authorId = this.member_pseudo
-              } else {
-                this.comment.authorId = res.user.pseudo
-              }
-              this.comment.authorPicture = res.user.picture;
-
-            }
-
-          )
-
-
-      }
-
-    )
-
-
+          // console.log('liste amis', this.user.friendsList)
+          // On enleve de la lsite les
+          //console.log('Liste de tous les membres ', this.membersNotFriends)
+          this.user.friendsList.forEach(element => {
+            // console.log('element bi !!!',element.status)
+            this.membersNotFriends.splice(
+              this.membersNotFriends.findIndex(
+                user => user._id === element.friendId
+              ),
+              0
+            );
+          });
+        });
+      });
+      //On recupere les info du user connecté
+      this.authService.getData().subscribe(res => {
+        this.currentUser = res;
+        this.comment.author = res.user.first_name + " " + res.user.last_name;
+        //console.log('ki est tu pseudo ??',this.member_pseudo)
+        if (res.user.pseudo != this.member_pseudo) {
+          this.comment.authorId = this.member_pseudo;
+        } else {
+          this.comment.authorId = res.user.pseudo;
+        }
+        this.comment.authorPicture = res.user.picture;
+      });
+    });
   }
 
-
-
-  chatRequest(friend){
-    const pseudo =friend.members.pseudo
+  chatRequest(friend) {
+    const pseudo = friend.members.pseudo;
     this.memberActionService.requestInvitation(pseudo);
   }
 
- 
-
-/* 
-  onSubmit() {
-    const params= {email:this.user.email, displayName:this.user.pseudo}
-    this.chatService.join(params).subscribe(
-      res => {
-        console.log(res)
-      },
-      error => {
-        console.error(error)
-      }
-    )
-    //this.chatService.openChatRoom({user:this.user, friend:friend.members})
-    
-
-  } */
-/* 
-  sendMessage(message: string) {
-    this.sending = true;
-    this.chatService.sendMessage(message)
-      .subscribe(resp => {
-        console.log(resp)
-        this.message = undefined;
-        this.sending = false;
-      }, err => {
-        this.sending = false;
-      } );
-  } */
+  disconnect(){
+    this.authService.logoutUser();
+  }
 
 
+  /*
+    onSubmit() {
+      const params= {email:this.user.email, displayName:this.user.pseudo}
+      this.chatService.join(params).subscribe(
+        res => {
+          console.log(res)
+        },
+        error => {
+          console.error(error)
+        }
+      )
+      //this.chatService.openChatRoom({user:this.user, friend:friend.members})
+
+
+    } */
+  /*
+    sendMessage(message: string) {
+      this.sending = true;
+      this.chatService.sendMessage(message)
+        .subscribe(resp => {
+          console.log(resp)
+          this.message = undefined;
+          this.sending = false;
+        }, err => {
+          this.sending = false;
+        } );
+    } */
 
   remove(array, element) {
     const index = array.indexOf(element);
@@ -342,16 +282,14 @@ this.visitor=false;
   }
 
   updateFriendList(member) {
-   
-     this.friends.push(member)
-    
+    this.friends.push(member);
   }
 
-
-
-
   updateMemberList(member) {
-    this.membersNotFriends.splice(this.membersNotFriends.findIndex(user => user === member), 1)
+    this.membersNotFriends.splice(
+      this.membersNotFriends.findIndex(user => user === member),
+      1
+    );
   }
 
   setStep(index: number) {
@@ -364,291 +302,232 @@ this.visitor=false;
 
   prevStep() {
     this.step--;
-  } 
-
+  }
 
   posted() {
     this.comment.date = new Date();
-    this.commentService.postMessage(this.comment)
-
+    this.commentService.postMessage(this.comment);
   }
-/* 
-  openDialog(friend) {
-    const dialogConfig = new MatDialogConfig();
+  /*
+    openDialog(friend) {
+      const dialogConfig = new MatDialogConfig();
 
-    dialogConfig.disableClose = false;
-    dialogConfig.autoFocus = true;
+      dialogConfig.disableClose = false;
+      dialogConfig.autoFocus = true;
 
-    dialogConfig.data = {
-    me:  this.user,
-    myfriend:friend
-    }
-    
-
-    this.dialog.open(ChatWindowComponent, dialogConfig);
-} */
-
- 
+      dialogConfig.data = {
+      me:  this.user,
+      myfriend:friend
+      }
 
 
-  all(){
+      this.dialog.open(ChatWindowComponent, dialogConfig);
+  } */
 
-    this.friends=[]
-    
+  all() {
+    this.friends = [];
+
     this.user.friendsList.forEach(element => {
       //console.log(element)
-      this.memberActionService.getMemberById(element).subscribe(
-        res => {
-          this.friends.push(res)
-         // console.log(this.friends)
-         
-
-        }
-      )
-    })
-
+      this.memberActionService.getMemberById(element).subscribe(res => {
+        this.friends.push(res);
+        // console.log(this.friends)
+      });
+    });
 
     //console.log('de alll',this.friends)
-
   }
 
-  confirm(){
-    this.friends=[];
-    const conf= this.user.friendsList.filter(element => element.status=='confirmer');
+  confirm() {
+    this.friends = [];
+    const conf = this.user.friendsList.filter(
+      element => element.status == "confirmer"
+    );
     //console.log('conf est egala a ',conf)
     conf.forEach(element => {
       //console.log(element)
-      this.memberActionService.getMemberById(element).subscribe(
-        res => {
-          this.friends.push(res)
-          //console.log(this.friends)
-         
-
-        }
-      )
-    })
+      this.memberActionService.getMemberById(element).subscribe(res => {
+        this.friends.push(res);
+        //console.log(this.friends)
+      });
+    });
 
     //console.log('Confirme',this.friends)
     //console.log(this.user.friendsList)
-
   }
-  send(){
-   
-    this.friends=[];
-    const send = this.user.friendsList.filter(element => element.status=='invitation en cours ');
+  send() {
+    this.friends = [];
+    const send = this.user.friendsList.filter(
+      element => element.status == "invitation en cours "
+    );
     send.forEach(element => {
       //console.log(element)
-      this.memberActionService.getMemberById(element).subscribe(
-        res => {
-          this.friends.push(res)
-          //console.log('envoyées',this.friends)
-         
-
-        }
-      )
-    })
-  //  console.log('pour send',send)
-  //  console.log('envoyées',this.friends)
-    
-
+      this.memberActionService.getMemberById(element).subscribe(res => {
+        this.friends.push(res);
+        //console.log('envoyées',this.friends)
+      });
+    });
+    //  console.log('pour send',send)
+    //  console.log('envoyées',this.friends)
   }
 
-  waiting(){
-
-
-    this.friends=[];
-    const wainting= this.user.friendsList.filter(element => element.status=='en attente de confirmation');
+  waiting() {
+    this.friends = [];
+    const wainting = this.user.friendsList.filter(
+      element => element.status == "en attente de confirmation"
+    );
     wainting.forEach(element => {
       //console.log(element)
-      this.memberActionService.getMemberById(element).subscribe(
-        res => {
-          this.friends.push(res)
-          //console.log(res
-         
-
-        }
-      )
-    })
+      this.memberActionService.getMemberById(element).subscribe(res => {
+        this.friends.push(res);
+        //console.log(res
+      });
+    });
     //console.log('En attente',this.friends)
   }
 
   searchfriend() {
- console.log(this.authService.getAllMembers().subscribe(
-   res =>{
-     
-    console.log(res)
-   } )
-  )
+    console.log(
+      this.authService.getAllMembers().subscribe(res => {
+        console.log(res);
+      })
+    );
   }
 
   onSelect(member) {
-    this.router.navigate(['/member_space', member.pseudo])
-
+    this.router.navigate(["/member_space", member.pseudo]);
   }
 
-  sendInviation(member){
-
+  sendInviation(member) {
     this.memberActionService.requestInvitation(member);
   }
 
-
-
-
   cancelInvitation(member) {
-    console.log(member)
+    console.log(member);
     this.membersNotFriends.push(member.members);
-    const finder=this.user.friendsList.findIndex(user =>  user.friendId === member.members._id)
-    this.user.friendsList.splice(this.user.friendsList.findIndex(user =>  user.friendId === member.members._id),1)
-    console.log(finder)
-    console.log(this.user.friendsList.length)
-    this.memberActionService.cancelInvitationrequest(member,this.user)
-    this.authService.updateUser(this.user).subscribe(
-      resp => console.log('Mise a jour ok ???',resp)
-    )
+    const finder = this.user.friendsList.findIndex(
+      user => user.friendId === member.members._id
+    );
+    this.user.friendsList.splice(
+      this.user.friendsList.findIndex(
+        user => user.friendId === member.members._id
+      ),
+      1
+    );
+    console.log(finder);
+    console.log(this.user.friendsList.length);
+    this.memberActionService.cancelInvitationrequest(member, this.user);
+    this.authService
+      .updateUser(this.user)
+      .subscribe(resp => console.log("Mise a jour ok ???", resp));
   }
 
-  acceptRequestInvitation(member){
-
+  acceptRequestInvitation(member) {
     this.user.friendsList.forEach(element => {
-
-      if (element.friendId == member.members._id && element.status == "en attente de confirmation") {
-
+      if (
+        element.friendId == member.members._id &&
+        element.status == "en attente de confirmation"
+      ) {
         element.status = "confirmé";
       }
-
-
     });
 
-    this.memberActionService.acceptInvitation(member, this.user).subscribe(
-      res => {
+    this.memberActionService
+      .acceptInvitation(member, this.user)
+      .subscribe(res => {
+        if (res == 1) {
+          // On fait la meme chose de l'autre coté
+          this.memberActionService
+            .updateInvitation(member, this.user)
+            .subscribe(res2 => console.log(res2));
 
-        if(res==1){
-        // On fait la meme chose de l'autre coté 
-        this.memberActionService.updateInvitation(member,this.user).subscribe(
-          res2=> console.log(res2)
-        )
-
-        this.authService.getData().subscribe(
-          res => {
-            this.user= res.user;
-          } 
-        );
-          console.log('update ok')
-        }else {
-
-          console.log('update non effectué')
+          this.authService.getData().subscribe(res => {
+            this.user = res.user;
+          });
+          console.log("update ok");
+        } else {
+          console.log("update non effectué");
         }
-
-      }
-    )
+      });
   }
-
- 
-
-
 
   acceptInvitation(friendId) {
-    console.log(friendId.members._id)
-    console.log(this.user.friendsList)
+    console.log(friendId.members._id);
+    console.log(this.user.friendsList);
     this.user.friendsList.forEach(element => {
-
-      if (element.friendId == friendId.members._id && element.status == "en attente de confirmation") {
-
+      if (
+        element.friendId == friendId.members._id &&
+        element.status == "en attente de confirmation"
+      ) {
         element.status = "confirmé";
       }
-
-
     });
-    console.log('aprés modif', this.user.friendsList)
+    console.log("aprés modif", this.user.friendsList);
 
-    this.authService.updateUser(this.user).subscribe(
-      res => console.log(res)
-    )
-  } 
+    this.authService.updateUser(this.user).subscribe(res => console.log(res));
+  }
 
   sendInvitationrequest(member) {
-    console.log('Id a inviter ', member)
-    console.log(' Liste vide ? ??????', this.user.friendsList)
+    console.log("Id a inviter ", member);
+    console.log(" Liste vide ? ??????", this.user.friendsList);
     let test;
 
-
-    if (this.user.friendsList.length != 0 && this.member_pseudo != member.pseudo) {
-      test = this.user.friendsList.find((element) => {
-
+    if (
+      this.user.friendsList.length != 0 &&
+      this.member_pseudo != member.pseudo
+    ) {
+      test = this.user.friendsList.find(element => {
         return element.friendId == member._id;
-
-      })
+      });
     }
 
-
-   
-    
-
-    console.log(test)
+    console.log(test);
 
     if (test === undefined || this.user.friendsList.length == 0) {
-
       // console.log('On rajoute a la liste de demande amis',id)
 
       // console.log('On continu et on ajoute  la liste')
 
       //console.log("Le membre est comment ?",id)
-      console.log('//////', member)
-      console.log('les amis du user en cour', this.friends)
-      this.memberActionService.add_friend(member,this.user)
-        .subscribe(
-          res => {
-            if (res) {
-              this.updateMemberList(member);
-              this.user.friendsList.push({ status: "invitation en cours ", friendId: member._id })
-              
-              this.memberActionService.getMemberById({ status: "invitation en cours ", friendId: member._id }).subscribe(
-                res => {
-                  this.friends.push(res)
-                  //console.log(res
-                 
+      console.log("//////", member);
+      console.log("les amis du user en cour", this.friends);
+      this.memberActionService.add_friend(member, this.user).subscribe(res => {
+        if (res) {
+          this.updateMemberList(member);
+          this.user.friendsList.push({
+            status: "invitation en cours ",
+            friendId: member._id
+          });
 
-                }
-              )
+          this.memberActionService
+            .getMemberById({
+              status: "invitation en cours ",
+              friendId: member._id
+            })
+            .subscribe(res => {
+              this.friends.push(res);
+              //console.log(res
+            });
 
-
-              console.log(member._id);
-              this.authService.updateUser(this.user).
-                subscribe(
-                  res => {
-                    console.log('Apres update la reponse API', res.data)
-                    //this.updateFriendList(member);
-                    
-
-                  }
-                )
-
-
-
-            }
-
-
-          })
+          console.log(member._id);
+          this.authService.updateUser(this.user).subscribe(res => {
+            console.log("Apres update la reponse API", res.data);
+            //this.updateFriendList(member);
+          });
+        }
+      });
     } else {
-
-      alert('Invitation deja envoyée ou Membre deja amis')
+      alert("Invitation deja envoyée ou Membre deja amis");
     }
-
   }
 
-
-invitetoChat(member){
-
-  this.chatService.sendChatInvitation({me:this.user.pseudo,myFriend:member.members.pseudo})
-  
+  invitetoChat(member) {
+    this.chatService.sendChatInvitation({
+      me: this.user.pseudo,
+      myFriend: member.members.pseudo
+    });
+  }
 }
-
-
-
-
-
-}
-
 
 /* @Component({
   selector: 'chat',

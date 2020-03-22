@@ -17,8 +17,8 @@ const cors = require('cors')
 
 
 
-const db="mongodb://ofallou:meissa71@ds249079.mlab.com:49079/reseau_social";
-//const db="mongodb://127.0.0.1:27017/reseau_social_db";
+//const db="mongodb://ofallou:meissa71@ds249079.mlab.com:49079/reseau_social";
+const db="mongodb://127.0.0.1:27017/reseau_social_db";
 
 const secret='RffrtejksizikskiksizkskizkskkzikskskksMpp';
 
@@ -42,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 const PORT = process.env.PORT || 5000;
 //routes
-const api = require('./back/routes');
+const api = require('./back/routes.js');
 
 app.use(bodyParser.json());
 //config route
@@ -52,7 +52,7 @@ app.get('*', (req, res) => {
   const index= path.join(__dirname, 'dist','index.html')
   res.sendFile(index);
 
-}); 
+});
 
 //app.use(express.static(__dirname + "/dist/"))
 
@@ -73,7 +73,7 @@ io.on('connection' , (socket) =>{
 
 
     //socket.emit('user join',{message:'Welcome'});
-    
+
 
     socket.on('invitation:send' , (data)=> {
       socket.join(data)
@@ -98,7 +98,7 @@ io.on('connection' , (socket) =>{
       console.log(data);
       io.sockets.emit('invitation:ok', data)
     })
-      
+
       socket.on('posted', (data) => {
         console.log('Message reçu', data, socket.id);
         io.sockets.emit('message',data)
@@ -114,7 +114,7 @@ io.on('connection' , (socket) =>{
 
         io.to(data.me).emit('yes ')
 
-        
+
       })
 
       socket.on('sent', (data)=> {
@@ -125,7 +125,7 @@ io.on('connection' , (socket) =>{
 
 
       socket.on('disconnect',() => {
-        
+
         io.emit('user disconnect', socket.id)
         console.log('user disconnected', socket.id)
       })

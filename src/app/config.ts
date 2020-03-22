@@ -2,7 +2,7 @@ export class Config {
 
   URL = "http://localhost:5000"
   public static  get SOCKET_HOST(): string {
-    return "https://dry-fortress-71234.herokuapp.com" 
+    return "http://localhost:5000"
   }
 
 

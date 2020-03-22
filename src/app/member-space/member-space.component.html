@@ -1,117 +1,138 @@
+<app-header></app-header>
 
- <app-header></app-header>
-
-
-   
-  <div class="myspace">
-
-      <div class="menuside">
-
-          <a href="/home"><i class="material-icons"  matTooltip="Se deconnecter"
-            >
-                input
-                </i></a>
-      
-       </div>
-
+<div class="myspace">
+  <div class="menuside">
+    <a routerLink="/home" (click)="disconnect()"
+      ><i class="material-icons" matTooltip="Se deconnecter ?????">
+        input
+      </i></a
+    >
+  </div>
 
   <div>
     <mat-card class="card">
-        <mat-card-header>
-            <img src=" {{user.picture}}"  class="rounded" alt="">
-          <mat-card-title>
-            {{user.first_name}}
-            {{user.last_name}}
-                </mat-card-title>
-          <mat-card-subtitle>
-            {{user.pseudo}}
-           
-          </mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-        </mat-card-content>
-      </mat-card>
+      <mat-card-header>
+        <img src=" {{ user.picture }}" class="rounded" alt="" />
+        <mat-card-title>
+          {{ user.first_name }}
+          {{ user.last_name }}
+        </mat-card-title>
+        <mat-card-subtitle>
+          {{ user.pseudo }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content> </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="chat"></div>
 
-</div>
-<div class="chat">
-</div>
+  <div class="member">
+    <mat-card class="example-card ">
+      <mat-card-content>
+        <form
+          class="example-form"
+          #commentF="ngForm"
+          (submit)="posted(); commentF.reset()"
+        >
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="titre du message"
+              name="title"
+              id="titre"
+              [(ngModel)]="comment.title"
+              required
+            />
+          </mat-form-field>
+          <br />
+          <mat-form-field class="example-full-width">
+            <textarea
+              matInput
+              placeholder="Poster un commentaire......"
+              name="comment"
+              [(ngModel)]="comment.content"
+            ></textarea>
+          </mat-form-field>
+          <br />
+          <button
+            type="submit"
+            mat-mini-fab
+            color="accent"
+            [disabled]="!commentF.form.valid"
+          >
+            Poster
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
 
 
-<div class=" member p-2 bd-highlight" >
-<!--     <mat-card  class="example-card ">
-       
-        <mat-card-content >
-           <form class="example-form" #commentF="ngForm" (submit)="posted();commentF.reset()" >
-               <mat-form-field>
-                 <input matInput placeholder="titre du message" name="title" id="titre" [(ngModel)]="comment.title" required >
-               </mat-form-field>
-                <br>
-               <mat-form-field class="example-full-width">
-                 <textarea matInput placeholder="Poster un commentaire......" name="comment" [(ngModel)]="comment.content"></textarea>
-               </mat-form-field>
-                <br>
-               <button type="submit" mat-mini-fab color="accent" [disabled]="!commentF.form.valid">Poster
-               </button>
-           </form>
-        </mat-card-content>
- 
-    </mat-card> -->
-      
+    <div class="card" style="width: 18rem;"  *ngFor="let comment of userComment">
+      <div class="card-body">
+        <h5 class="card-title">
+          <img
+          src="{{ comment.authorPicture }}"
+          width="48px"
+          alt="Card image cap"
+        />
+          {{ comment.author }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{ comment.title }}</h6>
+        <p class="card-text">{{ comment.content }}</p>
+        <a href="#" class="card-link">partager</a>
+        <a href="#" class="card-link">supprimer</a>
+      </div>
+      <span>Posté le {{ comment.date | date: "dd-MM-yyyy à HH:mm" }}</span>
+    </div>
+
+
 
 
 <!--     <div class="card" style="width:400px;" *ngFor="let comment of userComment">
-        <div class="card-header">
-            <img src="{{comment.authorPicture}}" width="48px" alt="Card image cap">
-            {{comment.author }}
-          </div>
-        
-        <div class="card-body">
-          <h5 class="card-title">{{comment.title}}</h5>
-          <p class="card-text">
-              {{comment.content}}
-        </div>
-        <div class="card-footer text-muted">
-            Posté le  {{ comment.date| date:'dd-MM-yyyy à HH:mm' }}
-          </div>
-   
-        
-      </div> -->
+      <div class="card-header">
+        <img
+          src="{{ comment.authorPicture }}"
+          width="48px"
+          alt="Card image cap"
+        />
+        {{ comment.author }}
+      </div>
 
+      <div class="card-body">
+        <h5 class="card-title">{{ comment.title }}</h5>
+        <p class="card-text">
+          {{ comment.content }}
+        </p>
+      </div>
 
- </div>
- 
+      <div class="card-footer text-muted">
+        Posté le {{ comment.date | date: "dd-MM-yyyy à HH:mm" }}
+      </div>
+    </div> -->
+  </div>
 
+  <div class=" p-2 bd-highlight">
+    <div class="request">
+      <!--         <form *ngIf="!visitor || isAdmin" class="example-form" #search="ngForm" >
 
-
-<div class=" p-2 bd-highlight"  >
-
-
-    <div  class="request">
-<!--         <form *ngIf="!visitor || isAdmin" class="example-form" #search="ngForm" >
-        
             <mat-form-field>
               <input matInput placeholder="nom, prenom ou pseudo" name="name" [(ngModel)]="keyword.name" >
             </mat-form-field>
             <button type="submit" mat-button color="primary" (click)="searchfriend()" >OK</button>
-mat-list-item> 
+mat-list-item>
                  <form class="example-form" >
-                    <img src=" {{member.picture}}" alt=""> {{member.pseudo}} 
-                    
-                  
+                    <img src=" {{member.picture}}" alt=""> {{member.pseudo}}
+
+
                   </form>
                  </mat-list-item>
-      
+
                </mat-list>
-        
+
               </form>
             <mat-list *ngFor="let member of resultList">
                -->
-                
-          
- 
 
-
-<!--          <table *ngIf="!visitor || isAdmin" class="table table-striped">
+      <!--          <table *ngIf="!visitor || isAdmin" class="table table-striped">
             <thead>
             Membres
             </thead>
@@ -125,17 +146,11 @@ mat-list-item>
                     person_add
                     </i></button></td>
               </tr>
-              
+
             </tbody>
           </table> -->
 
-          
-          
-            
-                   
-                   
-                   
-                    <!--  <mat-button-toggle-group name="status" aria-label="Font Style">
+      <!--  <mat-button-toggle-group name="status" aria-label="Font Style">
                         <mat-button-toggle (click)="all()"  matTooltip="Tous les status" value="demande">
                             <i  class="material-icons">
                                 clear_all
@@ -145,37 +160,33 @@ mat-list-item>
                         <mat-button-toggle (click)="waiting()"  matTooltip="En attente de confirmation" value="attente"><i  class="material-icons" >arrow_left</i></mat-button-toggle>
                         <mat-button-toggle  (click)="send()"  matTooltip="Demande d'ami envoyée" value="demande"><i   class="material-icons" >arrow_right</i></mat-button-toggle>
                       </mat-button-toggle-group> -->
-                      
-                      
-                <div class="members" *ngFor="let friend of friends">
-                  <img class="picture" (click)="onSelect(friend.members)" src="{{friend.members.picture}}" alt="" style="width: 36px;" alt="">
 
+      <div class="members" *ngFor="let friend of friends">
+        <img
+          class="picture"
+          (click)="onSelect(friend.members)"
+          src="{{ friend.members.picture }}"
+          alt=""
+          style="width: 36px;"
+          alt=""
+        />
+      </div>
 
-                </div>
-                   
-
-
-                    
-<!-- 
+      <!--
                       <div  *ngIf="friend.status=='en attente de confirmation'">
-                         
+
                               <i *ngIf="!visitor || isAdmin" (click)="acceptRequestInvitation(friend)" class="material-icons"> group_add</i>
-                              
-                          
+
+
                               <i *ngIf="!visitor || isAdmin" (click)="cancelInvitation(friend)" matTooltip="Annuler la demande"  class="material-icons">
                                   cancel
                                   </i>
-                         
+
 
                       </div> -->
-                     
+    </div>
 
-              
-                
-      
-      </div>
-
-<!-- <div class="chat">
+    <!-- <div class="chat">
   <h6 class="pb-2 mb-0">Group Chat <button class="btn btn-sm btn-primary" >invite others</button></h6>
   <div class="chats">
     <div class="chatbox">
@@ -198,24 +209,18 @@ mat-list-item>
         </p>
       </div>
     </div>
-  
+
     <div class="d-flex flex-row">
       <input [(ngModel)]="message" type="text" class="form-control" placeholder="Enter message" style="margin-right: 10px">
       <button [disabled]="!message || sending" (click)="sendMessage(message)" class="btn btn-primary"> {{sending ? 'Sending' : 'Send'}}</button>
     </div>
   </div>
-  
+
   </div>
 </div> -->
-
+  </div>
 </div>
 
-</div>
+<div></div>
 
-<div>
-
-</div>
-
-
-
-<router-outlet></router-outlet> 
+<router-outlet></router-outlet>

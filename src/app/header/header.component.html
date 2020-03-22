@@ -1,14 +1,14 @@
 
 <mat-toolbar color="primary">
    <mat-toolbar-row>
-        <span>Octokeep</span>
+        <span>Kemet</span>
         <span class="example-spacer"></span>
-        
+
              <a routerLink="/" routerLinkActive="active"><i class="material-icons" matTooltip="Page d'accueil">
             home
-            </i></a> 
+            </i></a>
         <span class="example-spacer"></span>
-       
+
 <!--            <span class="example-spacer"></span>
            <span><a *ngIf="user.admin" routerLink="/admin" routerLinkActive="active">  <i class="material-icons" matTooltip="Admin">
             supervised_user_circle
@@ -22,25 +22,25 @@
             <span class="example-spacer"></span>
             <span class="example-spacer"></span> -->
 
-     
+
 
       <span class="example-spacer"></span>
       <!-- <span><a *ngIf="getUserState()"  routerLink="/userdata" routerLinkActive="active"><i class="fas fa-user-circle"></i></a></span> -->
-      
+
       <!-- <a *ngIf="!getUserState()" class="item" routerLink="/login" routerLinkActive="active"><i class="material-icons" matTooltip="Membre - Se connecter">
             account_circle
             </i></a> -->
-     
+
 
             <div class="infos">
                 <div>
-                    <a routerLink="/member_space/{{user.pseudo}}" matTooltip="Mon espace "><img src="{{user.picture}}"  alt=""></a>            
+                    <a routerLink="/member_space/{{user.pseudo}}" matTooltip="Mon espace "><img src="{{user.picture}}"  alt=""></a>
                 </div>
                 <div>
-                    {{user.first_name}} {{user.last_name}} 
+                    {{user.first_name}} {{user.last_name}}
                 </div>
                </div>
-      
+
     </mat-toolbar-row>
 
 <!--     <a *ngIf="getUserState()"  (click)="logoutUser()" href="/home"><i class="material-icons"  matTooltip="Se deconnecter"
@@ -48,4 +48,3 @@
             input
             </i></a> -->
   </mat-toolbar>
-  

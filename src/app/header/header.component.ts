@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../auth.service";
 import { CommentService } from '../comment.service';
 import { User } from '../models/user';
+import { TokenService } from '../token.service';
 
 @Component({
   selector: 'app-header',
@@ -24,16 +25,17 @@ export class HeaderComponent implements OnInit {
   };
 
   membersOnlines=[];
-  constructor( private authService: AuthService) {
+  constructor( private authService: AuthService, private tokenService:TokenService) {
 
     this.getUserState()
-    
+
     console.log(this.isAuth)
   if(this.isAuth){
-    
+
     this.authService.getData()
     .subscribe(
-      res => {//console.log('////',res)
+      res => {
+       console.log('////',res);
       this.user = res.user;
       this.userid=res.user._id
       this.user.online=true
@@ -45,29 +47,33 @@ export class HeaderComponent implements OnInit {
         this.membersOnlines.push(online)
       }
     )
-    
+
       })
   }
-  
+
   this.authService.onOfflineEvent().subscribe(
     offline=> console.log('offline: => ',offline)
   )
-  
+
   }
- 
+
   ngOnInit() {
 
-    this.getUserState()
-    //console.log(this.isAuth)
+   const myToken = this.tokenService.decodeToken();
+   console.log(myToken);
+
+    this.getUserState();
+    console.log(this.isAuth);
   if(this.isAuth){
     this.authService.getData()
     .subscribe(
-      res => {//console.log('////',res)
+      res => {
+        console.log('////',res.user);
       this.user = res.user;
-      this.userid=res.user._id
-      })
+      this.userid=res.user._id;
+      });
   }
-    
+
   }
 
 
@@ -83,10 +89,10 @@ export class HeaderComponent implements OnInit {
     this.isAuth =false;
     this.user.online=false
     this.authService.updateUserStatus(this.user)
-    
-    
+
+
     }
 
- 
+
 
 }
